@@ -108,6 +108,7 @@ def _update_database(filename):
 
 	curr_ver, curr_date = _get_current_version(usb_ids)
 
+	print_info('Getting current database version')
 	print('Version:  {}'.format(curr_ver))
 	print('Date:     {}'.format(curr_date))
 
@@ -196,7 +197,7 @@ def _get_latest_version():
 	print_info('Getting latest version and date')
 
 	try:
-		resp = requests.get('https://raw.githubusercontent.com/systemd/systemd/master/hwdb/usb.ids', timeout=10)
+		resp = requests.get('http://www.linux-usb.org/usb.ids', timeout=10)
 	except requests.exceptions.Timeout as e:
 		return (None, -1, -1, USBIDs._SERVER_TIMEOUT_ERROR, str(e))
 
