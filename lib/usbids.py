@@ -106,9 +106,8 @@ def _update_database(filename):
 		print_critical('Permission denied: \'{}\''.format(filename), initial_error=str(e))
 		return
 
-	curr_ver, curr_date = _get_current_version(usb_ids)
-
 	print_info('Getting current database version')
+	curr_ver, curr_date = _get_current_version(usb_ids)
 	print('Version:  {}'.format(curr_ver))
 	print('Date:     {}'.format(curr_date))
 
