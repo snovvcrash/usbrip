@@ -5,7 +5,7 @@ usbrip
 
 usbrip (derived from "USB Ripper", not "USB R.I.P." :hushed:) is an open source forensics tool with CLI interface that lets you keep track of USB device artifacts (a.k.a. *USB event history*: "Connected" and "Disconnected" events) on Linux machines.
 
-Table of contents:
+Table of Contents:
   * [**Description**](#description)  
   * [**Screenshots**](#screenshots)  
   * [**Usage**](#usage)  
@@ -89,7 +89,7 @@ Examples
   
 Dependencies
 ==========
-usbrips makes use of the following external modules:
+usbrip makes use of the following external modules:
 * [terminaltables](https://robpol86.github.io/terminaltables/v3.1.0/index.html "terminaltables 3.1.0 — terminaltables")
 * [termcolor](https://pypi.python.org/pypi/termcolor "termcolor 1.1.0 : Python Package Index")
 * [bs4](https://www.crummy.com/software/BeautifulSoup/bs4/doc/ "Beautiful Soup Documentation — Beautiful Soup 4.4.0 documentation")
