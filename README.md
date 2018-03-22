@@ -1,5 +1,6 @@
 usbrip
 ========
+
 usbrip (derived from "USB Ripper", not "USB R.I.P." :hushed:) is an open source forensic tool with CLI interface that lets you keep track of USB device artifacts (a.k.a. *USB event history*: "Connected" and "Disconnected" events) on Linux machines.
 
 Description
