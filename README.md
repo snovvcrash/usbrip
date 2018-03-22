@@ -46,12 +46,12 @@ $ python3 usbrip.py <module> <submodule> -h
 
 Examples
 ========
-* Show event history of all USB devices without asking about the generation method of the output (-q, --quite, default output to the terminal stdout) represented as list (-l, --list) with latest 100 entries (-n, --number 100):
+* Show event history of all USB devices without asking about the generation method of the output (`-q`, `--quite`, default output to the terminal stdout) represented as list (`-l`, `--list`) with latest 100 entries (`-n NUMBER`, `--number NUMBER`):
   ```
   $ python3 usbrip.py events history -ql -c conn vid pid disconn serial -n 100
   ```
 
-* Show event history of external USB devices (-e, --external, which were *actually* disconnected) with asking about the generation method of the output (default or as a JSON-file) represented as table (-t, --table) sorted by date (-d, --dates "Mar  3" "Mar 21") with logs taken from outer files (-f, --files `/var/log/syslog.1` `/var/log/syslog.2.gz`):
+* Show event history of external USB devices (`-e`, `--external`, which were *actually* disconnected) with asking about the generation method of the output (default or as a JSON-file) represented as table (`-t`, `--table`) sorted by date (`-d DATES`, `--dates DATES`) with logs taken from the outer files (`-f FILES`, `--files FILES`):
   ```
   $ python3 usbrip.py events history -et -c conn vid pid disconn serial -d "Mar  3" "Mar 21" -f /var/log/syslog.1 /var/log/syslog.2.gz
   ```
@@ -61,13 +61,13 @@ Examples
   python3 usbrip.py history events -t | awk '{ sub("$", "\r"); print }' > usbrip.txt && enconv -x UTF8 usbrip.txt
   ```
 
-  *Remark*: you can always get rid of escape characters by yourself even if you have already got the output to stdout. To do that just copy the output data to `usbrip.txt` and write one awk instruction more:
+  *Remark*: you can always get rid of the escape characters by yourself even if you have already got the output to stdout. To do that just copy the output data to `usbrip.txt` and write one more awk instruction:
 
   ```
   awk '{ sub("$", "\r"); gsub("\\x1B\\[[0-?]*[ -/]*[@-~]", ""); print }' usbrip.txt && enconv -x UTF8 usbrip.txt
   ```
 
-* Generate a list of trusted USB devices as a JSON-file (-o, --output `trusted/auth.json`):
+* Generate a list of trusted USB devices as a JSON-file (`-o OUTPUT`, `--output OUTPUT`):
   ```
   $ python3 usbrip.py events gen_auth -o trusted/auth.json
   ```
@@ -82,7 +82,7 @@ Examples
   $ python3 usbrip.py ids search --vid 0781 --pid 5580
   ```
 
-* Download latest version of `usb_ids/usb.ids` database from [here](http://www.linux-usb.org/usb.ids "List of USB ID's"):
+* Download the latest version of `usb_ids/usb.ids` database from [here](http://www.linux-usb.org/usb.ids "List of USB ID's"):
   ```
   $ python3 usbrip.py ids download
   ```
