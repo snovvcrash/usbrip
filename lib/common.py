@@ -44,7 +44,7 @@ ABSENCE   = '\u2205'  # '∅', U_EMPTY_SET
 SEPARATOR = '\u2212'  # '−', U_MINUS_SIGN
 
 # Flag for enabling colored text when termianl output, else (| or > for example) no color
-IS_COLORED = True if sys.stdout.isatty() else False
+ISATTY = True if sys.stdout.isatty() else False
 
 # ----------------------------------------------------------
 # ------------------------- Banner -------------------------
@@ -65,7 +65,7 @@ I = ('I', 'i', '1', '!')
 
 E,N,S,I = list(map(lambda x: random.choice(x), (E,N,S,I)))
 
-if IS_COLORED:
+if ISATTY:
 	E,N,S,I = list(map(lambda x: colored(x, 'green', 'on_blue')+'\033[1;33m', (E,N,S,I)))
 else:
 	BANNER = BANNER[7:-5]
@@ -118,7 +118,7 @@ class USBRipError(Exception):
 
 COLUMN_NAMES = OrderedDict()
 
-if IS_COLORED:
+if ISATTY:
 	COLUMN_NAMES['conn']     = colored('Connected',     'magenta', attrs=['bold'])
 	COLUMN_NAMES['user']     = colored('User',          'magenta', attrs=['bold'])
 	COLUMN_NAMES['vid']      = colored('VID',           'magenta', attrs=['bold'])
@@ -216,7 +216,7 @@ def list_files(source_dir):
 # ----------------------------------------------------------
 
 def print_info(message):
-	if IS_COLORED:
+	if ISATTY:
 		cprint('[INFO] {}'.format(message), 'green')
 	else:
 		print('[INFO] {}'.format(message))
@@ -228,7 +228,7 @@ def print_warning(message, *, errcode=0, initial_error=''):
 		if initial_error:
 			print(initial_error, file=sys.stderr)
 
-	if IS_COLORED:
+	if ISATTY:
 		cprint('[WARNING] {}'.format(message), 'yellow')
 	else:
 		print('[WARNING] {}'.format(message))
@@ -240,7 +240,7 @@ def print_critical(message, *, errcode=0, initial_error=''):
 		if initial_error:
 			print(initial_error, file=sys.stderr)
 
-	if IS_COLORED:
+	if ISATTY:
 		cprint('[CRITICAL] {}'. format(message), 'white', 'on_red', attrs=['bold'])
 	else:
 		print('[CRITICAL] {}'. format(message))

@@ -53,7 +53,7 @@ from calendar import month_name
 from lib.common import BULLET
 from lib.common import ABSENCE
 from lib.common import SEPARATOR
-from lib.common import IS_COLORED
+from lib.common import ISATTY
 from lib.common import COLUMN_NAMES
 from lib.common import DefaultOrderedDict
 from lib.common import root_dir_join
@@ -74,7 +74,7 @@ from lib.common import time_it_if_debug
 class USBEvents:
 
 	# SingleTable (uses ANSI escape codes) when termianl output, else (| or > for example) AsciiTable (only ASCII)
-	TableClass = SingleTable if sys.stdout.isatty() else AsciiTable
+	TableClass = SingleTable if ISATTY else AsciiTable
 
 	@time_it_if_debug(DEBUG, time_it)
 	def __init__(self, files=None):
@@ -108,7 +108,7 @@ class USBEvents:
 			print_info('No USB events found!')
 			return
 
-		if not quiet:
+		if not quiet and ISATTY:
 			try:
 				number, filename = _output_choice('event history', 'history.json', 'history/')
 			except USBRipError as e:
@@ -183,7 +183,7 @@ class USBEvents:
 			print_info('No USB violation events found!')
 			return
 
-		if not quiet:
+		if not quiet and ISATTY:
 			try:
 				number, filename = _output_choice('violation', 'viol.json', 'violations/')
 			except USBRipError as e:
@@ -440,16 +440,16 @@ def _represent_events(events_to_show, columns, table_data, title, repres=None):
 				event[name] = ABSENCE
 
 			item = event[name]
-			if name == 'conn' and IS_COLORED:
+			if name == 'conn' and ISATTY:
 				item = colored(item, 'green')
-			elif name == 'disconn' and IS_COLORED:
+			elif name == 'disconn' and ISATTY:
 				item = colored(item, 'red')
 
 			row.append(item)
 
 		table_data.append(row)
 
-	if IS_COLORED:
+	if ISATTY:
 		event_table = _build_single_table(USBEvents.TableClass, table_data, colored(title, 'white', attrs=['bold']))
 	else:
 		event_table = _build_single_table(USBEvents.TableClass, table_data, title)
@@ -470,7 +470,10 @@ def _represent_events(events_to_show, columns, table_data, title, repres=None):
 		if not max_len // 2: max_len += 1
 		date_sep_len = (max_len - 8) // 2
 
-		cprint('\n' + title, 'white', attrs=['bold'])
+		if ISATTY:
+			cprint('\n' + title, 'white', attrs=['bold'])
+		else:
+			print('\n' + title)
 
 		prev_cday = ''
 		for event in events_to_show:
@@ -483,7 +486,7 @@ def _represent_events(events_to_show, columns, table_data, title, repres=None):
 				print(SEPARATOR * max_len)
 			prev_cday = curr_cday
 
-			if IS_COLORED:
+			if ISATTY:
 				print(colored('Connected:      ', 'magenta', attrs=['bold']) + colored(event['conn'], 'green'))
 				print(colored('User:           ', 'magenta', attrs=['bold']) + event['user'])
 				print(colored('VID:            ', 'magenta', attrs=['bold']) + event['vid'])
