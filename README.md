@@ -1,11 +1,21 @@
 usbrip
 ========
+[![Python Version](https://img.shields.io/badge/python-3.4,%203.5,%203.6-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/license-GPLv3-red.svg)](https://raw.githubusercontent.com/snovvcrash/usbrip/master/LICENSE)
 
 usbrip (derived from "USB Ripper", not "USB R.I.P." :hushed:) is an open source forensic tool with CLI interface that lets you keep track of USB device artifacts (a.k.a. *USB event history*: "Connected" and "Disconnected" events) on Linux machines.
 
+Table of contents:
+  * [**Description**](#description)  
+  * [**Screenshots**](#screenshots)  
+  * [**Usage**](#usage)  
+  * [**Examples**](#examples)  
+  * [**Dependencies**](#dependencies)  
+  * [**Post Scriptum**](#post-scriptum)
+
 Description
 ========
-usbrip is a small piece of software written in pure Python 3 (using some external modules though, see Dependencies) which parses Linux log files (`/var/log/syslog*` or `/var/log/messages*` depending on the distro) for constructing USB event history tables. Such tables may contain the following columns: "Connected" (date & time), "User", "VID" (vendor ID), "PID" (product ID), "Product", "Manufacturer", "Serial Number", "Port" and "Disconnected" (date & time).
+usbrip is a small piece of software written in pure Python 3 (using some external modules though, see [Dependencies](#dependencies)) which parses Linux log files (`/var/log/syslog*` or `/var/log/messages*` depending on the distro) for constructing USB event history tables. Such tables may contain the following columns: "Connected" (date & time), "User", "VID" (vendor ID), "PID" (product ID), "Product", "Manufacturer", "Serial Number", "Port" and "Disconnected" (date & time).
 
 Besides, it also can:
 * generate a list of authorized (trusted) USB devices as a JSON (call it `auth.json`);
