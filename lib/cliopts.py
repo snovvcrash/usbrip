@@ -88,7 +88,7 @@ def cmd_line_options():
 	ueh_parser.add_argument('-q',
                             '--quiet',
                             action='store_true',
-                            help='do not ask about the generation method of the output' \
+                            help='do not ask about the generation method of the output ' \
                                  '(default: Terminal stdout)')
 
 	ueh_parser.add_argument('-f',
@@ -180,7 +180,7 @@ def cmd_line_options():
 	uev_parser.add_argument('-q',
                             '--quiet',
                             action='store_true',
-                            help='do not ask about the generation method of the output' \
+                            help='do not ask about the generation method of the output ' \
                                  '(default: Terminal stdout)')
 
 	uev_parser.add_argument('-f',
