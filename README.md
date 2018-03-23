@@ -19,7 +19,7 @@ usbrip is a small piece of software written in pure Python 3 (using some externa
 
 Besides, it also can:
 * generate a list of authorized (trusted) USB devices as a JSON (call it `auth.json`);
-* search for "violation events" based on `auth.json`: show (or generate another JSON with) all USB devices that do appear in history but do NOT appear in `auth.json`;
+* search for "violation events" based on `auth.json`: show (or generate another JSON with) USB devices that do appear in history and do NOT appear in `auth.json`;
 * search additional details about a specific USB device based on its VID and/or PID.
 
 Screenshots

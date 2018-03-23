@@ -103,12 +103,12 @@ def cmd_line_options():
 	ueh_group_table_list.add_argument('-t',
                                       '--table',
                                       action='store_true',
-                                      help='display in the form of table (not list)')
+                                      help='represent as table (not list)')
 
 	ueh_group_table_list.add_argument('-l',
                                       '--list',
                                       action='store_true',
-                                      help='display in the form of list (not table)')
+                                      help='represent as list (not table)')
 
     # ---------------- USB Events Gen Auth JSON ----------------
 
@@ -150,8 +150,9 @@ def cmd_line_options():
 
 	uev_parser = ue_subparsers.add_parser('violations',
                                           help='search USB event history for violations ' \
-                                               '(whether all of the connected USB devices ' \
-                                               'are presented in authorized device list (JSON) or not)')
+                                               '(show USB devices that do appear in hist' \
+                                               'ory and do NOT appear in authorized devi' \
+                                               'ce list (JSON))')
 
 	uev_parser.add_argument('-i',
                             '--input',
@@ -195,12 +196,12 @@ def cmd_line_options():
 	uev_group_table_list.add_argument('-t',
                                       '--table',
                                       action='store_true',
-                                      help='display in the form of table (not list)')
+                                      help='represent as table (not list)')
 
 	uev_group_table_list.add_argument('-l',
                                       '--list',
                                       action='store_true',
-                                      help='display in the form of list (not table)')
+                                      help='represent as list (not table)')
 
 	# ----------------------------------------------------------
 	# ------------------------ USB IDs -------------------------
