@@ -46,38 +46,38 @@ $ python3 usbrip.py <module> <submodule> -h
 
 Examples
 ==========
-* Show event history of all USB devices without asking about the generation method of the output (`-q`, `--quite`, default output to the terminal stdout) represented as list (`-l`, `--list`) with latest 100 entries (`-n NUMBER`, `--number NUMBER`):
+* Show the event history of all USB devices, supressing banner output, info messages and user iteraction (`-q`, `--quite`), represented as a list (`-l`, `--list`) with latest 100 entries (`-n NUMBER`, `--number NUMBER`):
   ```
-  $ python3 usbrip.py events history -ql -c conn vid pid disconn serial -n 100
-  ```
-
-* Show event history of external USB devices (`-e`, `--external`, which were *actually* disconnected) with asking about the generation method of the output (default or as a JSON-file) represented as table (`-t`, `--table`) sorted by date (`-d DATES`, `--dates DATES`) with logs taken from the outer files (`-f FILES`, `--files FILES`):
-  ```
-  $ python3 usbrip.py events history -et -c conn vid pid disconn serial -d "Mar  3" "Mar 21" -f /var/log/syslog.1 /var/log/syslog.2.gz
+  $ python3 usbrip.py events history -ql -n 100
   ```
 
-* Build event history of all USB events and redirect the output to file for further analysis. When the output stream is NOT terminal stdout (`|` or `>` for example) there would be no ANSI escape characters (color) in the output so feel free to use it that way. Also notice that usbrip uses some UNICODE symbols so it would be nice to convert the resulting file to UTF-8 encoding (with `encov` for example) as well as replace newline characters to Windows style for portability (with `awk` for example):
+* Show the event history of the external USB devices (`-e`, `--external`, which were *actually* disconnected) represented as a table (`-t`, `--table`) containing "Connected", "VID", "PID", "Disconnected" and "Serial Number" columns (`-c [COLUMNS]`, `--columns [COLUMNS]`) sorted by date (`-d [DATES]`, `--dates [DATES]`) with logs taken from the outer files (`-f [FILES]`, `--files [FILES]`):
+  ```
+  $ python3 usbrip.py events history -et -c conn vid pid disconn serial -d "Dec  9" "Dec 10" -f /var/log/syslog.1 /var/log/syslog.2.gz
+  ```
+
+* Build the event history of all USB events and redirect the output to a file for further analysis. When the output stream is NOT terminal stdout (`|` or `>` for example) there would be no ANSI escape characters (color) in the output so feel free to use it that way. Also notice that usbrip uses some UNICODE symbols so it would be nice to convert the resulting file to UTF-8 encoding (with `encov` for example) as well as replace newline characters to Windows style for portability (with `awk` for example):
   ```
   python3 usbrip.py history events -t | awk '{ sub("$", "\r"); print }' > usbrip.txt && enconv -x UTF8 usbrip.txt
   ```
 
-  *Remark*: you can always get rid of the escape characters by yourself even if you have already got the output to stdout. To do that just copy the output data to `usbrip.txt` and write one more `awk` instruction:
+  *Remark*: you can always get rid of the escape characters by yourself even if you have already got the output to stdout. To do that just copy the output data to `usbrip.txt` and add one more `awk` instruction:
 
   ```
   awk '{ sub("$", "\r"); gsub("\\x1B\\[[0-?]*[ -/]*[@-~]", ""); print }' usbrip.txt && enconv -x UTF8 usbrip.txt
   ```
 
-* Generate a list of trusted USB devices as a JSON-file (`-o OUTPUT`, `--output OUTPUT`):
+* Generate a list of trusted USB devices as a JSON-file (`trusted/auth.json`) containing the first *three* devices connected on September 26:
   ```
-  $ python3 usbrip.py events gen_auth -o trusted/auth.json
-  ```
-
-* Search for violation events with asking about the generation method of the output (default or as a JSON-file):
-  ```
-  $ python3 usbrip.py events violations -i trusted/auth.json
+  $ python3 usbrip.py events gen_auth trusted/auth.json -n 3 -d "Sep 26"
   ```
 
-* Search for details about a specific USB device by its VID and PID:
+* Search the event history of the external USB devices for violations based on the list of trusted USB devices (`trusted/auth.json`) and represent the output as a table with "Connected", "VID" and "PID" columns:
+  ```
+  $ python3 usbrip.py events violations trusted/auth.json -et -c conn vid pid
+  ```
+
+* Search for details about a specific USB device by its VID (`--vid VID`) and PID (`--pid PID`):
   ```
   $ python3 usbrip.py ids search --vid 0781 --pid 5580
   ```
