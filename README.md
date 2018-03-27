@@ -51,12 +51,12 @@ Examples
   $ python3 usbrip.py events history -ql -n 100
   ```
 
-* Show the event history of the external USB devices (`-e`, `--external`, which were *actually* disconnected) represented as a table (`-t`, `--table`) containing "Connected", "VID", "PID", "Disconnected" and "Serial Number" columns (`-c [COLUMNS]`, `--columns [COLUMNS]`) sorted by date (`-d [DATES]`, `--dates [DATES]`) with logs taken from the outer files (`-f [FILES]`, `--files [FILES]`):
+* Show the event history of the external USB devices (`-e`, `--external`, which were *actually* disconnected) represented as a table (`-t`, `--table`) containing "Connected", "VID", "PID", "Disconnected" and "Serial Number" columns (`-c [COLUMNS]`, `--columns [COLUMNS]`) filtered by date (`-d DATE [DATE ...]`, `--dates DATE [DATE ...]`) with logs taken from the outer files (`-f FILE [FILE ...]`, `--files FILE [FILE ...]`):
   ```
   $ python3 usbrip.py events history -et -c conn vid pid disconn serial -d "Dec  9" "Dec 10" -f /var/log/syslog.1 /var/log/syslog.2.gz
   ```
 
-* Build the event history of all USB devices and redirect the output to a file for further analysis. When the output stream is NOT terminal stdout (`|` or `>` for example) there would be no ANSI escape characters (color) in the output so feel free to use it that way. Also notice that usbrip uses some UNICODE symbols so it would be nice to convert the resulting file to UTF-8 encoding (with `encov` for example) as well as replace newline characters to Windows style for portability (with `awk` for example):
+* Build the event history of all USB devices and redirect the output to a file for further analysis. When the output stream is NOT terminal stdout (`|` or `>` for example) there would be no ANSI escape characters (color) in the output so feel free to use it that way. Also notice that usbrip uses some UNICODE symbols so it would be nice to convert the resulting file to UTF-8 encoding (with `encov` for example) as well as change newline characters to Windows style for portability (with `awk` for example):
   ```
   python3 usbrip.py history events -t | awk '{ sub("$", "\r"); print }' > usbrip.txt && enconv -x UTF8 usbrip.txt
   ```
