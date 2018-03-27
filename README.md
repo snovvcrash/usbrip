@@ -24,7 +24,7 @@ Besides, it also can:
 
 Screenshots
 ==========
-![Screenshot-1](https://user-images.githubusercontent.com/23141800/37735126-2b601742-2d5e-11e8-85ed-9945123f484e.png "Get USB event history of external devices")
+![Screenshot-1](https://user-images.githubusercontent.com/23141800/37978287-64adcadc-31ee-11e8-8bd7-f34e49a54749.png "Get USB event history of external devices")
 ![Screenshot-2](https://user-images.githubusercontent.com/23141800/37735847-4340b720-2d60-11e8-83ce-b77c2b0673f8.png "Search for USB devices by PID")
 
 Usage
