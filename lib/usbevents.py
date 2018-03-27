@@ -49,6 +49,7 @@ from collections import OrderedDict, defaultdict
 from terminaltables import AsciiTable, SingleTable
 from termcolor import colored, cprint
 from calendar import month_name
+from string import printable
 
 from lib.common import BULLET
 from lib.common import ABSENCE
@@ -562,36 +563,39 @@ def _output_choice(list_name, default_filename, dirname):
 
 		if number == '1':
 			while True:
-				filename = input('[>] Please enter the base name for the output file' \
+				filename = input('[>] Please enter the base name for the output file ' \
                                  '(default is \'{}\'): '.format(default_filename))
 
-				if not filename:
-					filename = default_filename
+				if all(c in printable for c in filename) and len(filename) < 256:
+					if not filename:
+						filename = default_filename
+					elif filename[-5:] != '.json':
+						filename = filename + '.json'
 
-				filename = root_dir_join(dirname + filename)
+					filename = root_dir_join(dirname + filename)
 
-				try:
-					dirname = os.path.dirname(filename)
-					os_makedirs(dirname)
-				except USBRipError as e:
-					print_critical(str(e), initial_error=e.errors['initial_error'])
-					return (None, '')
-				else:
-					print_info('Created \'{}\''.format(dirname))
+					try:
+						dirname = os.path.dirname(filename)
+						os_makedirs(dirname)
+					except USBRipError as e:
+						print_critical(str(e), initial_error=e.errors['initial_error'])
+						return (None, '')
+					else:
+						print_info('Created \'{}\''.format(dirname))
 
-				overwrite = True
-				if os.path.exists(filename):
-					while True:
-						overwrite = input('[?] File exists. Would you like to overwrite it? [Y/n]: ')
-						if len(overwrite) == 1 and overwrite in 'Yy':
-							overwrite = True
-							break
-						elif len(overwrite) == 1 and overwrite in 'Nn':
-							overwrite = False
-							break
+					overwrite = True
+					if os.path.exists(filename):
+						while True:
+							overwrite = input('[?] File exists. Would you like to overwrite it? [Y/n]: ')
+							if len(overwrite) == 1 and overwrite in 'Yy':
+								overwrite = True
+								break
+							elif len(overwrite) == 1 and overwrite in 'Nn':
+								overwrite = False
+								break
 
-				if overwrite:
-					return (int(number), filename)
+					if overwrite:
+						return (int(number), filename)
 
 		elif number == '2':
 			return (int(number), '')
