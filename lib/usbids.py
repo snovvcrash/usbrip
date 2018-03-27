@@ -63,6 +63,13 @@ class USBIDs:
 	_SERVER_TIMEOUT_ERROR      = -2
 	_SERVER_CONTENT_ERROR      = -3
 
+	# If True supress banner, info messages and user iteraction
+	QUIET = False
+
+	def __init__(self, *, quiet=False):
+		if quiet:
+			USBIDs.QUIET = quiet
+
 	@staticmethod
 	@time_it_if_debug(DEBUG, time_it)
 	def search_ids(vid, pid, *, offline=True):
@@ -106,12 +113,12 @@ def _update_database(filename):
 		print_critical('Permission denied: \'{}\''.format(filename), initial_error=str(e))
 		return
 
-	print_info('Getting current database version')
+	print_info('Getting current database version', quiet=USBIDs.QUIET)
 	curr_ver, curr_date = _get_current_version(usb_ids)
 	print('Version:  {}'.format(curr_ver))
 	print('Date:     {}'.format(curr_date))
 
-	print_info('Checking local database for update')
+	print_info('Checking local database for update', quiet=USBIDs.QUIET)
 	db, latest_ver, latest_date, error, e = _get_latest_version()
 
 	if error:
@@ -127,24 +134,27 @@ def _update_database(filename):
 		print('Updating database... ', end='')
 
 		usb_ids.write(db)
-		usb_ids.seek(0)
 		usb_ids.truncate()
+		usb_ids.seek(0)
 
 		print('Done\n')
 
 		print('Version:  {}'.format(latest_ver))
 		print('Date:     {}'.format(latest_date))
 
-	print_info('Local database is up-to-date')
+	print_info('Local database is up-to-date', quiet=USBIDs.QUIET)
 
 	return usb_ids
 
 def _download_database(filename):
 	try:
-		os_makedirs(os.path.dirname(filename))
+		dirname = os.path.dirname(filename)
+		os_makedirs(dirname)
 	except USBRipError as e:
 		print_critical(str(e), initial_error=e.errors['initial_error'])
 		return
+	else:
+		print_info('Created \'{}\''.format(dirname))
 
 	try:
 		usb_ids = open(filename, 'w+')
@@ -168,7 +178,7 @@ def _download_database(filename):
 	usb_ids.write(db)
 	usb_ids.seek(0)
 
-	print_info('Database downloaded')
+	print_info('Database downloaded', quiet=USBIDs.QUIET)
 
 	print('Version:  {}'.format(latest_ver))
 	print('Date:     {}'.format(latest_date))
@@ -193,7 +203,7 @@ def _get_latest_version():
 	if not connected:
 		return (None, -1, -1, error, e)
 
-	print_info('Getting latest version and date')
+	print_info('Getting latest version and date', quiet=USBIDs.QUIET)
 
 	try:
 		resp = requests.get('http://www.linux-usb.org/usb.ids', timeout=10)

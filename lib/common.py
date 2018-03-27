@@ -43,7 +43,7 @@ BULLET    = '\u2022'  # '•', U_BULLET
 ABSENCE   = '\u2205'  # '∅', U_EMPTY_SET
 SEPARATOR = '\u2212'  # '−', U_MINUS_SIGN
 
-# Flag for enabling colored text when termianl output, else (| or > for example) no color
+# Enable colored text when terminal output (True), else (| or > for example) no color (False)
 ISATTY = True if sys.stdout.isatty() else False
 
 # ----------------------------------------------------------
@@ -198,8 +198,6 @@ def os_makedirs(dirname):
 		if not os.path.isdir(dirname):
 			raise USBRipError('Path exists and it is not a directory: \'{}\''.format(dirname),
                               {'initial_error': str(e)} )
-	else:
-		print_info('Created \'{}\''.format(dirname))
 
 def traverse_dir(source_dir):
 	return [ os.path.join(root, filename)
@@ -215,7 +213,10 @@ def list_files(source_dir):
 # ------------------------ Messages ------------------------
 # ----------------------------------------------------------
 
-def print_info(message):
+def print_info(message, *, quiet=False):
+	if quiet:
+		return
+		
 	if ISATTY:
 		cprint('[INFO] {}'.format(message), 'green')
 	else:

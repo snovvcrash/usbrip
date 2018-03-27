@@ -52,6 +52,41 @@ def cmd_line_options():
 	ueh_parser = ue_subparsers.add_parser('history',
                                           help='show USB event history')
 
+	ueh_parser.add_argument('-q',
+                            '--quiet',
+                            action='store_true',
+                            help='supress banner, info messages and user iteraction')
+
+	ueh_group_table_list = ueh_parser.add_mutually_exclusive_group()
+
+	ueh_group_table_list.add_argument('-t',
+                                      '--table',
+                                      action='store_true',
+                                      help='represent as table (not list)')
+
+	ueh_group_table_list.add_argument('-l',
+                                      '--list',
+                                      action='store_true',
+                                      help='represent as list (not table)')
+
+	ueh_parser.add_argument('-e',
+                            '--external',
+                            action='store_true',
+                            help='show only those devices which have \'disconnect\' date')
+
+	ueh_parser.add_argument('-n',
+                            '--number',
+                            type=int,
+                            default=-1,
+                            help='number of events to show')
+
+	ueh_parser.add_argument('-d',
+                            '--dates',
+                            nargs='+',
+                            type=str,
+                            default=[],
+                            help='filter by DATES')
+
 	ueh_parser.add_argument('-c',
                             '--columns',
                             nargs='+',
@@ -67,30 +102,6 @@ def cmd_line_options():
                                                            '\'port\', '     \
                                                            '\'disconn\'.)')
 
-	ueh_parser.add_argument('-e',
-                            '--external',
-                            action='store_true',
-                            help='show only those devices which have \'disconnect\' date')
-
-	ueh_parser.add_argument('-d',
-                            '--dates',
-                            nargs='+',
-                            type=str,
-                            default=[],
-                            help='filter by DATES')
-
-	ueh_parser.add_argument('-n',
-                            '--number',
-                            type=int,
-                            default=-1,
-                            help='number of events to show')
-
-	ueh_parser.add_argument('-q',
-                            '--quiet',
-                            action='store_true',
-                            help='do not ask about the generation method of the output ' \
-                                 '(default: Terminal stdout)')
-
 	ueh_parser.add_argument('-f',
                             '--files',
                             nargs='+',
@@ -98,33 +109,30 @@ def cmd_line_options():
                             default=[],
                             help='obtain log from FILES')
 
-	ueh_group_table_list = ueh_parser.add_mutually_exclusive_group(required=False)
-
-	ueh_group_table_list.add_argument('-t',
-                                      '--table',
-                                      action='store_true',
-                                      help='represent as table (not list)')
-
-	ueh_group_table_list.add_argument('-l',
-                                      '--list',
-                                      action='store_true',
-                                      help='represent as list (not table)')
-
     # ---------------- USB Events Gen Auth JSON ----------------
 
 	ueg_parser = ue_subparsers.add_parser('gen_auth',
                                           help='generate authorized device list (JSON)')
 
-	ueg_parser.add_argument('-o',
-                            '--output',
+	ueg_parser.add_argument('output',
                             type=str,
-                            required=True,
                             help='set output path')
+
+	ueg_parser.add_argument('-q',
+                            '--quiet',
+                            action='store_true',
+                            help='supress banner, info messages and user iteraction')
 
 	ueg_parser.add_argument('-e',
                             '--external',
                             action='store_true',
                             help='show only those devices which have \'disconnect\' date')
+
+	ueg_parser.add_argument('-n',
+                            '--number',
+                            type=int,
+                            default=-1,
+                            help='number of events to show')
 
 	ueg_parser.add_argument('-d',
                             '--dates',
@@ -132,12 +140,6 @@ def cmd_line_options():
                             type=str,
                             default=[],
                             help='filter by DATES')
-
-	ueg_parser.add_argument('-n',
-                            '--number',
-                            type=int,
-                            default=-1,
-                            help='number of events to show')
 
 	ueg_parser.add_argument('-f',
                             '--files',
@@ -154,44 +156,16 @@ def cmd_line_options():
                                                'ory and do NOT appear in authorized devi' \
                                                'ce list (JSON))')
 
-	uev_parser.add_argument('-i',
-                            '--input',
+	uev_parser.add_argument('input',
                             type=str,
-                            required=True,
                             help='set input path')
-
-	uev_parser.add_argument('-e',
-                            '--external',
-                            action='store_true',
-                            help='show only those devices which have \'disconnect\' date')
-
-	uev_parser.add_argument('-d',
-                            '--dates',
-                            nargs='+',
-                            type=str,
-                            default=[],
-                            help='filter by DATES')
-
-	uev_parser.add_argument('-n',
-                            '--number',
-                            type=int,
-                            default=-1,
-                            help='number of events to show')
 
 	uev_parser.add_argument('-q',
                             '--quiet',
                             action='store_true',
-                            help='do not ask about the generation method of the output ' \
-                                 '(default: Terminal stdout)')
+                            help='supress banner, info messages and user iteraction')
 
-	uev_parser.add_argument('-f',
-                            '--files',
-                            nargs='+',
-                            type=str,
-                            default=[],
-                            help='obtain log from FILES')
-
-	uev_group_table_list = uev_parser.add_mutually_exclusive_group(required=False)
+	uev_group_table_list = uev_parser.add_mutually_exclusive_group()
 
 	uev_group_table_list.add_argument('-t',
                                       '--table',
@@ -202,6 +176,46 @@ def cmd_line_options():
                                       '--list',
                                       action='store_true',
                                       help='represent as list (not table)')
+
+	uev_parser.add_argument('-e',
+                            '--external',
+                            action='store_true',
+                            help='show only those devices which have \'disconnect\' date')
+
+	uev_parser.add_argument('-n',
+                            '--number',
+                            type=int,
+                            default=-1,
+                            help='number of events to show')
+
+	uev_parser.add_argument('-d',
+                            '--dates',
+                            nargs='+',
+                            type=str,
+                            default=[],
+                            help='filter by DATES')
+
+	uev_parser.add_argument('-c',
+                            '--columns',
+                            nargs='+',
+                            type=str,
+                            default=[],
+                            help='columns to show (options: \'conn\', '     \
+                                                           '\'user\', '     \
+                                                           '\'vid\', '      \
+                                                           '\'pid\', '      \
+                                                           '\'prod\', '     \
+                                                           '\'manufact\', ' \
+                                                           '\'serial\', '   \
+                                                           '\'port\', '     \
+                                                           '\'disconn\'.)')
+
+	uev_parser.add_argument('-f',
+                            '--files',
+                            nargs='+',
+                            type=str,
+                            default=[],
+                            help='obtain log from FILES')
 
 	# ----------------------------------------------------------
 	# ------------------------ USB IDs -------------------------
@@ -228,6 +242,11 @@ def cmd_line_options():
                             default=None,
                             help='product ID')
 
+	uis_parser.add_argument('-q',
+                            '--quiet',
+                            action='store_true',
+                            help='supress banner, info messages and user iteraction')
+
 	uis_parser.add_argument('--offline',
                             action='store_true',
                             help='offline mode (no database download/update)')
@@ -237,5 +256,10 @@ def cmd_line_options():
 	uid_parser = ui_subparsers.add_parser('download',
                                           help='download/update database;' \
                                                'ids database path is \'{}\''.format(root_dir_join('usb_ids/usb.ids')))
+
+	uid_parser.add_argument('-q',
+                            '--quiet',
+                            action='store_true',
+                            help='supress banner, info messages and user iteraction')
 
 	return parser

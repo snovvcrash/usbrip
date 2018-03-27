@@ -57,51 +57,52 @@ def usbrip_error(message, *, subparser=' '):
 # ----------------------------------------------------------
 
 def main():
-	print(BANNER)
-	
 	if not len(sys.argv) > 1:
+		print(BANNER)
 		usbrip_error('No arguments were passed')
 
 	parser = cmd_line_options()
 	args = parser.parse_args()
+	
+	if not args.quiet:
+		print(BANNER)
 
 	# ----------------------------------------------------------
 	# ----------------------- USB Events -----------------------
 	# ----------------------------------------------------------
 
 	if args.subparser == 'events' and args.ue_subparser:
-		if args.files:
-			for file in args.files:
-				if not os.path.exists(file):
-					usbrip_error(file + ': Path does not exist')
+		if 'columns' in args and args.columns:
+				for name in args.columns:
+					if name not in COLUMN_NAMES.keys():
+						usbrip_error(name + ': Invalid column name')
 
-		if args.dates:
+		if 'dates' in args and args.dates:
 			re_date = re.compile(r'^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) [\s1-3][0-9]$')
 			for date in args.dates:
 				if not re_date.search(date):
 					usbrip_error(date + ': Wrong date format')
 
-		sieve = dict(zip(('external', 'dates', 'number'), (args.external, args.dates, args.number)))
+		if 'files' in args and args.files:
+			for file in args.files:
+				if not os.path.exists(file):
+					usbrip_error(file + ': Path does not exist')
+
+		sieve = dict(zip(('external', 'number', 'dates'), (args.external, args.number, args.dates)))
+		repres = dict.fromkeys(('table', 'list', 'smart'), False)
+		
+		if 'table' in args and args.table:
+			repres['table'] = True
+		elif 'list' in args and args.list:
+			repres['list'] = True
+		else:
+			repres['smart'] = True
 
 		# ------------------- USB Events History -------------------
 
 		if args.ue_subparser == 'history':
-			if args.columns:
-				for name in args.columns:
-					if name not in COLUMN_NAMES.keys():
-						usbrip_error(name + ': Invalid column name')
-
-			repres = dict.fromkeys(('table', 'list', 'smart'), False)
-
-			if args.table:
-				repres['table'] = True
-			elif args.list:
-				repres['list'] = True
-			else:
-				repres['smart'] = True
-
-			ueh = USBEvents(args.files)
-			ueh.event_history(args.columns, sieve=sieve, repres=repres, quiet=args.quiet)
+			ueh = USBEvents(args.files, quiet=args.quiet)
+			ueh.event_history(args.columns, sieve=sieve, repres=repres)
 
 		# ---------------- USB Events Gen Auth JSON ----------------
 
@@ -109,8 +110,8 @@ def main():
 			if os.path.exists(args.output):
 				usbrip_error(args.output + ': Path already exists')
 
-			ueg = USBEvents(args.files)
-			ueg.generate_auth_json(args.output)
+			ueg = USBEvents(args.files, quiet=args.quiet)
+			ueg.generate_auth_json(args.output, sieve=sieve)
 
 		# ----------------- USB Events Violations ------------------
 
@@ -118,24 +119,15 @@ def main():
 			if not os.path.exists(args.input):
 				usbrip_error(args.input + ': Path does not exist')
 
-			repres = dict.fromkeys(('table', 'list', 'smart'), False)
-
-			if args.table:
-				repres['table'] = True
-			elif args.list:
-				repres['list'] = True
-			else:
-				repres['smart'] = True
-
-			uev = USBEvents(args.files)
-			uev.search_violations(args.input, sieve=sieve, repres=repres, quiet=args.quiet)
+			uev = USBEvents(args.files, quiet=args.quiet)
+			uev.search_violations(args.input, args.columns, sieve=sieve, repres=repres)
 
 	# ----------------------------------------------------------
 	# ------------------------ USB IDs -------------------------
 	# ----------------------------------------------------------
 
 	elif args.subparser == 'ids' and args.ui_subparser:
-		ui = USBIDs()
+		ui = USBIDs(quiet=args.quiet)
 
 		# --------------------- USB IDs Search ---------------------
 		
