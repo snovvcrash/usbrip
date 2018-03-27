@@ -58,20 +58,27 @@ def usbrip_error(message, *, subparser=' '):
 
 def main():
 	if not len(sys.argv) > 1:
-		print(BANNER)
+		print(BANNER + '\n')
 		usbrip_error('No arguments were passed')
 
 	parser = cmd_line_options()
 	args = parser.parse_args()
 	
-	if not args.quiet:
+	if 'quiet' in args and not args.quiet:
+		print(BANNER + '\n')
+
+	# ----------------------------------------------------------
+	# ------------------------- Banner -------------------------
+	# ----------------------------------------------------------
+
+	if args.subparser == 'banner':
 		print(BANNER)
 
 	# ----------------------------------------------------------
 	# ----------------------- USB Events -----------------------
 	# ----------------------------------------------------------
 
-	if args.subparser == 'events' and args.ue_subparser:
+	elif args.subparser == 'events' and args.ue_subparser:
 		if 'columns' in args and args.columns:
 				for name in args.columns:
 					if name not in COLUMN_NAMES.keys():
