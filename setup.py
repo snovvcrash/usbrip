@@ -35,7 +35,7 @@ build_exe_options = { "packages": ["os"],
                       "excludes": ["tkinter"] }
 
 setup(name = "usbrip",
-      version = "0.1",
+      version = "1.0",
       description = "A Linux usb-forensic tool",
       options = {"build_exe": build_exe_options},
       executables = [Executable("usbrip.py", base=None)] )
