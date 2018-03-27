@@ -88,7 +88,7 @@ def cmd_line_options():
                             help='number of events to show')
 
 	ueh_parser.add_argument('-d',
-                            '--dates',
+                            '--date',
                             nargs='+',
                             type=str,
                             default=[],
@@ -110,7 +110,7 @@ def cmd_line_options():
                                                            '\'disconn\'.)')
 
 	ueh_parser.add_argument('-f',
-                            '--files',
+                            '--file',
                             nargs='+',
                             type=str,
                             default=[],
@@ -142,14 +142,14 @@ def cmd_line_options():
                             help='number of events to show')
 
 	ueg_parser.add_argument('-d',
-                            '--dates',
+                            '--date',
                             nargs='+',
                             type=str,
                             default=[],
                             help='filter by DATES')
 
 	ueg_parser.add_argument('-f',
-                            '--files',
+                            '--file',
                             nargs='+',
                             type=str,
                             default=[],
@@ -196,7 +196,7 @@ def cmd_line_options():
                             help='number of events to show')
 
 	uev_parser.add_argument('-d',
-                            '--dates',
+                            '--date',
                             nargs='+',
                             type=str,
                             default=[],
@@ -218,7 +218,7 @@ def cmd_line_options():
                                                            '\'disconn\'.)')
 
 	uev_parser.add_argument('-f',
-                            '--files',
+                            '--file',
                             nargs='+',
                             type=str,
                             default=[],

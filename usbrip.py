@@ -84,18 +84,18 @@ def main():
 					if name not in COLUMN_NAMES.keys():
 						usbrip_error(name + ': Invalid column name')
 
-		if 'dates' in args and args.dates:
+		if 'date' in args and args.date:
 			re_date = re.compile(r'^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) [\s1-3][0-9]$')
-			for date in args.dates:
+			for date in args.date:
 				if not re_date.search(date):
 					usbrip_error(date + ': Wrong date format')
 
-		if 'files' in args and args.files:
-			for file in args.files:
+		if 'file' in args and args.file:
+			for file in args.file:
 				if not os.path.exists(file):
 					usbrip_error(file + ': Path does not exist')
 
-		sieve = dict(zip(('external', 'number', 'dates'), (args.external, args.number, args.dates)))
+		sieve = dict(zip(('external', 'number', 'date'), (args.external, args.number, args.date)))
 		repres = dict.fromkeys(('table', 'list', 'smart'), False)
 		
 		if 'table' in args and args.table:
@@ -108,7 +108,7 @@ def main():
 		# ------------------- USB Events History -------------------
 
 		if args.ue_subparser == 'history':
-			ueh = USBEvents(args.files, quiet=args.quiet)
+			ueh = USBEvents(args.file, quiet=args.quiet)
 			ueh.event_history(args.columns, sieve=sieve, repres=repres)
 
 		# ---------------- USB Events Gen Auth JSON ----------------
@@ -117,7 +117,7 @@ def main():
 			if os.path.exists(args.output):
 				usbrip_error(args.output + ': Path already exists')
 
-			ueg = USBEvents(args.files, quiet=args.quiet)
+			ueg = USBEvents(args.file, quiet=args.quiet)
 			ueg.generate_auth_json(args.output, sieve=sieve)
 
 		# ----------------- USB Events Violations ------------------
@@ -126,7 +126,7 @@ def main():
 			if not os.path.exists(args.input):
 				usbrip_error(args.input + ': Path does not exist')
 
-			uev = USBEvents(args.files, quiet=args.quiet)
+			uev = USBEvents(args.file, quiet=args.quiet)
 			uev.search_violations(args.input, args.columns, sieve=sieve, repres=repres)
 
 	# ----------------------------------------------------------
