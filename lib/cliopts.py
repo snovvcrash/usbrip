@@ -62,7 +62,7 @@ def cmd_line_options():
 	ueh_parser.add_argument('-q',
                             '--quiet',
                             action='store_true',
-                            help='supress banner, info messages and user iteraction')
+                            help='supress banner, info (geen) messages and user iteraction')
 
 	ueh_group_table_list = ueh_parser.add_mutually_exclusive_group()
 
@@ -239,6 +239,11 @@ def cmd_line_options():
                                           help='search by VID and/or PID; ' \
                                                'ids database path is \'{}\''.format(root_dir_join('usb_ids/usb.ids')))
 
+	uis_parser.add_argument('-q',
+                            '--quiet',
+                            action='store_true',
+                            help='supress banner, info messages and user iteraction')
+
 	uis_parser.add_argument('--vid',
                             type=str,
                             default=None,
@@ -248,11 +253,6 @@ def cmd_line_options():
                             type=str,
                             default=None,
                             help='product ID')
-
-	uis_parser.add_argument('-q',
-                            '--quiet',
-                            action='store_true',
-                            help='supress banner, info messages and user iteraction')
 
 	uis_parser.add_argument('--offline',
                             action='store_true',
