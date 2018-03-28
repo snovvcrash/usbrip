@@ -82,7 +82,7 @@ Examples
   $ python3 usbrip.py ids search --vid 0781 --pid 5580
   ```
 
-* Download the latest version of `usb_ids/usb.ids` database from [here](http://www.linux-usb.org/usb.ids "List of USB ID's"):
+* Download the latest version of `usb_ids/usb.ids` database (the source is [here](http://www.linux-usb.org/usb.ids "List of USB ID's")):
   ```
   $ python3 usbrip.py ids download
   ```
