@@ -91,7 +91,7 @@ class USBIDs:
 		file_exists = os.path.isfile(filename)
 
 		if file_exists and offline:
-			usb_ids = open(filename, 'r')
+			usb_ids = open(filename, 'r', encoding='utf-8')
 		elif file_exists and not offline:
 			usb_ids = _update_database(filename)
 		elif not file_exists and not offline:
@@ -108,7 +108,7 @@ class USBIDs:
 
 def _update_database(filename):
 	try:
-		usb_ids = open(filename, 'r+')
+		usb_ids = open(filename, 'r+', encoding='utf-8')
 	except PermissionError as e:
 		print_critical('Permission denied: \'{}\''.format(filename), initial_error=str(e))
 		return
@@ -157,7 +157,7 @@ def _download_database(filename):
 		print_info('Created \'{}\''.format(dirname))
 
 	try:
-		usb_ids = open(filename, 'w+')
+		usb_ids = open(filename, 'w+', encoding='utf-8')
 	except PermissionError as e:
 		print_critical('Permission denied: \'{}\''.format(filename), initial_error=str(e))
 		return
