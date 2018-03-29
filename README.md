@@ -51,7 +51,7 @@ Examples
   $ python3 usbrip.py events history -ql -n 100
   ```
 
-* Show the event history of the external USB devices (`-e`, `--external`, which were *actually* disconnected) represented as a table (`-t`, `--table`) containing "Connected", "VID", "PID", "Disconnected" and "Serial Number" columns (`-c [COLUMNS]`, `--columns [COLUMNS]`) filtered by date (`-d DATE [DATE ...]`, `--date DATE [DATE ...]`) with logs taken from the outer files (`-f FILE [FILE ...]`, `--file FILE [FILE ...]`):
+* Show the event history of the external USB devices (`-e`, `--external`, which were *actually* disconnected) represented as a table (`-t`, `--table`) containing "Connected", "VID", "PID", "Disconnected" and "Serial Number" columns (`-c COLUMN [COLUMN]`, `--column COLUMN [COLUMN]`) filtered by date (`-d DATE [DATE ...]`, `--date DATE [DATE ...]`) with logs taken from the outer files (`-f FILE [FILE ...]`, `--file FILE [FILE ...]`):
   ```
   $ python3 usbrip.py events history -et -c conn vid pid disconn serial -d "Dec  9" "Dec 10" -f /var/log/syslog.1 /var/log/syslog.2.gz
   ```

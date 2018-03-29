@@ -81,13 +81,13 @@ class USBEvents:
 	QUIET = False
 
 	@time_it_if_debug(DEBUG, time_it)
-	def __init__(self, file=None, *, quiet=False):
+	def __init__(self, files=None, *, quiet=False):
 		if quiet:
 			USBEvents.QUIET = quiet
 
-		if file:
+		if files:
 			raw_history = DefaultOrderedDict(list)
-			for file in file:
+			for file in files:
 				raw_history.update(_read_log_file(file))
 		else:
 			try:
@@ -396,7 +396,7 @@ def _filter_events(all_events, sieve=None):
 	if not sieve:
 		sieve = { 'external': False,
                   'number':      -1,
-                  'date':        [] }
+                  'dates':       [] }
 	else:
 		print_info('Filtering events', quiet=USBEvents.QUIET)
 
@@ -405,8 +405,8 @@ def _filter_events(all_events, sieve=None):
 	else:
 		events_to_show = all_events
 
-	if sieve['date']:
-		events_to_show = [event for date in sieve['date'] for event in events_to_show if event['conn'][:6] == date]
+	if sieve['dates']:
+		events_to_show = [event for date in sieve['dates'] for event in events_to_show if event['conn'][:6] == date]
 
 	if not len(events_to_show):
 		return None

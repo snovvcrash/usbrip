@@ -95,7 +95,7 @@ def cmd_line_options():
                             help='filter by DATES')
 
 	ueh_parser.add_argument('-c',
-                            '--columns',
+                            '--column',
                             nargs='+',
                             type=str,
                             default=[],
@@ -203,7 +203,7 @@ def cmd_line_options():
                             help='filter by DATES')
 
 	uev_parser.add_argument('-c',
-                            '--columns',
+                            '--column',
                             nargs='+',
                             type=str,
                             default=[],

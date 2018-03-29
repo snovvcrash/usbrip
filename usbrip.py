@@ -79,8 +79,8 @@ def main():
 	# ----------------------------------------------------------
 
 	elif args.subparser == 'events' and args.ue_subparser:
-		if 'columns' in args and args.columns:
-				for name in args.columns:
+		if 'column' in args and args.column:
+				for name in args.column:
 					if name not in COLUMN_NAMES.keys():
 						usbrip_error(name + ': Invalid column name')
 
@@ -95,7 +95,7 @@ def main():
 				if not os.path.exists(file):
 					usbrip_error(file + ': Path does not exist')
 
-		sieve = dict(zip(('external', 'number', 'date'), (args.external, args.number, args.date)))
+		sieve = dict(zip(('external', 'number', 'dates'), (args.external, args.number, args.date)))
 		repres = dict.fromkeys(('table', 'list', 'smart'), False)
 		
 		if 'table' in args and args.table:
@@ -109,7 +109,7 @@ def main():
 
 		if args.ue_subparser == 'history':
 			ueh = USBEvents(args.file, quiet=args.quiet)
-			ueh.event_history(args.columns, sieve=sieve, repres=repres)
+			ueh.event_history(args.column, sieve=sieve, repres=repres)
 
 		# ---------------- USB Events Gen Auth JSON ----------------
 
@@ -127,7 +127,7 @@ def main():
 				usbrip_error(args.input + ': Path does not exist')
 
 			uev = USBEvents(args.file, quiet=args.quiet)
-			uev.search_violations(args.input, args.columns, sieve=sieve, repres=repres)
+			uev.search_violations(args.input, args.column, sieve=sieve, repres=repres)
 
 	# ----------------------------------------------------------
 	# ------------------------ USB IDs -------------------------
