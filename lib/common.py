@@ -58,7 +58,7 @@ BANNER = """\033[1;33m\
  _ _ ___| |_ ___[+]___ 
 | | |_ -| . |  _[*] . |
 |___|___|___|_| [?]  _|
-               x[^]_|   \033[;0m\033[4;37m%s\033[;0m
+               x[^]_|   \033[;0m\033[4;37m%s\033[;0m\
 """ % SITE
 
 E = ('E', 'e', '3')
@@ -71,7 +71,7 @@ E,N,S,I = list(map(lambda x: random.choice(x), (E,N,S,I)))
 if ISATTY:
 	E,N,S,I = list(map(lambda x: colored(x, 'green', 'on_blue')+'\033[1;33m', (E,N,S,I)))
 else:
-	BANNER = BANNER[7:-5]
+	BANNER = BANNER[7:151] + BANNER[163:199]
 
 BANNER = BANNER.replace('+', E, 1)
 BANNER = BANNER.replace('*', N, 1)
