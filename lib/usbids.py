@@ -37,10 +37,10 @@ systemd/usb.ids at master · systemd/systemd
 
 import re
 import socket
-import requests
 import os
 import sys
 
+from urllib.request import urlopen
 from bs4 import BeautifulSoup
 
 from lib.common import root_dir_join
@@ -206,11 +206,15 @@ def _get_latest_version():
 	print_info('Getting latest version and date', quiet=USBIDs.QUIET)
 
 	try:
-		resp = requests.get('http://www.linux-usb.org/usb.ids', timeout=10)
-	except requests.exceptions.Timeout as e:
+		html = urlopen('http://www.linux-usb.org/usb.ids', timeout=10).read()
+		#from requests import get
+		#resp = get('http://www.linux-usb.org/usb.ids', timeout=10)
+	except socket.timeout as e:
+	#except requests.exceptions.Timeout as e:
 		return (None, -1, -1, USBIDs._SERVER_TIMEOUT_ERROR, str(e))
 
-	soup = BeautifulSoup(resp.text, 'html.parser')
+	soup = BeautifulSoup(html.decode('cp1252'), 'html.parser')
+	#soup = BeautifulSoup(resp.text, 'html.parser')
 	db = soup.text
 	
 	try:
