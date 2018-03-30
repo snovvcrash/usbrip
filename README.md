@@ -100,4 +100,4 @@ All requirements are stated in `requirements.txt`.
 
 Post Scriptum
 ==========
-Yep, the logo and info messages style is inspired by the *sqlmap* project :see_no_evil:
+Yep, the banner and info messages style is inspired by the *sqlmap* project :see_no_evil:
