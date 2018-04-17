@@ -63,7 +63,7 @@ class USBIDs:
 	_SERVER_TIMEOUT_ERROR      = -2
 	_SERVER_CONTENT_ERROR      = -3
 
-	# If True supress banner, info messages and user iteraction
+	# If True -> supress banner, info messages and user iteraction
 	QUIET = False
 
 	def __init__(self, *, quiet=False):

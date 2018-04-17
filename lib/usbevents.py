@@ -77,7 +77,7 @@ class USBEvents:
 	# SingleTable (uses ANSI escape codes) when termianl output, else (| or > for example) AsciiTable (only ASCII)
 	TableClass = SingleTable if ISATTY else AsciiTable
 
-	# If True supress banner, info messages and user iteraction
+	# If True -> supress banner, info messages and user iteraction
 	QUIET = False
 
 	@time_it_if_debug(DEBUG, time_it)
@@ -362,7 +362,7 @@ def _parse_history(divided_history):
 	return all_events
 
 def _sort_by_date(unsorted_log):
-	# "usorted_log" is a list of ( ('Mon dd hh:mm:ss', 'EVENT'), ['LOG DATA'] )
+	# "usorted_log" is a list of ( ('Mon dd hh:mm:ss', 'EVENT'), ['LOG_DATA'] )
 	MONTH_ENUM = { m[:3]: str(i) for i, m in enumerate(month_name[1:]) }
 	return sorted(unsorted_log, key=lambda i: MONTH_ENUM[i[0][0][:3]] + i[0][0][3:])
 
