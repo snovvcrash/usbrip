@@ -29,10 +29,8 @@ along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 """
-vendor ID - Linux-USB.org
+USB Vendor/Device IDs Database - Linux-USB.org
 	http://www.linux-usb.org/usb.ids
-systemd/usb.ids at master · systemd/systemd
-	https://raw.githubusercontent.com/systemd/systemd/master/hwdb/usb.ids
 """
 
 import re
