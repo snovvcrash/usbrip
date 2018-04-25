@@ -1,7 +1,7 @@
 #
 #	List of USB ID's
 #
-#	Maintained by Stephen J. Gowdy 
+#	Maintained by Stephen J. Gowdy <linux.usb.ids@gmail.com>
 #	If you have any new entries, please submit them via
 #		http://www.linux-usb.org/usb-ids.html
 #	or send entries as patches (diff -u old new) in the
@@ -9,8 +9,8 @@
 #	The latest version can be obtained from
 #		http://www.linux-usb.org/usb.ids
 #
-# Version: 2018.03.23
-# Date:    2018-03-23 20:34:08
+# Version: 2018.04.14
+# Date:    2018-04-14 20:34:06
 #
 
 # Vendors, devices and interfaces. Please keep sorted.
@@ -183,7 +183,7 @@
 	6902  Floppy Disk Drive
 	7500  CD-R/RW
 	ffff  Dongle with BlueCore in DFU mode
-03f0  Hewlett-Packard
+03f0  HP, Inc
 	0004  DeskJet 895c
 	0011  OfficeJet G55
 	0012  DeskJet 1125C Printer Port
@@ -1142,7 +1142,7 @@
 	0a68  Func MS-3 gaming mouse [WT6573F MCU]
 	2367  Human Interface Device [HP CalcPad 200 Calculator and Numeric Keypad]
 	6510  Weltrend Bar Code Reader
-	6520  XBOX Xploder
+	6520  Xploder Xbox Memory Unit (8MB)
 	6533  Speed-Link Competition Pro
 	6543  Manhattan Magnetic Card Strip Reader
 040c  VTech Computers, Ltd
@@ -1882,6 +1882,7 @@
 	0f00  Steering Wheel for Xbox
 	0f03  Steering Wheel for Xbox
 	0f07  Controller for Xbox
+	0f0c  Xbox Memory Unit (8MB)
 	0f10  Modena GT Wheel
 	a003  Rage 3D Game Pad
 	a01b  PK-GP301 Driving Wheel
@@ -1922,6 +1923,8 @@
 	3410  TUSB3410 Microcontroller
 	3f00  OMAP1610
 	3f02  SMC WSKP100 Wi-Fi Phone
+	505f  TUSB5052 Serial
+	5153  TUSB5052 Hub
 	5409  Frontier Labs NEX IA+ Digital Audio Player
 	6000  AU5 ADSL Modem (pre-reenum)
 	6001  AU5 ADSL Modem
@@ -1962,6 +1965,7 @@
 	0162  SiS162 usb Wireless LAN Adapter
 	0163  SiS163U 802.11 Wireless LAN Adapter
 	0817  SiS-184-ASUS-4352.17 touch panel
+	10e1  HID Touch Controller
 	5401  Wireless Adapter RO80211GS-USB
 0458  KYE Systems Corp. (Mouse Systems)
 	0001  Mouse
@@ -2379,9 +2383,20 @@
 	0799  Surface Pro embedded keyboard
 	07a5  Wireless Receiver 1461C
 	07b9  Wired Keyboard 200
+	07c6  RTL8153 GigE [Surface Dock Ethernet]
 	07ca  Surface Pro 3 Docking Station Audio Device
+	07cd  Surface Keyboard
 	07f8  Wired Keyboard 600 (model 1576)
 	07fd  Nano Transceiver 1.1
+	0900  Surface Dock Hub
+	0901  Surface Dock Hub
+	0902  Surface Dock Hub
+	0903  Surface Dock Hub
+	0904  Surface Dock Extender
+	0905  Surface Dock Audio
+	090b  Hub
+	090c  SD Card
+	091a  Hub
 	0a00  Lumia 950 Dual SIM (RM-1118)
 	930a  ISOUSB.SYS Intel 82930 Isochronous IO Test Board
 	ffca  Catalina
@@ -2449,13 +2464,15 @@
 	4d62  HP Laser Mobile Mini Mouse
 	4d75  Rocketfish RF-FLBTAD Bluetooth Adapter
 	4d81  Dell N889 Optical Mouse
+	4de3  HP 5-Button Optical Comfort 
+ Mouse
 	4de7  webcam
 	4e04  Lenovo Keyboard KB1021
 0463  MGE UPS Systems
 	0001  UPS
 	ffff  UPS
 0464  AMP/Tycoelectronics Corp.
-0467  AT&T; Paradyne
+0467  AT&T Paradyne
 0468  Wieson Technologies Co., Ltd
 046a  Cherry GmbH
 	0001  Keyboard
@@ -3007,6 +3024,7 @@
 	20e3  GoGear Raga
 	20e4  GoGear ViBE 8GB
 	2160  Mio LINK Heart Rate Monitor
+	21e0  GoGEAR Raga
 	262c  SPC230NC Webcam
 	485d  Senselock SenseIV v2.x
 	df55  LPCXpresso LPC-Link
@@ -3320,9 +3338,9 @@
 	2001  DGP-5
 	3001  YST-MS55D USB Speaker
 	3003  YST-M45D USB Speaker
-	4000  NetVolante RTA54i Broadband&ISDN; Router
+	4000  NetVolante RTA54i Broadband&ISDN Router
 	4001  NetVolante RTW65b Broadband Wireless Router
-	4002  NetVolante RTW65i Broadband&ISDN; Wireless Router
+	4002  NetVolante RTW65i Broadband&ISDN Wireless Router
 	4004  NetVolante RTA55i Broadband VoIP Router
 	5000  CS1D
 	5001  DSP1D
@@ -3502,6 +3520,7 @@
 	049b  Strobe XP 100
 	04a0  7400
 	04ac  Xerox Travel Scanner 100
+	04bb  strobe 400 scanner
 	04cd  Xerox Travel Scanner 150
 04a8  Multivideo Labs, Inc.
 	0101  Hub
@@ -4291,6 +4310,7 @@
 	6370  ViewMate Desktop Mouse CC2201
 	6502  CY4609
 	6506  CY4603
+	650a  CY4613
 	6560  CY7C65640 USB-2.0 "TetraHub"
 	6830  CY7C68300A EZ-USB AT2 USB 2.0 to ATA/ATAPI
 	6831  Storage Adapter ISD-300LP (CY)
@@ -4992,7 +5012,7 @@
 	5151  SCR338 Keyboard Smart Card Reader
 	5292  SCL011 RFID reader
 	5410  SCR35xx Smart Card Reader
-	5591  SCL3711-NFC&RW;
+	5591  SCL3711-NFC&RW
 	5810  uTrust 2700 R Smart Card Reader
 	e000  SCRx31 Reader
 	e001  SCR331 SmartCard Reader
@@ -6499,7 +6519,7 @@
 	0679  NMS Video Camera (Webcam)
 	1002  Che-ez! Splash
 0554  Dictaphone Corp.
-0555  ANAM S&T; Co., Ltd
+0555  ANAM S&T Co., Ltd
 0556  Asahi Kasei Microsystems Co., Ltd
 	0001  AK5370 I/F A/D Converter
 0557  ATEN International Co., Ltd
@@ -6789,6 +6809,10 @@
 	037d  DTH-2452 tablet
 	037e  DTH-2452 touchscreen
 	0382  DTK-2451 tablet
+	038a  DTH-3220 [Cintiq Pro 32] internal hub
+	038d  DTH-3220 [Cintiq Pro 32] internal hub
+	038e  DTH-3220 [Cintiq Pro 32] external hub
+	038f  DTH-3220 [Cintiq Pro 32] internal hub
 	0400  PenPartner 4x5
 	4001  TPC4001
 	4004  TPC4004
@@ -6810,7 +6834,16 @@
 056e  Elecom Co., Ltd
 	0002  29UO Mouse
 	0057  M-PGDL Mouse
-	0072  Mouse
+	005c  M-PGDL Mouse
+	005d  M-FGDL Mouse
+	005e  M-FG2DL Mouse
+	0062  M-D18DR Mouse
+	0063  M-SODL Mouse
+	0069  M-GE1UL Mouse
+	0071  M-GE3DL Mouse
+	0072  M-LS6UL Mouse
+	0073  M-LS7UL Mouse
+	0074  M-FW1UL Mouse
 	200c  LD-USB/TX
 	4002  Laneed 100Mbps Ethernet LD-USB/TX [pegasus]
 	4005  LD-USBL/TX
@@ -7177,7 +7210,7 @@
 	a130  USB Wireless 2.4GHz Gamepad
 	a131  USB Wireless 2.4GHz Joystick
 	a132  USB Wireless 2.4GHz Wheelpad
-	a133  USB Wireless 2.4GHz Wheel&Gamepad;
+	a133  USB Wireless 2.4GHz Wheel&Gamepad
 	a202  ForceFeedbackWheel
 	a209  MetalStrike FF
 	b000  USB,4-Axis,12-Button with POV
@@ -8256,7 +8289,7 @@
 	6871  Mouse
 	8611  NTK96550 based camera
 0604  Jean Co., Ltd
-0605  Anchor C&C; Co., Ltd
+0605  Anchor C&C Co., Ltd
 0606  Royal Information Electronics Co., Ltd
 0607  Bridge Information Co., Ltd
 0608  Genrad Ads
@@ -8473,7 +8506,7 @@
 0662  Kansai Electric Co., Ltd
 0663  Topmax Electronic Co., Ltd
 	0103  CobraPad
-0664  ET&T; Technology Co., Ltd.
+0664  ET&T Technology Co., Ltd.
 	0301  Groovy Technology Corp. GTouch Touch Screen
 	0302  Groovy Technology Corp. GTouch Touch Screen
 	0303  Groovy Technology Corp. GTouch Touch Screen
@@ -10513,7 +10546,7 @@
 0854  ActiveWire, Inc.
 	0100  I/O Board
 	0101  I/O Board, rev1
-0856  B&B; Electronics
+0856  B&B Electronics
 	ac01  uLinks USOTL4 RS422/485 Adapter
 0858  Hitachi Maxell, Ltd
 	3102  Bluetooth Device
@@ -11351,7 +11384,7 @@
 	0401  ePass3000
 	0702  ePass3003
 	0703  ePass3003Auto
-	0802  ePass2000 (G&D; STARCOS SPK 2.4)
+	0802  ePass2000 (G&D STARCOS SPK 2.4)
 	0807  ePass2003
 0971  Gretag-Macbeth AG
 	2000  i1 Pro
@@ -12595,7 +12628,7 @@
 0bb6  Network Alchemy
 0bb7  Joytech Computer Co., Ltd
 0bb8  Hitachi Semiconductor and Devices Sales Co., Ltd
-0bb9  Eiger M&C; Co., Ltd
+0bb9  Eiger M&C Co., Ltd
 0bba  ZAccess Systems
 0bbb  General Meters Corp.
 0bbc  Assistive Technology, Inc.
@@ -13199,7 +13232,7 @@
 	0170  3873 Manual Insert card reader
 0ca2  Zyfer
 0ca3  Sega Corp.
-0ca4  ST&T; Instrument Corp.
+0ca4  ST&T Instrument Corp.
 0ca5  BAE Systems Canada, Inc.
 0ca6  Castles Technology Co., Ltd
 	0010  EZUSB PC/SC Smart Card Reader
@@ -13298,8 +13331,8 @@
 	0003  U3
 	0009  UE9
 0cd6  Scheidt & Bachmann
-	000c  S&B; TPU
-	000e  S&B; BKV
+	000c  S&B TPU
+	000e  S&B BKV
 	0011  Money Coin Unit
 0cd7  NewChip S.r.l.
 0cd8  JS Digitech, Inc.
@@ -13735,7 +13768,7 @@
 	1000  Mbox 1 [Mbox]
 	3000  Mbox 2
 	b011  Eleven Rack
-0dbc  A&D; Medical
+0dbc  A&D Medical
 	0003  AND Serial Cable [AND Smart Cable]
 0dbe  Jiuh Shiuh Precision Industry Co., Ltd
 0dbf  Jess-Link International
@@ -13825,7 +13858,7 @@
 0dee  Lifetime Memory Products
 	4010  Storage Adapter
 0def  Full Rise Electronic Co., Ltd
-0df4  NET&SYS;
+0df4  NET&SYS
 	0201  MNG-2005
 0df6  Sitecom Europe B.V.
 	0001  C-Media VOIP Device
@@ -14985,7 +15018,7 @@
 	80ca  ATM2400 Sensor Device
 	813f  tams EasyControl
 	8149  West Mountain Radio Computerized Battery Analyzer
-	814a  West Mountain Radio RIGblaster P&P;
+	814a  West Mountain Radio RIGblaster P&P
 	814b  West Mountain Radio RIGtalk
 	818a  Silicon Labs FM Radio Reference Design
 	81e8  Zephyr BioHarness
@@ -15269,7 +15302,7 @@
 	6565  FuelBand
 11b0  ATECH FLASH TECHNOLOGY
 	6208  PRO-28U
-11be  R&D; International NV
+11be  R&D International NV
 	f0a0  Martin Maxxyz DMX
 11c0  Betop
 	5506  Gamepad
@@ -15573,7 +15606,7 @@
 	15bb  ME936 LTE/HSDPA+ 4G modem
 	15c1  ME906s LTE M.2 Module
 	15ca  E3131 3G/UMTS/HSPA+ Modem (Mass Storage Mode)
-	1805  AT&T; Go Phone U2800A phone
+	1805  AT&T Go Phone U2800A phone
 	1c05  Broadband stick (modem on)
 	1c0b  E173s 3G broadband stick (modem off)
 	1c20  R205 Mobile WiFi (Charging)
@@ -15718,7 +15751,7 @@
 	0003  Touch Panel Controller
 	0004  Touch Panel Controller
 134e  Digby's Bitpile, Inc. DBA D Bit
-1357  P&E; Microcomputer Systems
+1357  P&E Microcomputer Systems
 	0089  OpenSDA - CDC Serial Port
 	0503  USB-ML-12 HCS08/HCS12 Multilink
 	0504  DEMOJM
@@ -15979,7 +16012,7 @@
 	a001  Gobi Wireless Modem
 	a008  Gobi Wireless Modem (QDL mode)
 	b001  Ovation MC551
-1415  Nam Tai E&E; Products Ltd. or OmniVision Technologies, Inc.
+1415  Nam Tai E&E Products Ltd. or OmniVision Technologies, Inc.
 	0000  Sony SingStar USBMIC
 	0020  Sony Wireless SingStar
 	2000  Sony Playstation Eye
@@ -16394,7 +16427,7 @@
 	6545  FD Device
 	fa05  Flash Drive
 154d  ConnectCounty Holdings Berhad
-154e  D&M; Holdings, Inc. (Denon/Marantz)
+154e  D&M Holdings, Inc. (Denon/Marantz)
 	3000  Marantz RC9001 Remote Control
 154f  SNBC CO., Ltd
 1554  Prolink Microsystems Corp.
@@ -17176,8 +17209,8 @@
 	0010  VoiceKey
 1843  Vaisala
 1849  ASRock Incorporation
-1852  GYROCOM C&C; Co., LTD
-	7922  Audiotrak DR.DAC2 DX [GYROCOM C&C;]
+1852  GYROCOM C&C Co., LTD
+	7922  Audiotrak DR.DAC2 DX [GYROCOM C&C]
 1854  Memory Devices Ltd.
 185b  Compro
 	3020  K100 Infrared Receiver
@@ -17271,7 +17304,7 @@
 	4ee5  Nexus 4 (PTP)
 	4ee6  Nexus 4/5 (PTP + debug)
 	7102  Toshiba Thrive tablet
-	b004  Pandigital / B&N; Novel 9" tablet
+	b004  Pandigital / B&N Novel 9" tablet
 	d001  Nexus 4 (fastboot)
 	d002  Nexus 4 (debug)
 	d109  LG G2x MTP
@@ -18508,7 +18541,7 @@
 	0964  Inventio Software MSP430
 2058  Nano River Technology
 	2058  ViperBoard I2C, SPI, GPIO interface
-2077  Taicang T&W; Electronics Co. Ltd
+2077  Taicang T&W Electronics Co. Ltd
 	9002  W1M100 HSPA/WCDMA Module
 2080  Barnes & Noble
 	0001  nook
@@ -18972,6 +19005,14 @@
 	14ea  GW-US11H WLAN
 2c1a  Dolphin Peripherals
 	0000  Wireless Optical Mouse
+2c7c  Quectel Wireless Solutions Co., Ltd.
+	0121  EC21 LTE modem
+	0125  EC25 LTE modem
+	0191  EG91 LTE modem
+	0195  EG95 LTE modem
+	0296  BG96 CAT-M1/NB-IoT modem
+	0306  EG06/EP06/EM06 LTE-A modem
+	0435  AG35 LTE modem
 2dcf  Dialog Semiconductor
 	c952  Audio Class 2.0 Devices
 2fb2  Fujitsu, Ltd
