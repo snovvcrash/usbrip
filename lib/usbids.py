@@ -39,7 +39,6 @@ import os
 import sys
 
 from urllib.request import urlopen
-from bs4 import BeautifulSoup
 
 from lib.common import root_dir_join
 from lib.common import os_makedirs
@@ -211,9 +210,9 @@ def _get_latest_version():
 	#except requests.exceptions.Timeout as e:
 		return (None, -1, -1, USBIDs._SERVER_TIMEOUT_ERROR, str(e))
 
-	soup = BeautifulSoup(html.decode('cp1252'), 'html.parser')
+	db = html.decode('cp1252')
 	#soup = BeautifulSoup(resp.text, 'html.parser')
-	db = soup.text
+	#db = soup.text
 	
 	try:
 		latest_ver  = re.search(r'^# Version:\s*(.*?$)', db, re.MULTILINE).group(1)

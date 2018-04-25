@@ -88,13 +88,12 @@ Examples
   ```
   $ python3 usbrip.py ids download
   ```
-  
+
 Dependencies
 ==========
 usbrip makes use of the following external modules:
 * [terminaltables](https://robpol86.github.io/terminaltables/v3.1.0/index.html "terminaltables 3.1.0 — terminaltables")
 * [termcolor](https://pypi.python.org/pypi/termcolor "termcolor 1.1.0 : Python Package Index")
-* [bs4](https://www.crummy.com/software/BeautifulSoup/bs4/doc/ "Beautiful Soup Documentation — Beautiful Soup 4.4.0 documentation")
 
 All requirements are stated in `requirements.txt`.
 
