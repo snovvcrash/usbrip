@@ -36,7 +36,6 @@ USB Vendor/Device IDs Database - Linux-USB.org
 import re
 import socket
 import os
-import sys
 
 from urllib.request import urlopen
 
@@ -108,7 +107,7 @@ def _update_database(filename):
 		usb_ids = open(filename, 'r+', encoding='utf-8')
 	except PermissionError as e:
 		print_critical('Permission denied: \'{}\''.format(filename), initial_error=str(e))
-		return
+		return None
 
 	print_info('Getting current database version', quiet=USBIDs.QUIET)
 	curr_ver, curr_date = _get_current_version(usb_ids)
@@ -149,7 +148,7 @@ def _download_database(filename):
 		os_makedirs(dirname)
 	except USBRipError as e:
 		print_critical(str(e), initial_error=e.errors['initial_error'])
-		return
+		return None
 	else:
 		print_info('Created \'{}\''.format(dirname))
 
@@ -157,7 +156,7 @@ def _download_database(filename):
 		usb_ids = open(filename, 'w+', encoding='utf-8')
 	except PermissionError as e:
 		print_critical('Permission denied: \'{}\''.format(filename), initial_error=str(e))
-		return
+		return None
 
 	db, latest_ver, latest_date, error, e = _get_latest_version()
 
@@ -167,10 +166,10 @@ def _download_database(filename):
 		if error == USBIDs._INTERNET_CONNECTION_ERROR:
 			raise USBRipError('No internet connection')
 		elif error == USBIDs._SERVER_TIMEOUT_ERROR:
-			raise USBRipError('Server timeout', errors={'errcode': error, 'initial_error': e} )
+			raise USBRipError('Server timeout', errors={'errcode': error, 'initial_error': e})
 		elif error == USBIDs._SERVER_CONTENT_ERROR:
 			raise USBRipError('Server content error: no version or date found',
-                              errors={'errcode': error, 'initial_error': e} )
+                              errors={'errcode': error, 'initial_error': e})
 
 	usb_ids.write(db)
 	usb_ids.seek(0)
@@ -191,7 +190,7 @@ def _get_current_version(usb_ids):
 		curr_date = re.search(r'^# Date:\s*(.*?$)', db, re.MULTILINE).group(1)
 	except AttributeError as e:
 		raise USBRipError('Invalid database content structure: no version or date found',
-                          errors={'initial_error': str(e)} )
+                          errors={'initial_error': str(e)})
 
 	return (curr_ver, curr_date)
 
@@ -213,7 +212,7 @@ def _get_latest_version():
 	db = html.decode('cp1252')
 	#soup = BeautifulSoup(resp.text, 'html.parser')
 	#db = soup.text
-	
+
 	try:
 		latest_ver  = re.search(r'^# Version:\s*(.*?$)', db, re.MULTILINE).group(1)
 		latest_date = re.search(r'^# Date:\s*(.*?$)', db, re.MULTILINE).group(1)

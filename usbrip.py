@@ -32,8 +32,6 @@ import re
 import os
 import sys
 
-from argparse import ArgumentParser
-
 from lib import USBEvents
 from lib import USBIDs
 
@@ -63,7 +61,7 @@ def main():
 
 	parser = cmd_line_options()
 	args = parser.parse_args()
-	
+
 	if 'quiet' in args and not args.quiet:
 		print(BANNER + '\n')
 
@@ -97,7 +95,7 @@ def main():
 
 		sieve = dict(zip(('external', 'number', 'dates'), (args.external, args.number, args.date)))
 		repres = dict.fromkeys(('table', 'list', 'smart'), False)
-		
+
 		if 'table' in args and args.table:
 			repres['table'] = True
 		elif 'list' in args and args.list:
@@ -145,12 +143,12 @@ def main():
 			ui.search_ids(args.vid, args.pid, offline=args.offline)
 
 		# -------------------- USB IDs Download --------------------
-		
+
 		elif args.ui_subparser == 'download':
 			try:
 				usb_ids = ui.prepare_database(offline=False)
 			except USBRipError as e:
-				print_critical(str(e), errcode=e.errors['errcode'], initial_error=e.error['initial_error'])
+				print_critical(str(e), errcode=e.errors['errcode'], initial_error=e.errors['initial_error'])
 			else:
 				usb_ids.close()
 

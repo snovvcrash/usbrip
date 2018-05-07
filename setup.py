@@ -31,11 +31,11 @@ along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 import sys
 from cx_Freeze import setup, Executable
 
-build_exe_options = { "packages": ["os"],
-                      "excludes": ["tkinter"] }
+build_exe_options = {"packages": ["os"],
+                     "excludes": ["tkinter"]}
 
-setup(name = "usbrip",
-      version = "1.0",
-      description = "A Linux usb-forensic tool",
-      options = {"build_exe": build_exe_options},
-      executables = [Executable("usbrip.py", base=None)] )
+setup(name="usbrip",
+      version="1.0",
+      description="A Linux usb-forensic tool",
+      options={"build_exe": build_exe_options},
+      executables=[Executable("usbrip.py", base=None)])

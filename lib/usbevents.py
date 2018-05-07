@@ -43,13 +43,12 @@ import json
 import itertools
 import operator
 import os
-import sys
 
 from collections import OrderedDict, defaultdict
-from terminaltables import AsciiTable, SingleTable
-from termcolor import colored, cprint
 from calendar import month_name
 from string import printable
+from terminaltables import AsciiTable, SingleTable
+from termcolor import colored, cprint
 
 from lib.common import BULLET
 from lib.common import ABSENCE
@@ -130,7 +129,7 @@ class USBEvents:
 	@time_it_if_debug(DEBUG, time_it)
 	def generate_auth_json(self, output_auth, *, sieve=None):
 		try:
-			dirname = os.path.dirname(filename)
+			dirname = os.path.dirname(output_auth)
 			os_makedirs(dirname)
 		except USBRipError as e:
 			print_critical(str(e), initial_error=e.errors['initial_error'])
@@ -198,8 +197,6 @@ class USBEvents:
 		self._events_to_show = _filter_events(self._violations, sieve)
 		if not self._events_to_show:
 			print_info('No USB violation events found!', quiet=USBEvents.QUIET)
-			json.dump([], auth_json)
-			auth_json.close()
 			return
 
 		if not USBEvents.QUIET and ISATTY:
@@ -221,19 +218,19 @@ def _get_raw_history():
 
 	print_info('Searching for log files: \'/var/log/syslog*\' or \'/var/log/messages*\'', quiet=USBEvents.QUIET)
 
-	syslog_files = sorted([ filename
-                            for filename in list_files('/var/log/')
-                            if filename.rsplit('/', 1)[1].startswith('syslog') ])
+	syslog_files = sorted([filename
+                           for filename in list_files('/var/log/')
+                           if filename.rsplit('/', 1)[1].startswith('syslog')])
 
-	if len(syslog_files) > 0:
+	if syslog_files:
 		for syslog in syslog_files:
 			raw_history.update(_read_log_file(syslog))
 	else:
-		messages_files = sorted([ filename
-                                  for filename in list_files('/var/log/')
-                                  if filename.rsplit('/', 1)[1].startswith('messages') ])
+		messages_files = sorted([filename
+                                 for filename in list_files('/var/log/')
+                                 if filename.rsplit('/', 1)[1].startswith('messages')])
 
-		if len(messages_files) > 0:
+		if messages_files:
 			for messages in messages_files:
 				raw_history.update(_read_log_file(messages))
 		else:
@@ -301,15 +298,15 @@ def _parse_history(divided_history):
 					pid = re_pid.search(line).group(1)
 					port = re_port.search(line).group(1)
 
-					event = { 'conn':        date,
-                              'user':        user,
-                              'vid':          vid,
-                              'pid':          pid,
-                              'prod':        None,
-                              'manufact':    None,
-                              'serial':      None,
-                              'port':        port,
-                              'disconn':     None }
+					event = {'conn':        date,
+                             'user':        user,
+                             'vid':          vid,
+                             'pid':          pid,
+                             'prod':        None,
+                             'manufact':    None,
+                             'serial':      None,
+                             'port':        port,
+                             'disconn':     None}
 
 					record_collection.append(event)
 					curr += 1
@@ -394,9 +391,9 @@ def _is_sorted(iterable, reverse=False):
 
 def _filter_events(all_events, sieve=None):
 	if not sieve:
-		sieve = { 'external': False,
-                  'number':      -1,
-                  'dates':       [] }
+		sieve = {'external': False,
+                 'number':      -1,
+                 'dates':       []}
 	else:
 		print_info('Filtering events', quiet=USBEvents.QUIET)
 
@@ -408,7 +405,7 @@ def _filter_events(all_events, sieve=None):
 	if sieve['dates']:
 		events_to_show = [event for date in sieve['dates'] for event in events_to_show if event['conn'][:6] == date]
 
-	if not len(events_to_show):
+	if not events_to_show:
 		return None
 
 	SIZE = len(events_to_show)
@@ -424,19 +421,19 @@ def _represent_events(events_to_show, columns, table_data, title, repres=None):
 	print_info('Preparing gathered events', quiet=USBEvents.QUIET)
 
 	if not repres:
-		repres = { 'table': False,
-                   'list':  False,
-                   'smart':  True }
+		repres = {'table': False,
+                  'list':  False,
+                  'smart':  True}
 
-	max_len = { 'conn':     15,
-                'user':     max(max(len(event['user']) for event in events_to_show), len('User')),
-                'vid':       4,
-                'pid':       4,
-                'prod':     max(max(len(str(event['prod'])) for event in events_to_show), len('Product')),
-                'manufact': max(max(len(str(event['manufact'])) for event in events_to_show), len('Manufacturer')),
-                'serial':   max(max(len(str(event['serial'])) for event in events_to_show), len('Serial Number')),
-                'port':     max(max(len(event['port']) for event in events_to_show), len('Port')),
-                'disconn':  15 }
+	max_len = {'conn':     15,
+               'user':     max(max(len(event['user']) for event in events_to_show), len('User')),
+               'vid':       4,
+               'pid':       4,
+               'prod':     max(max(len(str(event['prod'])) for event in events_to_show), len('Product')),
+               'manufact': max(max(len(str(event['manufact'])) for event in events_to_show), len('Manufacturer')),
+               'serial':   max(max(len(str(event['serial'])) for event in events_to_show), len('Serial Number')),
+               'port':     max(max(len(event['port']) for event in events_to_show), len('Port')),
+               'disconn':  15}
 
 	for event in events_to_show:
 		if 'conn' in columns:

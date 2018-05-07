@@ -147,7 +147,7 @@ else:
 # ----------------------------------------------------------
 
 class DefaultOrderedDict(OrderedDict):
-	def __init__(self, default_factory=None, *args, **kwargs):
+	def __init__(self, *args, default_factory=None, **kwargs):
 		if (default_factory is not None and not isinstance(default_factory, Callable)):
 			raise TypeError('first argument must be callable')
 		OrderedDict.__init__(self, *args, **kwargs)
@@ -196,21 +196,21 @@ def os_makedirs(dirname):
 	try:
 		os.makedirs(dirname)
 	except PermissionError as e:
-		raise USBRipError('Permission denied: \'{}\''.format(dirname), {'initial_error': str(e)} )
+		raise USBRipError('Permission denied: \'{}\''.format(dirname), {'initial_error': str(e)})
 	except OSError as e:  # exists
 		if not os.path.isdir(dirname):
 			raise USBRipError('Path exists and it is not a directory: \'{}\''.format(dirname),
-                              {'initial_error': str(e)} )
+                              {'initial_error': str(e)})
 
 def traverse_dir(source_dir):
-	return [ os.path.join(root, filename)
-			 for root, dirnames, filenames in os.walk(source_dir)
-			 for filename in filenames ]
+	return [os.path.join(root, filename)
+            for root, dirnames, filenames in os.walk(source_dir)
+            for filename in filenames]
 
 def list_files(source_dir):
-	return [ os.path.join(source_dir, filename)
-			 for filename in os.listdir(source_dir)
-			 if os.path.isfile(os.path.join(source_dir, filename)) ]
+	return [os.path.join(source_dir, filename)
+            for filename in os.listdir(source_dir)
+            if os.path.isfile(os.path.join(source_dir, filename))]
 
 # ----------------------------------------------------------
 # ------------------------ Messages ------------------------
@@ -219,7 +219,7 @@ def list_files(source_dir):
 def print_info(message, *, quiet=False):
 	if quiet:
 		return
-		
+
 	if ISATTY:
 		cprint('[INFO] {}'.format(message), 'green')
 	else:
