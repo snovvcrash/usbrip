@@ -85,7 +85,7 @@ class USBEvents:
 			USBEvents.QUIET = quiet
 
 		if files:
-			raw_history = DefaultOrderedDict(list)
+			raw_history = DefaultOrderedDict(default_factory=list)
 			for file in files:
 				raw_history.update(_read_log_file(file))
 		else:
@@ -110,7 +110,7 @@ class USBEvents:
 			table_data = [[val for val in COLUMN_NAMES.values()]]
 
 		self._events_to_show = _filter_events(self._all_events, sieve)
-		if not self._events_to_show:
+		if self._events_to_show is None:
 			print_info('No USB events found!', quiet=USBEvents.QUIET)
 			return
 
@@ -144,7 +144,7 @@ class USBEvents:
 			return
 
 		self._events_to_show = _filter_events(self._all_events, sieve)
-		if not self._events_to_show:
+		if self._events_to_show is None:
 			print_info('No USB violation events found!', quiet=USBEvents.QUIET)
 			json.dump([], auth_json)
 			auth_json.close()
@@ -195,7 +195,7 @@ class USBEvents:
 				return
 
 		self._events_to_show = _filter_events(self._violations, sieve)
-		if not self._events_to_show:
+		if self._events_to_show is None:
 			print_info('No USB violation events found!', quiet=USBEvents.QUIET)
 			return
 
@@ -214,7 +214,7 @@ class USBEvents:
 # ----------------------------------------------------------
 
 def _get_raw_history():
-	raw_history = DefaultOrderedDict(list)
+	raw_history = DefaultOrderedDict(default_factory=list)
 
 	print_info('Searching for log files: \'/var/log/syslog*\' or \'/var/log/messages*\'', quiet=USBEvents.QUIET)
 
@@ -239,7 +239,7 @@ def _get_raw_history():
 	return raw_history
 
 def _read_log_file(filename):
-	filtered = DefaultOrderedDict(list)
+	filtered = DefaultOrderedDict(default_factory=list)
 
 	if filename.endswith('.gz'):
 		print_info('Unpacking \'{}\''.format(filename), quiet=USBEvents.QUIET)
@@ -390,7 +390,7 @@ def _is_sorted(iterable, reverse=False):
                in pairwise(iterable))
 
 def _filter_events(all_events, sieve=None):
-	if not sieve:
+	if sieve is None:
 		sieve = {'external': False,
                  'number':      -1,
                  'dates':       []}
@@ -420,7 +420,7 @@ def _filter_events(all_events, sieve=None):
 def _represent_events(events_to_show, columns, table_data, title, repres=None):
 	print_info('Preparing gathered events', quiet=USBEvents.QUIET)
 
-	if not repres:
+	if repres is None:
 		repres = {'table': False,
                   'list':  False,
                   'smart':  True}
