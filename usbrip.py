@@ -83,10 +83,12 @@ def main():
 						usbrip_error(name + ': Invalid column name')
 
 		if 'date' in args and args.date:
-			re_date = re.compile(r'^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) [\s1-3][0-9]$')
-			for date in args.date:
-				if not re_date.search(date):
-					usbrip_error(date + ': Wrong date format')
+			re_date = re.compile(r'^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+[1-3]?[0-9]$')
+			for i in range(len(args.date)):
+				if not re_date.search(args.date[i]):
+					usbrip_error(args.date[i] + ': Wrong date format')
+				date_parts = args.date[i].split()
+				args.date[i] = ' '.join(date_parts) if len(date_parts[-1]) == 2 else '  '.join(date_parts)
 
 		if 'file' in args and args.file:
 			for file in args.file:
