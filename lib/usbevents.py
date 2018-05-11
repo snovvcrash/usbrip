@@ -67,9 +67,11 @@ from lib.common import DEBUG
 from lib.common import time_it
 from lib.common import time_it_if_debug
 
+
 # ----------------------------------------------------------
 # ----------------------- USB Events -----------------------
 # ----------------------------------------------------------
+
 
 class USBEvents:
 
@@ -209,9 +211,11 @@ class USBEvents:
 
 		_represent_events(self._events_to_show, columns, table_data, 'USB-Violation-Events', repres)
 
+
 # ----------------------------------------------------------
 # ----------------------- Utilities ------------------------
 # ----------------------------------------------------------
+
 
 def _get_raw_history():
 	raw_history = DefaultOrderedDict(default_factory=list)
@@ -237,6 +241,7 @@ def _get_raw_history():
 			raise USBRipError('None of log file types was found!')
 
 	return raw_history
+
 
 def _read_log_file(filename):
 	filtered = DefaultOrderedDict(default_factory=list)
@@ -266,6 +271,7 @@ def _read_log_file(filename):
 	log.close()
 	return filtered
 
+
 def _divide_history(raw_history):
 	divided_history = OrderedDict()
 	for date, logs in raw_history.items():
@@ -276,6 +282,7 @@ def _divide_history(raw_history):
 			divided_history[(date, 'd')] = logs
 
 	return divided_history
+
 
 def _parse_history(divided_history):
 	re_vid      = re.compile(r'idVendor=(\w+)')
@@ -312,7 +319,7 @@ def _parse_history(divided_history):
 					curr += 1
 					link = 1
 					interrupted = False
-					
+
 				else:
 					if not interrupted:
 						if link == 1:
@@ -358,10 +365,12 @@ def _parse_history(divided_history):
 
 	return all_events
 
+
 def _sort_by_date(unsorted_log):
 	# "usorted_log" is a list of ( ('Mon dd hh:mm:ss', 'EVENT'), ['LOG_DATA'] )
-	MONTH_ENUM = { m[:3]: str(i) for i, m in enumerate(month_name[1:]) }
+	MONTH_ENUM = {m[:3]: str(i) for i, m in enumerate(month_name[1:])}
 	return sorted(unsorted_log, key=lambda i: MONTH_ENUM[i[0][0][:3]] + i[0][0][3:])
+
 
 def _process_auth_json(input_auth):
 	with open(input_auth, 'r+') as auth_json:
@@ -377,6 +386,7 @@ def _process_auth_json(input_auth):
 
 	return auth
 
+
 def _is_sorted(iterable, reverse=False):
 	def pairwise(iterable):
 		a, b = itertools.tee(iterable)
@@ -388,6 +398,7 @@ def _is_sorted(iterable, reverse=False):
 	return all(compare(current_element, next_element)
                for current_element, next_element
                in pairwise(iterable))
+
 
 def _filter_events(all_events, sieve=None):
 	if sieve is None:
@@ -416,6 +427,7 @@ def _filter_events(all_events, sieve=None):
 		sieve['number'] = SIZE
 
 	return [events_to_show[SIZE-i] for i in range(sieve['number'], 0, -1)]
+
 
 def _represent_events(events_to_show, columns, table_data, title, repres=None):
 	print_info('Preparing gathered events', quiet=USBEvents.QUIET)
@@ -521,6 +533,7 @@ def _represent_events(events_to_show, columns, table_data, title, repres=None):
 				print('Disconnected:   ' + event['disconn'])
 		print(SEPARATOR * max_len)
 
+
 def _build_single_table(TableClass, table_data, title, align='right', inner_row_border=False):
 	single_table = TableClass(table_data)
 	single_table.title = title
@@ -529,6 +542,7 @@ def _build_single_table(TableClass, table_data, title, align='right', inner_row_
 	if inner_row_border:
 		single_table.inner_row_border = True
 	return single_table
+
 
 def _json_dump(events_to_show, list_name, filename):
 	print_info('Generating {} list (JSON)'.format(list_name), quiet=USBEvents.QUIET)
@@ -548,6 +562,7 @@ def _json_dump(events_to_show, list_name, filename):
 		return
 
 	print_info('New {} list: \'{}\''.format(list_name, filename), quiet=USBEvents.QUIET)
+
 
 def _output_choice(list_name, default_filename, dirname):
 	while True:

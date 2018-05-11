@@ -41,18 +41,22 @@ from lib.common import COLUMN_NAMES
 from lib.common import USBRipError
 from lib.common import print_critical
 
+
 # ----------------------------------------------------------
 # ------------------- Error Message Gen --------------------
 # ----------------------------------------------------------
+
 
 def usbrip_error(message, *, subparser=' '):
 	print('usage: python3 {}{}[-h]\n'.format(sys.argv[0], subparser))
 	print(sys.argv[0].rsplit('/', 1)[-1] + ': error: ' + message, file=sys.stderr)
 	sys.exit(1)
 
+
 # ----------------------------------------------------------
 # -------------------------- Main --------------------------
 # ----------------------------------------------------------
+
 
 def main():
 	if not len(sys.argv) > 1:
@@ -137,7 +141,7 @@ def main():
 		ui = USBIDs(quiet=args.quiet)
 
 		# --------------------- USB IDs Search ---------------------
-		
+
 		if args.ui_subparser == 'search':
 			if not args.vid and not args.pid:
 				usbrip_error('At least one of --vid/--pid or --download option should be specified')
@@ -158,9 +162,11 @@ def main():
 		subparser = ' ' + args.subparser + ' '
 		usbrip_error('Choose one of the usbrip {} actions'.format(args.subparser), subparser=subparser)
 
+
 # ----------------------------------------------------------
 # ------------------------- Start --------------------------
 # ----------------------------------------------------------
+
 
 if __name__ == '__main__':
 	main()

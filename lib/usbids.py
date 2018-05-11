@@ -49,9 +49,11 @@ from lib.common import DEBUG
 from lib.common import time_it
 from lib.common import time_it_if_debug
 
+
 # ----------------------------------------------------------
 # ------------------------ USB IDs -------------------------
 # ----------------------------------------------------------
+
 
 class USBIDs:
 
@@ -98,9 +100,11 @@ class USBIDs:
 
 		return usb_ids
 
+
 # ----------------------------------------------------------
 # ----------------------- Utilities ------------------------
 # ----------------------------------------------------------
+
 
 def _update_database(filename):
 	try:
@@ -142,6 +146,7 @@ def _update_database(filename):
 
 	return usb_ids
 
+
 def _download_database(filename):
 	try:
 		dirname = os.path.dirname(filename)
@@ -181,6 +186,7 @@ def _download_database(filename):
 
 	return usb_ids
 
+
 def _get_current_version(usb_ids):
 	db = usb_ids.read()
 	usb_ids.seek(0)
@@ -193,6 +199,7 @@ def _get_current_version(usb_ids):
                           errors={'initial_error': str(e)})
 
 	return (curr_ver, curr_date)
+
 
 def _get_latest_version():
 	connected, error, e = _check_connection('www.google.com')
@@ -221,6 +228,7 @@ def _get_latest_version():
 
 	return (db, latest_ver, latest_date, 0, '')
 
+
 def _check_connection(hostname):
 	try:
 		host = socket.gethostbyname(hostname)
@@ -228,6 +236,7 @@ def _check_connection(hostname):
 		return (True, 0, '')
 	except Exception as e:
 		return (False, USBIDs._INTERNET_CONNECTION_ERROR, str(e))
+
 
 def _search_ids_helper(usb_ids, vid, pid):
 	print('Searching for matches... ', end='')

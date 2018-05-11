@@ -35,9 +35,11 @@ import sys
 from collections import OrderedDict, Callable
 from termcolor import colored, cprint
 
+
 # ----------------------------------------------------------
 # ----------------------- Constants ------------------------
 # ----------------------------------------------------------
+
 
 BULLET    = '\u2022'  # '•', U_BULLET
 ABSENCE   = '\u2205'  # '∅', U_EMPTY_SET
@@ -46,9 +48,11 @@ SEPARATOR = '\u2212'  # '−', U_MINUS_SIGN
 # Enable colored text when terminal output (True), else (| or > for example) no color (False)
 ISATTY = True if sys.stdout.isatty() else False
 
+
 # ----------------------------------------------------------
 # ------------------------- Banner -------------------------
 # ----------------------------------------------------------
+
 
 SITE = 'https://github.com/snovvcrash/usbrip'
 
@@ -78,11 +82,14 @@ BANNER = BANNER.replace('*', N, 1)
 BANNER = BANNER.replace('?', S, 1)
 BANNER = BANNER.replace('^', I, 1)
 
+
 # ----------------------------------------------------------
 # ------------------------- Debug --------------------------
 # ----------------------------------------------------------
 
+
 DEBUG = False
+
 
 def time_it(func):
 	import functools
@@ -96,6 +103,7 @@ def time_it(func):
 		return result
 	return wrapper
 
+
 class time_it_if_debug():
 	def __init__(self, condition, decorator):
 		self._condition = condition
@@ -106,6 +114,7 @@ class time_it_if_debug():
 			return func
 		return self._decorator(func)
 
+
 class USBRipError(Exception):
 	def __init__(self, message, *, errors=None):
 		super().__init__(message)
@@ -115,9 +124,11 @@ class USBRipError(Exception):
 		self.errors.setdefault('errcode', 0)
 		self.errors.setdefault('initial_error', '')
 
+
 # ----------------------------------------------------------
 # ----------------------- USB Events -----------------------
 # ----------------------------------------------------------
+
 
 COLUMN_NAMES = OrderedDict()
 
@@ -142,9 +153,11 @@ else:
 	COLUMN_NAMES['port']     = 'Port'
 	COLUMN_NAMES['disconn']  = 'Disconnected'
 
+
 # ----------------------------------------------------------
 # -------------------- Data Structures ---------------------
 # ----------------------------------------------------------
+
 
 class DefaultOrderedDict(OrderedDict):
 	def __init__(self, *args, default_factory=None, **kwargs):
@@ -185,12 +198,15 @@ class DefaultOrderedDict(OrderedDict):
 	def __repr__(self):
 		return 'OrderedDefaultDict({!s}, {!s})'.format(self._default_factory, OrderedDict.__repr__(self))
 
+
 # ----------------------------------------------------------
 # ----------------------- Utilities ------------------------
 # ----------------------------------------------------------
 
+
 def root_dir_join(name):
 	return os.path.join(os.path.abspath(__file__).rsplit('/', 2)[0], name)
+
 
 def os_makedirs(dirname):
 	try:
@@ -202,19 +218,23 @@ def os_makedirs(dirname):
 			raise USBRipError('Path exists and it is not a directory: \'{}\''.format(dirname),
                               {'initial_error': str(e)})
 
+
 def traverse_dir(source_dir):
 	return [os.path.join(root, filename)
             for root, dirnames, filenames in os.walk(source_dir)
             for filename in filenames]
+
 
 def list_files(source_dir):
 	return [os.path.join(source_dir, filename)
             for filename in os.listdir(source_dir)
             if os.path.isfile(os.path.join(source_dir, filename))]
 
+
 # ----------------------------------------------------------
 # ------------------------ Messages ------------------------
 # ----------------------------------------------------------
+
 
 def print_info(message, *, quiet=False):
 	if quiet:
@@ -224,6 +244,7 @@ def print_info(message, *, quiet=False):
 		cprint('[INFO] {}'.format(message), 'green')
 	else:
 		print('[INFO] {}'.format(message))
+
 
 def print_warning(message, *, errcode=0, initial_error=''):
 	if DEBUG:
@@ -236,6 +257,7 @@ def print_warning(message, *, errcode=0, initial_error=''):
 		cprint('[WARNING] {}'.format(message), 'yellow')
 	else:
 		print('[WARNING] {}'.format(message))
+
 
 def print_critical(message, *, errcode=0, initial_error=''):
 	if DEBUG:

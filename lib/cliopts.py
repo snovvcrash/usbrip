@@ -32,6 +32,7 @@ from argparse import ArgumentParser
 
 from lib.common import root_dir_join
 
+
 def cmd_line_options():
     parser = ArgumentParser()
     subparsers = parser.add_subparsers(dest='subparser')
