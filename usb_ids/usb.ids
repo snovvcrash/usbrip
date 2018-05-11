@@ -9,8 +9,8 @@
 #	The latest version can be obtained from
 #		http://www.linux-usb.org/usb.ids
 #
-# Version: 2018.04.14
-# Date:    2018-04-14 20:34:06
+# Version: 2018.05.04
+# Date:    2018-05-04 20:34:07
 #
 
 # Vendors, devices and interfaces. Please keep sorted.
@@ -2464,8 +2464,7 @@
 	4d62  HP Laser Mobile Mini Mouse
 	4d75  Rocketfish RF-FLBTAD Bluetooth Adapter
 	4d81  Dell N889 Optical Mouse
-	4de3  HP 5-Button Optical Comfort 
- Mouse
+	4de3  HP 5-Button Optical Comfort Mouse
 	4de7  webcam
 	4e04  Lenovo Keyboard KB1021
 0463  MGE UPS Systems
