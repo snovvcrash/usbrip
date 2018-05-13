@@ -129,7 +129,7 @@ class USBEvents:
 	# ---------------- USB Events Gen Auth JSON ----------------
 
 	@time_it_if_debug(DEBUG, time_it)
-	def generate_auth_json(self, output_auth, *, sieve=None):
+	def generate_auth_json(self, output_auth, attributes, *, sieve=None):
 		try:
 			dirname = os.path.dirname(output_auth)
 			os_makedirs(dirname)
@@ -154,11 +154,14 @@ class USBEvents:
 
 		print_info('Generating authorized device list (JSON)', quiet=USBEvents.QUIET)
 
+		if not attributes:
+			attributes = ('vid', 'pid', 'prod', 'manufact', 'serial')
+
 		auth = defaultdict(list)
 		for event in self._events_to_show:
 			for key, val in event.items():
-				if key in ('vid', 'pid', 'prod', 'manufact', 'serial') and \
-                   val is not None                                     and \
+				if key in attributes     and \
+                   val is not None       and \
                    val not in auth[key]:
 					auth[key].append(val)
 
@@ -173,7 +176,7 @@ class USBEvents:
 	# ----------------- USB Events Violations ------------------
 
 	@time_it_if_debug(DEBUG, time_it)
-	def search_violations(self, input_auth, columns, *, sieve=None, repres=None):
+	def search_violations(self, input_auth, attributes, columns, *, sieve=None, repres=None):
 		try:
 			auth = _process_auth_json(input_auth)
 		except json.decoder.JSONDecodeError as e:
@@ -188,12 +191,15 @@ class USBEvents:
 
 		print_info('Searching for violations', quiet=USBEvents.QUIET)
 
+		if not attributes:
+			attributes = auth.keys()
+
 		for event in self._all_events:
 			try:
-				if any(event[key] not in vals and event[key] is not None for key, vals in auth.items()):
+				if any(event[key] not in vals and event[key] is not None for key, vals in zip(attributes, auth.values())):
 					self._violations.append(event)
 			except KeyError as e:
-				print_critical('Invalid structure of authorized device list (JSON)', initial_error=str(e))
+				print_critical('No such attribute in authorized device list', initial_error=str(e))
 				return
 
 		self._events_to_show = _filter_events(self._violations, sieve)

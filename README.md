@@ -69,14 +69,14 @@ Examples
   awk '{ sub("$", "\r"); gsub("\\x1B\\[[0-?]*[ -/]*[@-~]", ""); print }' usbrip.txt && enconv -x UTF8 usbrip.txt
   ```
 
-* Generate a list of trusted USB devices as a JSON-file (`trusted/auth.json`) containing the first *three* devices connected on September 26:
+* Generate a list of trusted USB devices as a JSON-file (`trusted/auth.json`) with "VID" and "PID" attributes containing the first *three* devices connected on September 26:
   ```
-  $ python3 usbrip.py events gen_auth trusted/auth.json -n 3 -d "Sep 26"
+  $ python3 usbrip.py events gen_auth trusted/auth.json -a vid pid -n 3 -d "Sep 26"
   ```
 
-* Search the event history of the external USB devices for violations based on the list of trusted USB devices (`trusted/auth.json`) and represent the output as a table with "Connected", "VID" and "PID" columns:
+* Search the event history of the external USB devices for violations based on the list of trusted USB devices (`trusted/auth.json`) by "VID" attribute and represent the output as a table with "Connected", "VID" and "PID" columns:
   ```
-  $ python3 usbrip.py events violations trusted/auth.json -et -c conn vid pid
+  $ python3 usbrip.py events violations trusted/auth.json -a pid -et -c conn vid pid
   ```
 
 * Search for details about a specific USB device by its VID (`--vid VID`) and PID (`--pid PID`):

@@ -82,9 +82,14 @@ def main():
 
 	elif args.subparser == 'events' and args.ue_subparser:
 		if 'column' in args and args.column:
-				for name in args.column:
-					if name not in COLUMN_NAMES.keys():
-						usbrip_error(name + ': Invalid column name')
+			for column in args.column:
+				if column not in COLUMN_NAMES.keys():
+					usbrip_error(column + ': Invalid column name')
+
+		if 'attribute' in args and args.attribute:
+			for attribute in args.attribute:
+				if attribute not in ('vid', 'pid', 'prod', 'manufact', 'serial'):
+					usbrip_error(attribute + ': Invalid attribute name')
 
 		if 'date' in args and args.date:
 			re_date = re.compile(r'^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+[1-3]?[0-9]$')
@@ -122,7 +127,7 @@ def main():
 				usbrip_error(args.output + ': Path already exists')
 
 			ueg = USBEvents(args.file, quiet=args.quiet)
-			ueg.generate_auth_json(args.output, sieve=sieve)
+			ueg.generate_auth_json(args.output, args.attribute, sieve=sieve)
 
 		# ----------------- USB Events Violations ------------------
 
@@ -131,7 +136,7 @@ def main():
 				usbrip_error(args.input + ': Path does not exist')
 
 			uev = USBEvents(args.file, quiet=args.quiet)
-			uev.search_violations(args.input, args.column, sieve=sieve, repres=repres)
+			uev.search_violations(args.input, args.attribute, args.column, sieve=sieve, repres=repres)
 
 	# ----------------------------------------------------------
 	# ------------------------ USB IDs -------------------------

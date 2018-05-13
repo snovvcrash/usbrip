@@ -124,6 +124,18 @@ def cmd_line_options():
                             type=str,
                             help='set output path')
 
+    ueg_parser.add_argument('-a',
+                            '--attribute',
+                            nargs='+',
+                            type=str,
+                            default=[],
+                            help='attributes to include in authorized device list '
+                                 '(options: \'vid\', '      \
+                                           '\'pid\', '      \
+                                           '\'prod\', '     \
+                                           '\'manufact\', ' \
+                                           '\'serial\'.)')
+
     ueg_parser.add_argument('-q',
                             '--quiet',
                             action='store_true',
@@ -165,6 +177,18 @@ def cmd_line_options():
     uev_parser.add_argument('input',
                             type=str,
                             help='set input path')
+
+    uev_parser.add_argument('-a',
+                            '--attribute',
+                            nargs='+',
+                            type=str,
+                            default=[],
+                            help='attributes to look through when searching for USB violation events '
+                                 '(options: \'vid\', '      \
+                                           '\'pid\', '      \
+                                           '\'prod\', '     \
+                                           '\'manufact\', ' \
+                                           '\'serial\'.)')
 
     uev_parser.add_argument('-q',
                             '--quiet',
