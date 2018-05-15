@@ -6,7 +6,7 @@
 @author Sam Freeside <snovvcrash@protonmail.com>
 @date 2018-03
 
-@brief Common items
+@brief Common items.
 
 @license
 Copyright (C) 2018 Sam Freeside
@@ -32,7 +32,9 @@ import random
 import os
 import sys
 
+from calendar import month_name
 from collections import OrderedDict, Callable
+
 from termcolor import colored, cprint
 
 
@@ -155,6 +157,14 @@ else:
 
 
 # ----------------------------------------------------------
+# --------------------- Dates sorting ----------------------
+# ----------------------------------------------------------
+
+
+MONTH_ENUM = {m[:3]: str(i+1) for i, m in enumerate(month_name[1:])}
+
+
+# ----------------------------------------------------------
 # -------------------- Data Structures ---------------------
 # ----------------------------------------------------------
 
@@ -212,11 +222,12 @@ def os_makedirs(dirname):
 	try:
 		os.makedirs(dirname)
 	except PermissionError as e:
-		raise USBRipError('Permission denied: \'{}\''.format(dirname), {'initial_error': str(e)})
+		raise USBRipError('Permission denied: \'{}\''.format(dirname),
+                          errors={'initial_error': str(e)})
 	except OSError as e:  # exists
 		if not os.path.isdir(dirname):
 			raise USBRipError('Path exists and it is not a directory: \'{}\''.format(dirname),
-                              {'initial_error': str(e)})
+                              errors={'initial_error': str(e)})
 
 
 def traverse_dir(source_dir):

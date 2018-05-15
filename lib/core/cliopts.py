@@ -6,7 +6,7 @@
 @author Sam Freeside <snovvcrash@protonmail.com>
 @date 2018-03
 
-@brief Command line option parser
+@brief Command line option parser.
 
 @license
 Copyright (C) 2018 Sam Freeside
@@ -30,7 +30,7 @@ along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 
 from argparse import ArgumentParser
 
-from lib.common import root_dir_join
+from lib.core.common import root_dir_join
 
 
 def cmd_line_options():
@@ -41,22 +41,55 @@ def cmd_line_options():
     # ------------------------- Banner -------------------------
     # ----------------------------------------------------------
 
-    ue_parser = subparsers.add_parser('banner',
-                                      help='show tool banner')
+    build_ub_parser(subparsers)
 
     # ----------------------------------------------------------
     # ----------------------- USB Events -----------------------
     # ----------------------------------------------------------
 
+    build_ue_parser(subparsers)
+
+    # ----------------------------------------------------------
+    # ------------------------ USB IDs -------------------------
+    # ----------------------------------------------------------
+
+    build_uis_parser(subparsers)
+
+    return parser
+
+
+# ----------------------------------------------------------
+# ------------------------- Banner -------------------------
+# ----------------------------------------------------------
+
+
+def build_ub_parser(subparsers):
+    subparsers.add_parser('banner',
+                          help='show tool banner')
+
+
+# ----------------------------------------------------------
+# ----------------------- USB Events -----------------------
+# ----------------------------------------------------------
+
+
+def build_ue_parser(subparsers):
     ue_parser = subparsers.add_parser('events',
                                       help='work with USB events')
 
     ue_subparsers = ue_parser.add_subparsers(dest='ue_subparser')
 
-    # ------------------- USB Events History -------------------
+    build_ueh_parser(ue_subparsers)
+    build_ueg_parser(ue_subparsers)
+    build_uev_parser(ue_subparsers)
 
-    ueh_parser = ue_subparsers.add_parser('history',
-                                          help='show USB event history')
+
+# ------------------- USB Events History -------------------
+
+
+def build_ueh_parser(subparsers):
+    ueh_parser = subparsers.add_parser('history',
+                                       help='show USB event history')
 
     ueh_parser.add_argument('-q',
                             '--quiet',
@@ -98,14 +131,14 @@ def cmd_line_options():
                             nargs='+',
                             type=str,
                             default=[],
-                            help='columns to show (options: \'conn\', '     \
-                                                           '\'user\', '     \
-                                                           '\'vid\', '      \
-                                                           '\'pid\', '      \
-                                                           '\'prod\', '     \
-                                                           '\'manufact\', ' \
-                                                           '\'serial\', '   \
-                                                           '\'port\', '     \
+                            help='columns to show (options: \'conn\', '
+                                                           '\'user\', '
+                                                           '\'vid\', '
+                                                           '\'pid\', '
+                                                           '\'prod\', '
+                                                           '\'manufact\', '
+                                                           '\'serial\', '
+                                                           '\'port\', '
                                                            '\'disconn\'.)')
 
     ueh_parser.add_argument('-f',
@@ -115,10 +148,13 @@ def cmd_line_options():
                             default=[],
                             help='obtain log from FILES')
 
-    # ---------------- USB Events Gen Auth JSON ----------------
 
-    ueg_parser = ue_subparsers.add_parser('gen_auth',
-                                          help='generate authorized device list (JSON)')
+# ------------------ USB Events Gen Auth -------------------
+
+
+def build_ueg_parser(subparsers):
+    ueg_parser = subparsers.add_parser('gen_auth',
+                                       help='generate authorized device list (JSON)')
 
     ueg_parser.add_argument('output',
                             type=str,
@@ -130,10 +166,10 @@ def cmd_line_options():
                             type=str,
                             default=[],
                             help='attributes to include in authorized device list '
-                                 '(options: \'vid\', '      \
-                                           '\'pid\', '      \
-                                           '\'prod\', '     \
-                                           '\'manufact\', ' \
+                                 '(options: \'vid\', '
+                                           '\'pid\', '
+                                           '\'prod\', '
+                                           '\'manufact\', '
                                            '\'serial\'.)')
 
     ueg_parser.add_argument('-q',
@@ -166,13 +202,16 @@ def cmd_line_options():
                             default=[],
                             help='obtain log from FILES')
 
-    # ----------------- USB Events Violations ------------------
 
-    uev_parser = ue_subparsers.add_parser('violations',
-                                          help='search USB event history for violations ' \
-                                               '(show USB devices that do appear in hist' \
-                                               'ory and do NOT appear in authorized devi' \
-                                               'ce list (JSON))')
+# ----------------- USB Events Violations ------------------
+
+
+def build_uev_parser(subparsers):
+    uev_parser = subparsers.add_parser('violations',
+                                       help='search USB event history for violations '
+                                            '(show USB devices that do appear in hist'
+                                            'ory and do NOT appear in authorized devi'
+                                            'ce list (JSON))')
 
     uev_parser.add_argument('input',
                             type=str,
@@ -184,10 +223,10 @@ def cmd_line_options():
                             type=str,
                             default=[],
                             help='attributes to look through when searching for USB violation events '
-                                 '(options: \'vid\', '      \
-                                           '\'pid\', '      \
-                                           '\'prod\', '     \
-                                           '\'manufact\', ' \
+                                 '(options: \'vid\', '
+                                           '\'pid\', '
+                                           '\'prod\', '
+                                           '\'manufact\', '
                                            '\'serial\'.)')
 
     uev_parser.add_argument('-q',
@@ -230,14 +269,14 @@ def cmd_line_options():
                             nargs='+',
                             type=str,
                             default=[],
-                            help='columns to show (options: \'conn\', '     \
-                                                           '\'user\', '     \
-                                                           '\'vid\', '      \
-                                                           '\'pid\', '      \
-                                                           '\'prod\', '     \
-                                                           '\'manufact\', ' \
-                                                           '\'serial\', '   \
-                                                           '\'port\', '     \
+                            help='columns to show (options: \'conn\', '
+                                                           '\'user\', '
+                                                           '\'vid\', '
+                                                           '\'pid\', '
+                                                           '\'prod\', '
+                                                           '\'manufact\', '
+                                                           '\'serial\', '
+                                                           '\'port\', '
                                                            '\'disconn\'.)')
 
     uev_parser.add_argument('-f',
@@ -247,20 +286,29 @@ def cmd_line_options():
                             default=[],
                             help='obtain log from FILES')
 
-    # ----------------------------------------------------------
-    # ------------------------ USB IDs -------------------------
-    # ----------------------------------------------------------
 
+# ----------------------------------------------------------
+# ------------------------ USB IDs -------------------------
+# ----------------------------------------------------------
+
+
+def build_ui_parser(subparsers):
     ui_parser = subparsers.add_parser('ids',
                                       help='work with USB IDs')
 
     ui_subparsers = ui_parser.add_subparsers(dest='ui_subparser')
 
-    # --------------------- USB IDs Search ---------------------
+    build_uis_parser(ui_subparsers)
+    build_uid_parser(ui_subparsers)
 
-    uis_parser = ui_subparsers.add_parser('search',
-                                          help='search by VID and/or PID; ' \
-                                               'ids database path is \'{}\''.format(root_dir_join('usb_ids/usb.ids')))
+
+# --------------------- USB IDs Search ---------------------
+
+
+def build_uis_parser(subparsers):
+    uis_parser = subparsers.add_parser('search',
+                                       help='search by VID and/or PID; '
+                                          'ids database path is \'{}\''.format(root_dir_join('usb_ids/usb.ids')))
 
     uis_parser.add_argument('-q',
                             '--quiet',
@@ -281,15 +329,16 @@ def cmd_line_options():
                             action='store_true',
                             help='offline mode (no database download/update)')
 
-    # -------------------- USB IDs Download --------------------
 
-    uid_parser = ui_subparsers.add_parser('download',
-                                          help='download/update database;' \
-                                               'ids database path is \'{}\''.format(root_dir_join('usb_ids/usb.ids')))
+# -------------------- USB IDs Download --------------------
+
+
+def build_uid_parser(subparsers):
+    uid_parser = subparsers.add_parser('download',
+                                       help='download/update database;'
+                                            'ids database path is \'{}\''.format(root_dir_join('usb_ids/usb.ids')))
 
     uid_parser.add_argument('-q',
                             '--quiet',
                             action='store_true',
                             help='supress banner, info messages and user iteraction')
-
-    return parser

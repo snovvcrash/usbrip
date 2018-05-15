@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/opt/usbrip/venv/bin/python
 # -*- coding: UTF-8 -*-
 
 """
@@ -6,7 +6,7 @@
 @author Sam Freeside <snovvcrash@protonmail.com>
 @date 2018-03
 
-@brief usbrip project's driver program
+@brief usbrip project's driver program.
 
 @license
 Copyright (C) 2018 Sam Freeside
@@ -32,14 +32,14 @@ import re
 import os
 import sys
 
-from lib import USBEvents
-from lib import USBIDs
+from lib.core import USBEvents
+from lib.core import USBIDs
 
-from lib.cliopts import cmd_line_options
-from lib.common import BANNER
-from lib.common import COLUMN_NAMES
-from lib.common import USBRipError
-from lib.common import print_critical
+from lib.core.cliopts import cmd_line_options
+from lib.core.common import BANNER
+from lib.core.common import COLUMN_NAMES
+from lib.core.common import USBRipError
+from lib.core.common import print_critical
 
 
 # ----------------------------------------------------------
@@ -120,7 +120,7 @@ def main():
 			ueh = USBEvents(args.file, quiet=args.quiet)
 			ueh.event_history(args.column, sieve=sieve, repres=repres)
 
-		# ---------------- USB Events Gen Auth JSON ----------------
+		# ------------------ USB Events Gen Auth -------------------
 
 		elif args.ue_subparser == 'gen_auth':
 			if os.path.exists(args.output):
