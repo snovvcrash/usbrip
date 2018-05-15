@@ -32,6 +32,8 @@ import re
 import os
 import sys
 
+import lib.utils.timing
+
 from lib.core import USBEvents
 from lib.core import USBIDs
 
