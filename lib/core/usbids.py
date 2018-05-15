@@ -6,7 +6,7 @@
 @author Sam Freeside <snovvcrash@protonmail.com>
 @date 2018-03
 
-@brief USB IDs handler
+@brief USB IDs handler.
 
 @license
 Copyright (C) 2018 Sam Freeside
@@ -39,15 +39,15 @@ import os
 
 from urllib.request import urlopen
 
-from lib.common import root_dir_join
-from lib.common import os_makedirs
-from lib.common import print_info
-from lib.common import print_warning
-from lib.common import print_critical
-from lib.common import USBRipError
-from lib.common import DEBUG
-from lib.common import time_it
-from lib.common import time_it_if_debug
+from lib.core.common import root_dir_join
+from lib.core.common import os_makedirs
+from lib.core.common import print_info
+from lib.core.common import print_warning
+from lib.core.common import print_critical
+from lib.core.common import USBRipError
+from lib.core.common import DEBUG
+from lib.core.common import time_it
+from lib.core.common import time_it_if_debug
 
 
 # ----------------------------------------------------------

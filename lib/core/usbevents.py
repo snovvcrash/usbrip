@@ -6,7 +6,7 @@
 @author Sam Freeside <snovvcrash@protonmail.com>
 @date 2018-03
 
-@brief USB events handler
+@brief USB events handler.
 
 @license
 Copyright (C) 2018 Sam Freeside
@@ -45,27 +45,28 @@ import operator
 import os
 
 from collections import OrderedDict, defaultdict
-from calendar import month_name
 from string import printable
+
 from terminaltables import AsciiTable, SingleTable
 from termcolor import colored, cprint
 
-from lib.common import BULLET
-from lib.common import ABSENCE
-from lib.common import SEPARATOR
-from lib.common import ISATTY
-from lib.common import COLUMN_NAMES
-from lib.common import DefaultOrderedDict
-from lib.common import root_dir_join
-from lib.common import os_makedirs
-from lib.common import list_files
-from lib.common import print_info
-from lib.common import print_warning
-from lib.common import print_critical
-from lib.common import USBRipError
-from lib.common import DEBUG
-from lib.common import time_it
-from lib.common import time_it_if_debug
+from lib.core.common import BULLET
+from lib.core.common import ABSENCE
+from lib.core.common import SEPARATOR
+from lib.core.common import ISATTY
+from lib.core.common import COLUMN_NAMES
+from lib.core.common import MONTH_ENUM
+from lib.core.common import DefaultOrderedDict
+from lib.core.common import root_dir_join
+from lib.core.common import os_makedirs
+from lib.core.common import list_files
+from lib.core.common import print_info
+from lib.core.common import print_warning
+from lib.core.common import print_critical
+from lib.core.common import USBRipError
+from lib.core.common import DEBUG
+from lib.core.common import time_it
+from lib.core.common import time_it_if_debug
 
 
 # ----------------------------------------------------------
@@ -121,12 +122,14 @@ class USBEvents:
 			if number is None:
 				return
 			elif number == 1:
-				_json_dump(self._events_to_show, 'event history', filename)
-				return
+				try:
+					_json_dump(self._events_to_show, 'event history', filename)
+				except USBRipError as e:
+					print_critical(str(e), initial_error=e.errors['initial_error'])
 
 		_represent_events(self._events_to_show, columns, table_data, 'USB-History-Events', repres)
 
-	# ---------------- USB Events Gen Auth JSON ----------------
+	# ------------------ USB Events Gen Auth -------------------
 
 	@time_it_if_debug(DEBUG, time_it)
 	def generate_auth_json(self, output_auth, attributes, *, sieve=None):
@@ -160,8 +163,8 @@ class USBEvents:
 		auth = defaultdict(list)
 		for event in self._events_to_show:
 			for key, val in event.items():
-				if key in attributes     and \
-                   val is not None       and \
+				if key in attributes    and \
+                   val is not None      and \
                    val not in auth[key]:
 					auth[key].append(val)
 
@@ -212,8 +215,10 @@ class USBEvents:
 			if number is None:
 				return
 			elif number == 1:
-				_json_dump(self._events_to_show, 'violation', filename)
-				return
+				try:
+					_json_dump(self._events_to_show, 'violations', filename)
+				except USBRipError as e:
+					print_critical(str(e), initial_error=e.errors['initial_error'])
 
 		_represent_events(self._events_to_show, columns, table_data, 'USB-Violation-Events', repres)
 
@@ -374,7 +379,6 @@ def _parse_history(divided_history):
 
 def _sort_by_date(unsorted_log):
 	# "usorted_log" is a list of ( ('Mon dd hh:mm:ss', 'EVENT'), ['LOG_DATA'] )
-	MONTH_ENUM = {m[:3]: str(i) for i, m in enumerate(month_name[1:])}
 	return sorted(unsorted_log, key=lambda i: MONTH_ENUM[i[0][0][:3]] + i[0][0][3:])
 
 
@@ -564,8 +568,8 @@ def _json_dump(events_to_show, list_name, filename):
 		with open(filename, 'w') as out_json:
 			json.dump(out, out_json, indent=4)
 	except PermissionError as e:
-		print_critical('Permission denied: \'{}\''.format(filename), initial_error=str(e))
-		return
+		raise USBRipError('Permission denied: \'{}\''.format(filename),
+                          errors={'initial_error': str(e)})
 
 	print_info('New {} list: \'{}\''.format(list_name, filename), quiet=USBEvents.QUIET)
 
@@ -581,7 +585,7 @@ def _output_choice(list_name, default_filename, dirname):
 
 		if number == '1':
 			while True:
-				filename = input('[>] Please enter the base name for the output file ' \
+				filename = input('[>] Please enter the base name for the output file '
                                  '(default is \'{}\'): '.format(default_filename))
 
 				if all(c in printable for c in filename) and len(filename) < 256:

@@ -6,7 +6,7 @@
 @author Sam Freeside <snovvcrash@protonmail.com>
 @date 2018-03
 
-@brief Python __init__ file
+@brief Python __init__ file.
 
 @license
 Copyright (C) 2018 Sam Freeside
@@ -28,5 +28,5 @@ along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 @endlicense
 """
 
-from lib.usbevents import USBEvents
-from lib.usbids import USBIDs
+from lib.core.usbevents import USBEvents
+from lib.core.usbids import USBIDs
