@@ -39,7 +39,7 @@ def tick(msg, fmt='%H:%M:%S', taken=None):
 	print('%s %s' % (msg, now))
 	if taken:
 		taken = datetime.timedelta(seconds=taken)
-		print('[*] Time taken: %s s' % taken)
+		print('[*] Time taken: %s' % taken)
 
 
 def log():
