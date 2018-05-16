@@ -32,7 +32,9 @@ import re
 import os
 import sys
 
-import lib.utils.timing
+import lib.utils.timing as timing
+
+from string import printable
 
 from lib.core import USBEvents
 from lib.core import USBStorage
@@ -73,6 +75,8 @@ def main():
 	# ----------------------------------------------------------
 
 	elif args.subparser == 'events' and args.ue_subparser:
+		timing.begin(quiet=args.quiet)
+
 		sieve, repres = validate_ue_args(args)
 		ue = USBEvents(args.file, quiet=args.quiet)
 
@@ -95,16 +99,25 @@ def main():
 	# ---------------------- USB Storage -----------------------
 	# ----------------------------------------------------------
 
-	elif args.subparser == 'storage' and args.ue_subparser:
-		if args.ue_subparser == 'create':
-			usc = USBStorage(quiet=args.quiet)
-			usc.create_storage(args.storage_type, passwd=args.password, attributes=args.attribute)
+	'''elif args.subparser == 'storage' and args.us_subparser:
+		timing.begin(quiet=args.quiet)
+
+		validate_us_args(args)
+		us = USBStorage(quiet=args.quiet)
+
+		if args.us_subparser == 'create':
+			us.create_storage(args.storage_type,
+                              passwd=args.password,
+                              input_auth=args.input,
+                              attributes=args.attribute)'''
 
 	# ----------------------------------------------------------
 	# ------------------------ USB IDs -------------------------
 	# ----------------------------------------------------------
 
 	elif args.subparser == 'ids' and args.ui_subparser:
+		timing.begin(quiet=args.quiet)
+
 		validate_ui_args(args)
 		ui = USBIDs(quiet=args.quiet)
 
@@ -174,6 +187,26 @@ def validate_ue_args(args):
 		repres['smart'] = True
 
 	return (sieve, repres)
+
+
+def validate_us_args(args):
+	if 'storage_type' in args and not args.storage_type in ('history', 'violations'):
+		usbrip_error(args.storage_type + ': Invalid storage type')
+
+	if 'password' in args and args.password        and \
+       (len(args.password) < 8                      or \
+        not any(c.islower() for c in args.password) or \
+        not any(c.isupper() for c in args.password) or \
+        not any(c.isdigit() for c in args.password) or \
+        any(c not in printable for c in args.password)):
+		usbrip_error(args.password + ': Password must be at least 8 chars long and contain at least '
+                                     '1 lowercase letter, at least 1 uppercase letter and at least '
+                                     '1 digit')
+
+	if 'attribute' in args and args.attribute:
+		for attribute in args.attribute:
+			if attribute not in ('vid', 'pid', 'prod', 'manufact', 'serial'):
+				usbrip_error(attribute + ': Invalid attribute name')
 
 
 def validate_ui_args(args):

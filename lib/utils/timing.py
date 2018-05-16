@@ -32,6 +32,8 @@ import atexit
 import time
 import datetime
 
+START = time.time()
+
 
 def tick(msg, fmt='%H:%M:%S', taken=None):
 	#fmt = '%Y-%m-%d %H:%M:%S'
@@ -42,12 +44,13 @@ def tick(msg, fmt='%H:%M:%S', taken=None):
 		print('[*] Time taken: %s' % taken)
 
 
-def log():
+def final():
 	end = time.time()
-	taken = end - start
+	taken = end - START
 	tick('[*] Shutted down at', taken=taken)
 
 
-start = time.time()
-atexit.register(log)
-tick('[*] Started at')
+def begin(*, quiet):
+	if not quiet:
+		atexit.register(final)
+		tick('[*] Started at')
