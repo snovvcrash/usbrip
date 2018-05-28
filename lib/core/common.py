@@ -32,6 +32,7 @@ import random
 import os
 import sys
 
+from string import printable
 from calendar import month_name
 from collections import OrderedDict, Callable
 
@@ -50,22 +51,28 @@ SEPARATOR = '\u2212'  # '−', U_MINUS_SIGN
 # Enable colored text when terminal output (True), else (| or > for example) no color (False)
 ISATTY = True if sys.stdout.isatty() else False
 
+DEBUG = False
+
 
 # ----------------------------------------------------------
 # ------------------------- Banner -------------------------
 # ----------------------------------------------------------
 
 
+VERSION = '2.0'
 SITE = 'https://github.com/snovvcrash/usbrip'
+
+VERSION_FORMATTED = '\033[1;37m{\033[1;34mv%s\033[1;37m}\033[1;33m' % VERSION
+SITE_FORMATTED = '\033[0m\033[4;37m%s\033[0m' % SITE
 
 BANNER = """\033[1;33m\
                        
-         _     {{4}}   
+         _     {{4}}    %s
  _ _ ___| |_ ___[+]___ 
 | | |_ -| . |  _[*] . |
 |___|___|___|_| [?]  _|
-               x[^]_|   \033[;0m\033[4;37m%s\033[;0m\
-""" % SITE
+               x[^]_|   %s\
+""" % (VERSION_FORMATTED, SITE_FORMATTED)
 
 E = ('E', 'e', '3')
 N = ('N', 'n')
@@ -75,9 +82,12 @@ I = ('I', 'i', '1', '!')
 E,N,S,I = list(map(lambda x: random.choice(x), (E,N,S,I)))
 
 if ISATTY:
-	E,N,S,I = list(map(lambda x: colored(x, 'green', 'on_blue')+'\033[1;33m', (E,N,S,I)))
+	E,N,S,I = list(map(lambda x: colored(x, 'green', 'on_blue') + '\033[1;33m', (E,N,S,I)))
 else:
-	BANNER = BANNER[7:151] + BANNER[163:199]
+	mid_start = 55 + len(VERSION_FORMATTED)
+	mid_end = mid_start + 97
+	VERSION = '{v' + VERSION + '}'
+	BANNER = BANNER[31:55] + VERSION + BANNER[mid_start:mid_end] + SITE
 
 BANNER = BANNER.replace('+', E, 1)
 BANNER = BANNER.replace('*', N, 1)
@@ -90,12 +100,10 @@ BANNER = BANNER.replace('^', I, 1)
 # ----------------------------------------------------------
 
 
-DEBUG = False
-
-
 def time_it(func):
 	import functools
 	import time
+
 	@functools.wraps(func)
 	def wrapper(*args, **kwargs):
 		start = time.time()
@@ -171,7 +179,7 @@ MONTH_ENUM = {m[:3]: str(i+1) for i, m in enumerate(month_name[1:])}
 
 class DefaultOrderedDict(OrderedDict):
 	def __init__(self, *args, default_factory=None, **kwargs):
-		if (default_factory is not None and not isinstance(default_factory, Callable)):
+		if default_factory is not None and not isinstance(default_factory, Callable):
 			raise TypeError('first argument must be callable')
 		OrderedDict.__init__(self, *args, **kwargs)
 		self._default_factory = default_factory
@@ -215,19 +223,23 @@ class DefaultOrderedDict(OrderedDict):
 
 
 def root_dir_join(name):
-	return os.path.join(os.path.abspath(__file__).rsplit('/', 2)[0], name)
+	return os.path.join(os.path.abspath(__file__).rsplit('/', 3)[0], name)
 
 
 def os_makedirs(dirname):
 	try:
 		os.makedirs(dirname)
 	except PermissionError as e:
-		raise USBRipError('Permission denied: \'{}\''.format(dirname),
-                          errors={'initial_error': str(e)})
+		raise USBRipError(
+			'Permission denied: \'{}\''.format(dirname),
+			errors={'initial_error': str(e)}
+		)
 	except OSError as e:  # exists
 		if not os.path.isdir(dirname):
-			raise USBRipError('Path exists and it is not a directory: \'{}\''.format(dirname),
-                              errors={'initial_error': str(e)})
+			raise USBRipError(
+				'Path exists and it is not a directory: \'{}\''.format(dirname),
+				errors={'initial_error': str(e)}
+			)
 
 
 def traverse_dir(source_dir):
@@ -240,6 +252,17 @@ def list_files(source_dir):
 	return [os.path.join(source_dir, filename)
             for filename in os.listdir(source_dir)
             if os.path.isfile(os.path.join(source_dir, filename))]
+
+
+def is_correct(password):
+	if (len(password) < 8 or
+			not any(c.islower() for c in password) or
+			not any(c.isupper() for c in password) or
+			not any(c.isdigit() for c in password) or
+			any(c not in printable for c in password)):
+		return False
+
+	return True
 
 
 # ----------------------------------------------------------
@@ -257,7 +280,10 @@ def print_info(message, *, quiet=False):
 		print('[INFO] {}'.format(message))
 
 
-def print_warning(message, *, errcode=0, initial_error=''):
+def print_warning(message, *, errcode=0, initial_error='', quiet=False):
+	if quiet:
+		return
+
 	if DEBUG:
 		if errcode:
 			print('ERRCODE: {}'.format(errcode))
@@ -281,3 +307,16 @@ def print_critical(message, *, errcode=0, initial_error=''):
 		cprint('[CRITICAL] {}'. format(message), 'white', 'on_red', attrs=['bold'])
 	else:
 		print('[CRITICAL] {}'. format(message))
+
+
+def print_secret(message, *, secret=''):
+	if ISATTY:
+		cprint(
+			'[SECRET] {} {}'.format(
+				colored(message, 'white', attrs=['bold']),
+				colored(secret, 'white', 'on_grey', attrs=['bold'])
+			),
+			'white', attrs=['bold']
+		)
+	else:
+		print('[SECRET] {} {}'.format(message, secret))

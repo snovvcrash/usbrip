@@ -34,17 +34,16 @@ import sys
 
 import lib.utils.timing as timing
 
-from string import printable
-
 from lib.core import USBEvents
 from lib.core import USBStorage
 from lib.core import USBIDs
 
-from lib.core.cliopts import cmd_line_options
+from lib.parse.cliopts import cmd_line_options
 from lib.core.common import BANNER
 from lib.core.common import COLUMN_NAMES
-from lib.core.common import USBRipError
+from lib.core.common import is_correct
 from lib.core.common import print_critical
+from lib.core.common import USBRipError
 
 
 # ----------------------------------------------------------
@@ -55,7 +54,7 @@ from lib.core.common import print_critical
 def main():
 	if not len(sys.argv) > 1:
 		print(BANNER + '\n')
-		usbrip_error('No arguments were passed')
+		usbrip_arg_error()
 
 	parser = cmd_line_options()
 	args = parser.parse_args()
@@ -75,50 +74,99 @@ def main():
 	# ----------------------------------------------------------
 
 	elif args.subparser == 'events' and args.ue_subparser:
-		timing.begin(quiet=args.quiet)
-
 		sieve, repres = validate_ue_args(args)
-		ue = USBEvents(args.file, quiet=args.quiet)
 
 		# ------------------- USB Events History -------------------
 
 		if args.ue_subparser == 'history':
-			ue.event_history(args.column, sieve=sieve, repres=repres)
+			timing.begin(quiet=args.quiet)
+			ueh = USBEvents(args.file, quiet=args.quiet)
+			if ueh:
+				ueh.event_history(args.column, sieve=sieve, repres=repres)
+
+		# -------------------- USB Events Open ---------------------
+
+		elif args.ue_subparser == 'open':
+			timing.begin(quiet=args.quiet)
+			USBEvents.QUIET = args.quiet
+			USBEvents.open_dump(args.input, args.column, sieve=sieve, repres=repres)
 
 		# ------------------ USB Events Gen Auth -------------------
 
 		elif args.ue_subparser == 'gen_auth':
-			ue.generate_auth_json(args.output, args.attribute, sieve=sieve)
+			timing.begin(quiet=args.quiet)
+			ueg = USBEvents(args.file, quiet=args.quiet)
+			if ueg:
+				if ueg.generate_auth_json(args.output, args.attribute, sieve=sieve):
+					usbrip_internal_error()
+			else:
+				usbrip_internal_error()
 
 		# ----------------- USB Events Violations ------------------
 
 		elif args.ue_subparser == 'violations':
-			ue.search_violations(args.input, args.attribute, args.column, sieve=sieve, repres=repres)
+			timing.begin(quiet=args.quiet)
+			uev = USBEvents(args.file, quiet=args.quiet)
+			if uev:
+				uev.search_violations(args.input, args.attribute, args.column, sieve=sieve, repres=repres)
 
 	# ----------------------------------------------------------
 	# ---------------------- USB Storage -----------------------
 	# ----------------------------------------------------------
 
-	'''elif args.subparser == 'storage' and args.us_subparser:
+	elif args.subparser == 'storage' and args.us_subparser:
+		sieve, repres = validate_us_args(args)
 		timing.begin(quiet=args.quiet)
-
-		validate_us_args(args)
 		us = USBStorage(quiet=args.quiet)
 
-		if args.us_subparser == 'create':
-			us.create_storage(args.storage_type,
-                              passwd=args.password,
-                              input_auth=args.input,
-                              attributes=args.attribute)'''
+		# -------------------- USB Storage List --------------------
+
+		if args.us_subparser == 'list':
+			us.list_storage(args.storage_type, args.password)
+
+		# -------------------- USB Storage Open --------------------
+
+		elif args.us_subparser == 'open':
+			us.open_storage(args.storage_type, args.password, args.column, sieve=sieve, repres=repres)
+
+		# ------------------- USB Storage Update -------------------
+
+		elif args.us_subparser == 'update':
+			if us.update_storage(
+				args.storage_type,
+				args.password,
+				input_auth=args.input,
+				attributes=args.attribute,
+				compression_level=args.lvl,
+				sieve=sieve
+			):
+				usbrip_internal_error()
+
+		# ------------------- USB Storage Create -------------------
+
+		elif args.us_subparser == 'create':
+			if us.create_storage(
+				args.storage_type,
+				password=args.password,
+				input_auth=args.input,
+				attributes=args.attribute,
+				compression_level=args.lvl,
+				sieve=sieve
+			):
+				usbrip_internal_error()
+
+		# ------------------- USB Storage Passwd -------------------
+
+		elif args.us_subparser == 'passwd':
+			us.change_password(args.storage_type, args.old, args.new, compression_level=args.lvl)
 
 	# ----------------------------------------------------------
 	# ------------------------ USB IDs -------------------------
 	# ----------------------------------------------------------
 
 	elif args.subparser == 'ids' and args.ui_subparser:
-		timing.begin(quiet=args.quiet)
-
 		validate_ui_args(args)
+		timing.begin(quiet=args.quiet)
 		ui = USBIDs(quiet=args.quiet)
 
 		# --------------------- USB IDs Search ---------------------
@@ -138,91 +186,190 @@ def main():
 
 	else:
 		subparser = ' ' + args.subparser + ' '
-		usbrip_error('Choose one of the usbrip {} actions'.format(args.subparser), subparser=subparser)
+		usbrip_arg_error('Choose one of the usbrip {} actions'.format(args.subparser), subparser=subparser)
 
 
 # ----------------------------------------------------------
 # ------------------ Argument validation -------------------
 # ----------------------------------------------------------
 
+# ----------------------- USB Events -----------------------
+
 
 def validate_ue_args(args):
-	if 'column' in args and args.column:
-		for column in args.column:
-			if column not in COLUMN_NAMES.keys():
-				usbrip_error(column + ': Invalid column name')
+	_validate_column_args(args)
+	_validate_attribute_args(args)
+	_validate_io_args(args)
+	_validate_file_args(args)
 
-	if 'attribute' in args and args.attribute:
-		for attribute in args.attribute:
-			if attribute not in ('vid', 'pid', 'prod', 'manufact', 'serial'):
-				usbrip_error(attribute + ': Invalid attribute name')
+	return (_validate_sieve_args(args), _validate_repres_args(args))
 
-	if 'date' in args and args.date:
-		re_date = re.compile(r'^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+[1-3]?[0-9]$')
-		for i in range(len(args.date)):
-			if not re_date.search(args.date[i]):
-				usbrip_error(args.date[i] + ': Wrong date format')
-			date_parts = args.date[i].split()
-			args.date[i] = ' '.join(date_parts) if len(date_parts[-1]) == 2 else '  '.join(date_parts)
 
-	if 'file' in args and args.file:
-		for file in args.file:
-			if not os.path.exists(file):
-				usbrip_error(file + ': Path does not exist')
-
-	if 'output' in args and os.path.exists(args.output):
-		usbrip_error(args.output + ': Path already exists')
-
-	if 'input' in args and not os.path.exists(args.input):
-		usbrip_error(args.input + ': Path does not exist')
-
-	sieve = dict(zip(('external', 'number', 'dates'), (args.external, args.number, args.date)))
-	repres = dict.fromkeys(('table', 'list', 'smart'), False)
-
-	if 'table' in args and args.table:
-		repres['table'] = True
-	elif 'list' in args and args.list:
-		repres['list'] = True
-	else:
-		repres['smart'] = True
-
-	return (sieve, repres)
+# ---------------------- USB Storage -----------------------
 
 
 def validate_us_args(args):
-	if 'storage_type' in args and not args.storage_type in ('history', 'violations'):
-		usbrip_error(args.storage_type + ': Invalid storage type')
+	_validate_storage_type_args(args)
+	_validate_password_args(args)
+	_validate_compression_level_args(args)
+	_validate_io_args(args)
+	_validate_attribute_args(args)
 
-	if 'password' in args and args.password        and \
-       (len(args.password) < 8                      or \
-        not any(c.islower() for c in args.password) or \
-        not any(c.isupper() for c in args.password) or \
-        not any(c.isdigit() for c in args.password) or \
-        any(c not in printable for c in args.password)):
-		usbrip_error(args.password + ': Password must be at least 8 chars long and contain at least '
-                                     '1 lowercase letter, at least 1 uppercase letter and at least '
-                                     '1 digit')
+	return (_validate_sieve_args(args), _validate_repres_args(args))
 
-	if 'attribute' in args and args.attribute:
-		for attribute in args.attribute:
-			if attribute not in ('vid', 'pid', 'prod', 'manufact', 'serial'):
-				usbrip_error(attribute + ': Invalid attribute name')
+
+# ------------------------ USB IDs -------------------------
 
 
 def validate_ui_args(args):
-	if not args.vid and not args.pid:
-		usbrip_error('At least one of --vid/--pid or --download option should be specified')
+	_validate_vid_pid_args(args)
 
 
 # ----------------------------------------------------------
-# ------------------- Error Message Gen --------------------
+# ---------------- Error Message Generators ----------------
 # ----------------------------------------------------------
 
 
-def usbrip_error(message, *, subparser=' '):
-	print('usage: python3 {}{}[-h]\n'.format(sys.argv[0], subparser))
-	print(sys.argv[0].rsplit('/', 1)[-1] + ': error: ' + message, file=sys.stderr)
+def usbrip_arg_error(message=None, *, subparser=' '):
+	if message:
+		print('usage: python3 {}{}[-h]\n'.format(sys.argv[0], subparser))
+		print(sys.argv[0].rsplit('/', 1)[-1] + ': argument error: ' + message, file=sys.stderr)
+	else:
+		print('usage: python3 {} [-h]'.format(sys.argv[0]))
+
 	sys.exit(1)
+
+
+def usbrip_internal_error():
+	print(sys.argv[0].rsplit('/', 1)[-1] + ': Internal error occured', file=sys.stderr)
+	sys.exit(1)
+
+
+# ----------------------------------------------------------
+# ----------------------- Utilities ------------------------
+# ----------------------------------------------------------
+
+
+def _validate_column_args(args):
+	if 'column' in args and args.column:
+		for column in args.column:
+			if column not in COLUMN_NAMES.keys():
+				usbrip_arg_error(column + ': Invalid column name')
+
+
+def _validate_sieve_args(args):
+	if 'external' in args:
+		sieve = dict(zip(('external', 'number', 'dates', 'fields'),
+                         (args.external, args.number, args.date, {})))
+
+		if args.date:
+			re_date = re.compile(r'^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+[1-3]?[0-9]$')
+			for i in range(len(args.date)):
+				if not re_date.search(args.date[i]):
+					usbrip_arg_error(args.date[i] + ': Wrong date format')
+				date_parts = args.date[i].split()
+				args.date[i] = ' '.join(date_parts) if len(date_parts[-1]) == 2 else '  '.join(date_parts)
+
+		if args.user:
+			sieve['fields']['user'] = args.user
+		if args.vid:
+			sieve['fields']['vid'] = args.vid
+		if args.pid:
+			sieve['fields']['pid'] = args.pid
+		if args.prod:
+			sieve['fields']['prod'] = args.prod
+		if args.manufact:
+			sieve['fields']['manufact'] = args.manufact
+		if args.serial:
+			sieve['fields']['serial'] = args.serial
+		if args.port:
+			sieve['fields']['port'] = args.port
+
+		return sieve
+
+	return None
+
+
+def _validate_repres_args(args):
+	if 'table' in args or 'list' in args:
+		repres = dict.fromkeys(('table', 'list', 'smart'), False)
+
+		if 'table' in args and args.table:
+			repres['table'] = True
+		elif 'list' in args and args.list:
+			repres['list'] = True
+		else:
+			repres['smart'] = True
+
+		return repres
+
+	return None
+
+
+def _validate_io_args(args):
+	if 'input' in args and args.input:
+		if not os.path.exists(args.input):
+			usbrip_arg_error(args.input + ': Path does not exist')
+		elif not os.path.isfile(args.input):
+			usbrip_arg_error(args.input + ': Not a regular file')
+
+	if 'output' in args and os.path.exists(args.output):
+		usbrip_arg_error(args.output + ': Path already exists')
+
+
+def _validate_attribute_args(args):
+	if 'attribute' in args and args.attribute:
+		for attribute in args.attribute:
+			if attribute not in ('vid', 'pid', 'prod', 'manufact', 'serial'):
+				usbrip_arg_error(attribute + ': Invalid attribute name')
+
+
+def _validate_storage_type_args(args):
+	if args.storage_type not in ('history', 'violations'):
+		usbrip_arg_error(args.storage_type + ': Invalid storage type')
+
+	if args.storage_type == 'history':
+		if 'input' in args and args.input:
+			usbrip_arg_error('Cannot use \'--input\' swith with history storage')
+		if 'attribute' in args and args.attribute:
+			usbrip_arg_error('Cannot use \'--attribute\' swith with history storage')
+	elif args.storage_type == 'violations':
+		if 'input' in args and args.input is None:
+			usbrip_arg_error('Please specify input path for the list of authorized devices (-i)')
+
+
+def _validate_password_args(args):
+	errmsg = ': Password must be at least 8 chars long and contain at least ' \
+             '1 lowercase letter, at least 1 uppercase letter and at least '  \
+             '1 digit'
+
+	if 'password' in args and args.password and not is_correct(args.password):
+		usbrip_arg_error(args.password + errmsg)
+
+	if 'new' in args and args.new and not is_correct(args.new):
+		usbrip_arg_error(args.new + errmsg)
+
+	if 'old' in args and args.old and not is_correct(args.old):
+		usbrip_arg_error(args.old + errmsg)
+
+
+def _validate_compression_level_args(args):
+	if 'lvl' in args and args.lvl and (len(args.lvl) > 1 or args.lvl not in '0123456789'):
+		usbrip_arg_error(args.lvl + ': Invalid compression level')
+
+
+def _validate_file_args(args):
+	if 'file' in args and args.file:
+		for file in args.file:
+			if not os.path.exists(file):
+				usbrip_arg_error(file + ': Path does not exist')
+			elif not os.path.isfile(file):
+				usbrip_arg_error(file + ': Not a regular file')
+
+
+def _validate_vid_pid_args(args):
+	if not args.vid and not args.pid:
+		usbrip_arg_error('At least one of --vid/--pid or --download option should be specified')
 
 
 # ----------------------------------------------------------
