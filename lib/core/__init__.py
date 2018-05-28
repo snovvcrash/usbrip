@@ -29,4 +29,5 @@ along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 from lib.core.usbevents import USBEvents
+from lib.core.usbstorage import USBStorage
 from lib.core.usbids import USBIDs

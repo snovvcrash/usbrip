@@ -57,7 +57,6 @@ from lib.core.common import time_it_if_debug
 
 class USBIDs:
 
-	# If True -> supress banner, info messages and user iteraction
 	QUIET = False
 
 	_INTERNET_CONNECTION_ERROR = -1
@@ -72,7 +71,7 @@ class USBIDs:
 	@time_it_if_debug(DEBUG, time_it)
 	def search_ids(vid, pid, *, offline=True):
 		if offline:
-			print_warning('Offline mode')
+			print_warning('Offline mode', quiet=USBIDs.QUIET)
 
 		try:
 			usb_ids = USBIDs.prepare_database(offline=offline)
@@ -93,7 +92,7 @@ class USBIDs:
 		elif file_exists and not offline:
 			usb_ids = _update_database(filename)
 		elif not file_exists and not offline:
-			print_warning('No local database found, trying to download')
+			print_warning('No local database found, trying to download', quiet=USBIDs.QUIET)
 			usb_ids = _download_database(filename)
 		elif not file_exists and offline:
 			raise USBRipError('No local database found')
@@ -119,15 +118,32 @@ def _update_database(filename):
 	print('Date:     {}'.format(curr_date))
 
 	print_info('Checking local database for update', quiet=USBIDs.QUIET)
-	db, latest_ver, latest_date, error, e = _get_latest_version()
+	db, latest_ver, latest_date, errcode, e = _get_latest_version()
 
-	if error:
-		if error == USBIDs._INTERNET_CONNECTION_ERROR:
-			print_warning('No internet connection, using current version', errcode=error)
-		elif error == USBIDs._SERVER_TIMEOUT_ERROR:
-			print_warning('Server timeout, using current version', errcode=error, initial_error=e)
-		elif error == USBIDs._SERVER_CONTENT_ERROR:
-			print_warning('Server error, using current version', errcode=error, initial_error=e)
+	if errcode:
+		if errcode == USBIDs._INTERNET_CONNECTION_ERROR:
+			print_warning(
+				'No internet connection, using current version',
+				errcode=errcode,
+				quiet=USBIDs.QUIET
+			)
+
+		elif errcode == USBIDs._SERVER_TIMEOUT_ERROR:
+			print_warning(
+				'Server timeout, using current version',
+				errcode=errcode,
+				initial_error=e,
+				quiet=USBIDs.QUIET
+			)
+
+		elif errcode == USBIDs._SERVER_CONTENT_ERROR:
+			print_warning(
+				'Server error, using current version',
+				errcode=errcode,
+				initial_error=e,
+				quiet=USBIDs.QUIET
+			)
+
 		return usb_ids
 
 	if curr_ver != latest_ver and curr_date != latest_date:  # if there's newer database version
@@ -163,18 +179,20 @@ def _download_database(filename):
 		print_critical('Permission denied: \'{}\''.format(filename), initial_error=str(e))
 		return None
 
-	db, latest_ver, latest_date, error, e = _get_latest_version()
+	db, latest_ver, latest_date, errcode, e = _get_latest_version()
 
-	if error:
+	if errcode:
 		usb_ids.close()
 		os.remove(filename)
-		if error == USBIDs._INTERNET_CONNECTION_ERROR:
-			raise USBRipError('No internet connection')
-		elif error == USBIDs._SERVER_TIMEOUT_ERROR:
-			raise USBRipError('Server timeout', errors={'errcode': error, 'initial_error': e})
-		elif error == USBIDs._SERVER_CONTENT_ERROR:
-			raise USBRipError('Server content error: no version or date found',
-                              errors={'errcode': error, 'initial_error': e})
+
+		if errcode == USBIDs._INTERNET_CONNECTION_ERROR:
+			errmsg = 'No internet connection'
+		elif errcode == USBIDs._SERVER_TIMEOUT_ERROR:
+			errmsg = 'Server timeout'
+		elif errcode == USBIDs._SERVER_CONTENT_ERROR:
+			errmsg = 'Server content error: no version or date found'
+
+		raise USBRipError(errmsg, errors={'errcode': errcode, 'initial_error': e})
 
 	usb_ids.write(db)
 	usb_ids.seek(0)
@@ -195,16 +213,18 @@ def _get_current_version(usb_ids):
 		curr_ver = re.search(r'^# Version:\s*(.*?$)', db, re.MULTILINE).group(1)
 		curr_date = re.search(r'^# Date:\s*(.*?$)', db, re.MULTILINE).group(1)
 	except AttributeError as e:
-		raise USBRipError('Invalid database content structure: no version or date found',
-                          errors={'initial_error': str(e)})
+		raise USBRipError(
+			'Invalid database content structure: no version or date found',
+			errors={'initial_error': str(e)}
+		)
 
 	return (curr_ver, curr_date)
 
 
 def _get_latest_version():
-	connected, error, e = _check_connection('www.google.com')
+	connected, errcode, e = _check_connection('www.google.com')
 	if not connected:
-		return (None, -1, -1, error, e)
+		return (None, -1, -1, errcode, e)
 
 	print_info('Getting latest version and date', quiet=USBIDs.QUIET)
 
