@@ -256,10 +256,10 @@ def list_files(source_dir):
 
 def is_correct(password):
 	if (len(password) < 8 or
-			not any(c.islower() for c in password) or
-			not any(c.isupper() for c in password) or
-			not any(c.isdigit() for c in password) or
-			any(c not in printable for c in password)):
+		not any(c.islower() for c in password) or
+		not any(c.isupper() for c in password) or
+		not any(c.isdigit() for c in password) or
+		any(c not in printable for c in password)):
 		return False
 
 	return True

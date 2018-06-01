@@ -198,8 +198,8 @@ class USBEvents:
 		for event in self._events_to_show:
 			for key, val in event.items():
 				if (key in attributes and
-						val is not None and
-						val not in auth[key]):
+					val is not None and
+					val not in auth[key]):
 					auth[key].append(val)
 
 		for key in auth.keys():
