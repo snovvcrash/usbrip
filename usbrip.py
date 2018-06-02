@@ -32,18 +32,21 @@ import re
 import os
 import sys
 
+import lib.utils.debug as debug
+debug.DEBUG = '--debug' in sys.argv
+
 import lib.utils.timing as timing
 
 from lib.core import USBEvents
 from lib.core import USBStorage
 from lib.core import USBIDs
 
-from lib.parse.cliopts import cmd_line_options
 from lib.core.common import BANNER
 from lib.core.common import COLUMN_NAMES
 from lib.core.common import is_correct
 from lib.core.common import print_critical
 from lib.core.common import USBRipError
+from lib.parse.cliopts import cmd_line_options
 
 
 # ----------------------------------------------------------
@@ -59,8 +62,10 @@ def main():
 	parser = cmd_line_options()
 	args = parser.parse_args()
 
-	if 'quiet' in args and not args.quiet:
+	if not args.quiet:
 		print(BANNER + '\n')
+	else:
+		debug.QUIET = True
 
 	# ----------------------------------------------------------
 	# ------------------------- Banner -------------------------
@@ -79,23 +84,22 @@ def main():
 		# ------------------- USB Events History -------------------
 
 		if args.ue_subparser == 'history':
-			timing.begin(quiet=args.quiet)
-			ueh = USBEvents(args.file, quiet=args.quiet)
+			timing.begin()
+			ueh = USBEvents(args.file)
 			if ueh:
 				ueh.event_history(args.column, sieve=sieve, repres=repres)
 
 		# -------------------- USB Events Open ---------------------
 
 		elif args.ue_subparser == 'open':
-			timing.begin(quiet=args.quiet)
-			USBEvents.QUIET = args.quiet
+			timing.begin()
 			USBEvents.open_dump(args.input, args.column, sieve=sieve, repres=repres)
 
 		# ------------------ USB Events Gen Auth -------------------
 
 		elif args.ue_subparser == 'gen_auth':
-			timing.begin(quiet=args.quiet)
-			ueg = USBEvents(args.file, quiet=args.quiet)
+			timing.begin()
+			ueg = USBEvents(args.file)
 			if ueg:
 				if ueg.generate_auth_json(args.output, args.attribute, sieve=sieve):
 					usbrip_internal_error()
@@ -105,8 +109,8 @@ def main():
 		# ----------------- USB Events Violations ------------------
 
 		elif args.ue_subparser == 'violations':
-			timing.begin(quiet=args.quiet)
-			uev = USBEvents(args.file, quiet=args.quiet)
+			timing.begin()
+			uev = USBEvents(args.file)
 			if uev:
 				uev.search_violations(args.input, args.attribute, args.column, sieve=sieve, repres=repres)
 
@@ -116,8 +120,8 @@ def main():
 
 	elif args.subparser == 'storage' and args.us_subparser:
 		sieve, repres = validate_us_args(args)
-		timing.begin(quiet=args.quiet)
-		us = USBStorage(quiet=args.quiet)
+		timing.begin()
+		us = USBStorage()
 
 		# -------------------- USB Storage List --------------------
 
@@ -166,8 +170,8 @@ def main():
 
 	elif args.subparser == 'ids' and args.ui_subparser:
 		validate_ui_args(args)
-		timing.begin(quiet=args.quiet)
-		ui = USBIDs(quiet=args.quiet)
+		timing.begin()
+		ui = USBIDs()
 
 		# --------------------- USB IDs Search ---------------------
 

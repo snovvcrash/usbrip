@@ -37,6 +37,8 @@ import re
 import socket
 import os
 
+import lib.utils.debug as debug
+
 from urllib.request import urlopen
 
 from lib.core.common import root_dir_join
@@ -45,9 +47,9 @@ from lib.core.common import print_info
 from lib.core.common import print_warning
 from lib.core.common import print_critical
 from lib.core.common import USBRipError
-from lib.core.common import DEBUG
-from lib.core.common import time_it
-from lib.core.common import time_it_if_debug
+from lib.utils.debug import DEBUG
+from lib.utils.debug import time_it
+from lib.utils.debug import time_it_if_debug
 
 
 # ----------------------------------------------------------
@@ -57,21 +59,15 @@ from lib.core.common import time_it_if_debug
 
 class USBIDs:
 
-	QUIET = False
-
 	_INTERNET_CONNECTION_ERROR = -1
 	_SERVER_TIMEOUT_ERROR      = -2
 	_SERVER_CONTENT_ERROR      = -3
-
-	def __init__(self, *, quiet=False):
-		if quiet:
-			USBIDs.QUIET = quiet
 
 	@staticmethod
 	@time_it_if_debug(DEBUG, time_it)
 	def search_ids(vid, pid, *, offline=True):
 		if offline:
-			print_warning('Offline mode', quiet=USBIDs.QUIET)
+			print_warning('Offline mode')
 
 		try:
 			usb_ids = USBIDs.prepare_database(offline=offline)
@@ -92,7 +88,7 @@ class USBIDs:
 		elif file_exists and not offline:
 			usb_ids = _update_database(filename)
 		elif not file_exists and not offline:
-			print_warning('No local database found, trying to download', quiet=USBIDs.QUIET)
+			print_warning('No local database found, trying to download')
 			usb_ids = _download_database(filename)
 		elif not file_exists and offline:
 			raise USBRipError('No local database found')
@@ -112,36 +108,33 @@ def _update_database(filename):
 		print_critical('Permission denied: \'{}\''.format(filename), initial_error=str(e))
 		return None
 
-	print_info('Getting current database version', quiet=USBIDs.QUIET)
+	print_info('Getting current database version')
 	curr_ver, curr_date = _get_current_version(usb_ids)
 	print('Version:  {}'.format(curr_ver))
 	print('Date:     {}'.format(curr_date))
 
-	print_info('Checking local database for update', quiet=USBIDs.QUIET)
+	print_info('Checking local database for update')
 	db, latest_ver, latest_date, errcode, e = _get_latest_version()
 
 	if errcode:
 		if errcode == USBIDs._INTERNET_CONNECTION_ERROR:
 			print_warning(
 				'No internet connection, using current version',
-				errcode=errcode,
-				quiet=USBIDs.QUIET
+				errcode=errcode
 			)
 
 		elif errcode == USBIDs._SERVER_TIMEOUT_ERROR:
 			print_warning(
 				'Server timeout, using current version',
 				errcode=errcode,
-				initial_error=e,
-				quiet=USBIDs.QUIET
+				initial_error=e
 			)
 
 		elif errcode == USBIDs._SERVER_CONTENT_ERROR:
 			print_warning(
 				'Server error, using current version',
 				errcode=errcode,
-				initial_error=e,
-				quiet=USBIDs.QUIET
+				initial_error=e
 			)
 
 		return usb_ids
@@ -158,7 +151,7 @@ def _update_database(filename):
 		print('Version:  {}'.format(latest_ver))
 		print('Date:     {}'.format(latest_date))
 
-	print_info('Local database is up-to-date', quiet=USBIDs.QUIET)
+	print_info('Local database is up-to-date')
 
 	return usb_ids
 
@@ -197,7 +190,7 @@ def _download_database(filename):
 	usb_ids.write(db)
 	usb_ids.seek(0)
 
-	print_info('Database downloaded', quiet=USBIDs.QUIET)
+	print_info('Database downloaded')
 
 	print('Version:  {}'.format(latest_ver))
 	print('Date:     {}'.format(latest_date))
@@ -226,7 +219,7 @@ def _get_latest_version():
 	if not connected:
 		return (None, -1, -1, errcode, e)
 
-	print_info('Getting latest version and date', quiet=USBIDs.QUIET)
+	print_info('Getting latest version and date')
 
 	try:
 		html = urlopen('http://www.linux-usb.org/usb.ids', timeout=10).read()

@@ -33,6 +33,8 @@ import json
 import subprocess
 import os
 
+import lib.utils.debug as debug
+
 from base64 import b64encode
 from datetime import datetime
 
@@ -48,9 +50,9 @@ from lib.core.common import print_warning
 from lib.core.common import print_critical
 from lib.core.common import print_secret
 from lib.core.common import USBRipError
-from lib.core.common import DEBUG
-from lib.core.common import time_it
-from lib.core.common import time_it_if_debug
+from lib.utils.debug import DEBUG
+from lib.utils.debug import time_it
+from lib.utils.debug import time_it_if_debug
 
 
 # ----------------------------------------------------------
@@ -60,17 +62,11 @@ from lib.core.common import time_it_if_debug
 
 class USBStorage:
 
-	QUIET = False
-
 	_STORAGE_BASE = '/var/opt/usbrip/storage'
 
 	_7Z_WRONG_PASSWORD_ERROR = -1
 	_7Z_PERMISSION_ERROR     = -2
 	_7Z_UNKNOWN_ERROR        = -3
-
-	def __init__(self, *, quiet=False):
-		if quiet:
-			USBStorage.QUIET = quiet
 
 	# -------------------- USB Storage List --------------------
 
@@ -112,7 +108,6 @@ class USBStorage:
 		if 'Everything is Ok' in out:
 			base_filename = re.search(r'Extracting\s*(.*?$)', out, re.MULTILINE).group(1)
 			json_file = '{}/{}'.format(USBStorage._STORAGE_BASE, base_filename)
-			USBEvents.QUIET = USBStorage.QUIET
 			USBEvents.open_dump(json_file, columns, sieve=sieve, repres=repres)
 			os.remove(json_file)
 		else:
@@ -147,7 +142,7 @@ class USBStorage:
 		if events_to_show:
 			min_date, max_date = _get_dates(events_to_show)
 		else:
-			print_info('No events to append', quiet=USBStorage.QUIET)
+			print_info('No events to append')
 			return 1
 
 		storage_full_path = '{}/{}.7z'.format(USBStorage._STORAGE_BASE, storage_type)
@@ -155,7 +150,7 @@ class USBStorage:
 			print_critical('Storage not found: \'{}\''.format(storage_full_path))
 			return 1
 
-		print_info('Updating storage: \'{}\''.format(storage_full_path), quiet=USBStorage.QUIET)
+		print_info('Updating storage: \'{}\''.format(storage_full_path))
 
 		try:
 			out = _7zip_unpack(storage_full_path, password)
@@ -188,7 +183,7 @@ class USBStorage:
 				return 1
 
 			if 'Everything is Ok' in out:
-				print_info('Storage was successfully updated', quiet=USBStorage.QUIET)
+				print_info('Storage was successfully updated')
 			else:
 				print_critical('Undefined behaviour while creating storage', initial_error=out)
 
@@ -236,7 +231,7 @@ class USBStorage:
 			return 1
 
 		if password is None:
-			print_warning('No password provided, generating random one', quiet=USBEvents.QUIET)
+			print_warning('No password provided, generating random one')
 			password = _gen_random_password(12)
 
 		storage_full_path = '{}/{}.7z'.format(USBStorage._STORAGE_BASE, storage_type)
@@ -251,7 +246,7 @@ class USBStorage:
 			return 1
 
 		if 'Everything is Ok' in out:
-			print_info('New {} storage: \'{}\''.format(storage_type, storage_full_path), quiet=USBStorage.QUIET)
+			print_info('New {} storage: \'{}\''.format(storage_type, storage_full_path))
 			print_secret('Your password is', secret=password)
 			os.remove(json_file)
 		else:
@@ -277,7 +272,7 @@ class USBStorage:
 
 				out = _7zip_pack(storage_full_path, json_file, new_password, compression_level)
 				if 'Everything is Ok' in out:
-					print_info('Password was successfully changed', quiet=USBStorage.QUIET)
+					print_info('Password was successfully changed')
 				else:
 					print_critical('Undefined behaviour while creating storage', initial_error=out)
 
@@ -305,7 +300,7 @@ def _gen_random_password(length):
 
 
 def _get_history_events(sieve):
-	ue = USBEvents(quiet=USBStorage.QUIET)
+	ue = USBEvents()
 	if not ue:
 		return None
 
@@ -324,7 +319,7 @@ def _get_violation_events(sieve, input_auth, attributes, indent):
 	if not attributes:
 		attributes = auth.keys()
 
-	ue = USBEvents(quiet=USBStorage.QUIET)
+	ue = USBEvents()
 	if not ue:
 		return None
 
@@ -372,7 +367,7 @@ def _merge_json_events(events_dumped, events_to_show):
 
 
 def _7zip_list(archive, password):
-	print_info('Listing archive: \'{}\''.format(archive), quiet=USBStorage.QUIET)
+	print_info('Listing archive: \'{}\''.format(archive))
 
 	cmd = [
 		'7z',
@@ -389,7 +384,7 @@ def _7zip_list(archive, password):
 
 
 def _7zip_unpack(archive, password):
-	print_info('Unpacking archive: \'{}\''.format(archive), quiet=USBStorage.QUIET)
+	print_info('Unpacking archive: \'{}\''.format(archive))
 
 	cmd = [
 		'7z',
@@ -408,7 +403,7 @@ def _7zip_unpack(archive, password):
 
 
 def _7zip_pack(archive, file, password, compression_level):
-	print_info('Creating storage (7-Zip): \'{}\''.format(archive), quiet=USBStorage.QUIET)
+	print_info('Creating storage (7-Zip): \'{}\''.format(archive))
 
 	cmd = [
 		'7z',

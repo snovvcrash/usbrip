@@ -44,6 +44,8 @@ import itertools
 import operator
 import os
 
+import lib.utils.debug as debug
+
 from collections import OrderedDict, defaultdict
 from string import printable
 
@@ -64,9 +66,9 @@ from lib.core.common import print_info
 from lib.core.common import print_warning
 from lib.core.common import print_critical
 from lib.core.common import USBRipError
-from lib.core.common import DEBUG
-from lib.core.common import time_it
-from lib.core.common import time_it_if_debug
+from lib.utils.debug import DEBUG
+from lib.utils.debug import time_it
+from lib.utils.debug import time_it_if_debug
 
 
 # ----------------------------------------------------------
@@ -76,16 +78,11 @@ from lib.core.common import time_it_if_debug
 
 class USBEvents:
 
-	QUIET = False
-
 	# SingleTable (uses ANSI escape codes) when termianl output, else (| or > for example) AsciiTable (only ASCII)
 	TableClass = SingleTable if ISATTY else AsciiTable
 
 	@time_it_if_debug(DEBUG, time_it)
-	def __new__(cls, files=None, *, quiet=False):
-		if quiet:
-			USBEvents.QUIET = quiet
-
+	def __new__(cls, files=None):
 		if files:
 			raw_history = DefaultOrderedDict(default_factory=list)
 			for file in files:
@@ -112,10 +109,10 @@ class USBEvents:
 	def event_history(self, columns, *, indent=4, sieve=None, repres=None):
 		self._events_to_show = _filter_events(self._all_events, sieve)
 		if not self._events_to_show:
-			print_info('No USB events found!', quiet=USBEvents.QUIET)
+			print_info('No USB events found!')
 			return
 
-		if not USBEvents.QUIET and ISATTY:
+		if not debug.QUIET and ISATTY:
 			number, filename = _output_choice('event history', 'history.json', 'history/')
 			if number is None:
 				return
@@ -139,7 +136,7 @@ class USBEvents:
 	@staticmethod
 	@time_it_if_debug(DEBUG, time_it)
 	def open_dump(input_dump, columns, *, sieve=None, repres=None):
-		print_info('Opening USB event dump: \'{}\''.format(os.path.abspath(input_dump)), quiet=USBEvents.QUIET)
+		print_info('Opening USB event dump: \'{}\''.format(os.path.abspath(input_dump)))
 
 		try:
 			with open(input_dump, 'r', encoding='utf-8') as dump:
@@ -154,7 +151,7 @@ class USBEvents:
 
 		events_to_show = _filter_events(events_dumped, sieve)
 		if not events_to_show:
-			print_info('No USB events found!', quiet=USBEvents.QUIET)
+			print_info('No USB events found!')
 			return
 
 		if columns:
@@ -171,7 +168,7 @@ class USBEvents:
 	def generate_auth_json(self, output_auth, attributes, *, indent=4, sieve=None):
 		self._events_to_show = _filter_events(self._all_events, sieve)
 		if not self._events_to_show:
-			print_info('No USB devices found!', quiet=USBEvents.QUIET)
+			print_info('No USB devices found!')
 			return 1
 
 		try:
@@ -181,7 +178,7 @@ class USBEvents:
 			print_critical(str(e), initial_error=e.errors['initial_error'])
 			return 1
 		else:
-			print_info('Created \'{}\''.format(dirname), quiet=USBEvents.QUIET)
+			print_info('Created \'{}\''.format(dirname))
 
 		try:
 			auth_json = open(output_auth, 'w', encoding='utf-8')
@@ -189,7 +186,7 @@ class USBEvents:
 			print_critical('Permission denied: \'{}\'. Retry with sudo'.format(output_auth), initial_error=str(e))
 			return 1
 
-		print_info('Generating authorized device list (JSON)', quiet=USBEvents.QUIET)
+		print_info('Generating authorized device list (JSON)')
 
 		if not attributes:
 			attributes = ('vid', 'pid', 'prod', 'manufact', 'serial')
@@ -208,13 +205,13 @@ class USBEvents:
 		json.dump(auth, auth_json, sort_keys=True, indent=indent)
 		auth_json.close()
 
-		print_info('New authorized device list: \'{}\''.format(os.path.abspath(output_auth)), quiet=USBEvents.QUIET)
+		print_info('New authorized device list: \'{}\''.format(os.path.abspath(output_auth)))
 
 	# ----------------- USB Events Violations ------------------
 
 	@time_it_if_debug(DEBUG, time_it)
 	def search_violations(self, input_auth, attributes, columns, *, indent=4, sieve=None, repres=None):
-		print_info('Opening authorized device list: \'{}\''.format(os.path.abspath(input_auth)), quiet=USBEvents.QUIET)
+		print_info('Opening authorized device list: \'{}\''.format(os.path.abspath(input_auth)))
 
 		try:
 			auth = _process_auth_list(input_auth, indent)
@@ -222,7 +219,7 @@ class USBEvents:
 			print_critical('Failed to decode authorized device list (JSON)', initial_error=str(e))
 			return
 
-		print_info('Searching for violations', quiet=USBEvents.QUIET)
+		print_info('Searching for violations')
 
 		if not attributes:
 			attributes = auth.keys()
@@ -239,10 +236,10 @@ class USBEvents:
 
 		self._events_to_show = _filter_events(self._violations, sieve)
 		if not self._events_to_show:
-			print_info('No USB violation events found!', quiet=USBEvents.QUIET)
+			print_info('No USB violation events found!')
 			return
 
-		if not USBEvents.QUIET and ISATTY:
+		if not debug.QUIET and ISATTY:
 			number, filename = _output_choice('violation', 'viol.json', 'violations/')
 			if number is None:
 				return
@@ -270,7 +267,7 @@ class USBEvents:
 def _get_raw_history():
 	raw_history = DefaultOrderedDict(default_factory=list)
 
-	print_info('Searching for log files: \'/var/log/syslog*\' or \'/var/log/messages*\'', quiet=USBEvents.QUIET)
+	print_info('Searching for log files: \'/var/log/syslog*\' or \'/var/log/messages*\'')
 
 	syslog_files = sorted([filename
                            for filename in list_files('/var/log/')
@@ -297,15 +294,14 @@ def _read_log_file(filename):
 	filtered = DefaultOrderedDict(default_factory=list)
 
 	if filename.endswith('.gz'):
-		print_info('Unpacking \'{}\''.format(filename), quiet=USBEvents.QUIET)
+		print_info('Unpacking \'{}\''.format(filename))
 
 		try:
 			log = gzip.open(filename, 'rb')
 		except PermissionError as e:
 			print_warning(
 				'Permission denied: \'{}\'. Retry with sudo'.format(filename),
-				initial_error=str(e),
-				quiet=USBEvents.QUIET
+				initial_error=str(e)
 			)
 			return filtered
 		else:
@@ -316,7 +312,7 @@ def _read_log_file(filename):
 		log = open(filename, 'r', encoding='utf-8')
 		sentinel = ''
 
-	print_info('Reading \'{}\''.format(filename), quiet=USBEvents.QUIET)
+	print_info('Reading \'{}\''.format(filename))
 	regex = re.compile(r'usb')
 	for line in iter(log.readline, sentinel):
 		if isinstance(line, bytes):
@@ -467,7 +463,7 @@ def _filter_events(all_events, sieve):
 		}
 
 	if sieve != {'external': False, 'number': -1, 'dates': [], 'fields': {}}:
-		print_info('Filtering events', quiet=USBEvents.QUIET)
+		print_info('Filtering events')
 
 	events_to_show = all_events
 
@@ -490,9 +486,8 @@ def _filter_events(all_events, sieve):
 		if sieve['number'] > SIZE:
 			print_warning(
 				'USB action history has only {} entries instead of requested {}, '
-					'displaying all of them...'
-					.format(SIZE, sieve['number']),
-				quiet=USBEvents.QUIET
+				'displaying all of them...'
+				.format(SIZE, sieve['number'])
 			)
 
 		sieve['number'] = SIZE
@@ -501,7 +496,7 @@ def _filter_events(all_events, sieve):
 
 
 def _represent_events(events_to_show, columns, table_data, title, repres):
-	print_info('Preparing gathered events', quiet=USBEvents.QUIET)
+	print_info('Preparing gathered events')
 
 	if repres is None:
 		repres = {
@@ -553,16 +548,16 @@ def _represent_events(events_to_show, columns, table_data, title, repres):
 
 	# Display as table
 	if repres['smart'] and event_table.ok or repres['table']:
-		print_info('Representation: Table', quiet=USBEvents.QUIET)
+		print_info('Representation: Table')
 		print('\n' + event_table.table)
 
 	# Display as list
 	elif repres['smart'] and not event_table.ok or repres['list']:
 		if not event_table.ok:
-			print_warning('Terminal window is too small to display table properly', quiet=USBEvents.QUIET)
-			print_warning('Representation: List', quiet=USBEvents.QUIET)
+			print_warning('Terminal window is too small to display table properly')
+			print_warning('Representation: List')
 		else:
-			print_info('Representation: List', quiet=USBEvents.QUIET)
+			print_info('Representation: List')
 
 		max_len = max(len(str(val)) for event in events_to_show for val in event.values()) + \
                       len('Serial Number:  ')  # max length string
@@ -619,7 +614,7 @@ def _build_single_table(TableClass, table_data, title, align='right', inner_row_
 
 
 def _dump_events(events_to_show, list_name, filename, indent):
-	print_info('Generating {} list (JSON)'.format(list_name), quiet=USBEvents.QUIET)
+	print_info('Generating {} list (JSON)'.format(list_name))
 
 	out = []
 	for event in events_to_show:
@@ -637,7 +632,7 @@ def _dump_events(events_to_show, list_name, filename, indent):
 			errors={'initial_error': str(e)}
 		)
 
-	print_info('New {} list: \'{}\''.format(list_name, os.path.abspath(filename)), quiet=USBEvents.QUIET)
+	print_info('New {} list: \'{}\''.format(list_name, os.path.abspath(filename)))
 
 
 def _output_choice(list_name, default_filename, dirname):
@@ -670,7 +665,7 @@ def _output_choice(list_name, default_filename, dirname):
 						print_critical(str(e), initial_error=e.errors['initial_error'])
 						return (None, '')
 					else:
-						print_info('Created \'{}\''.format(dirname), quiet=USBEvents.QUIET)
+						print_info('Created \'{}\''.format(dirname))
 
 					overwrite = True
 					if os.path.isfile(filename):

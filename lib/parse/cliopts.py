@@ -106,6 +106,7 @@ def build_ueh_parser(subparsers):
         help='show USB event history'
     )
 
+    _parse_debug_args(ueh_parser)
     _parse_quiet_args(ueh_parser)
     _parse_column_args(ueh_parser)
     _parse_sieve_args(ueh_parser)
@@ -122,17 +123,18 @@ def build_ueo_parser(subparsers):
         help='open USB event dump'
     )
 
-    _parse_quiet_args(ueo_parser)
-    _parse_column_args(ueo_parser)
-    _parse_sieve_args(ueo_parser)
-    _parse_repres_args(ueo_parser)
-    _parse_file_args(ueo_parser)
-
     ueo_parser.add_argument(
         'input',
         type=str,
         help='input path for the event dump (JSON)'
     )
+
+    _parse_debug_args(ueo_parser)
+    _parse_quiet_args(ueo_parser)
+    _parse_column_args(ueo_parser)
+    _parse_sieve_args(ueo_parser)
+    _parse_repres_args(ueo_parser)
+    _parse_file_args(ueo_parser)
 
 
 # ------------------ USB Events Gen Auth -------------------
@@ -144,6 +146,13 @@ def build_ueg_parser(subparsers):
         help='generate authorized device list (JSON)'
     )
 
+    ueg_parser.add_argument(
+        'output',
+        type=str,
+        help='output path for the list of authorized devices (JSON)'
+    )
+
+    _parse_debug_args(ueg_parser)
     _parse_quiet_args(ueg_parser)
     _parse_sieve_args(ueg_parser)
     _parse_file_args(ueg_parser)
@@ -155,12 +164,6 @@ def build_ueg_parser(subparsers):
                  '\'prod\', '
                  '\'manufact\', '
                  '\'serial\'.)'
-    )
-
-    ueg_parser.add_argument(
-        'output',
-        type=str,
-        help='output path for the list of authorized devices (JSON)'
     )
 
 
@@ -176,6 +179,13 @@ def build_uev_parser(subparsers):
              'ce list (JSON))'
     )
 
+    uev_parser.add_argument(
+        'input',
+        type=str,
+        help='input path for the list of authorized devices (JSON)'
+    )
+
+    _parse_debug_args(uev_parser)
     _parse_quiet_args(uev_parser)
     _parse_column_args(uev_parser)
     _parse_sieve_args(uev_parser)
@@ -189,12 +199,6 @@ def build_uev_parser(subparsers):
                  '\'prod\', '
                  '\'manufact\', '
                  '\'serial\'.)'
-    )
-
-    uev_parser.add_argument(
-        'input',
-        type=str,
-        help='input path for the list of authorized devices (JSON)'
     )
 
 
@@ -227,6 +231,7 @@ def build_usl_parser(subparsers):
         help='list storage contents'
     )
 
+    _parse_debug_args(usl_parser)
     _parse_quiet_args(usl_parser)
     _parse_storage_type_args(usl_parser)
     _parse_password_args(usl_parser, required=True)
@@ -241,6 +246,7 @@ def build_uso_parser(subparsers):
         help='open storage contents'
     )
 
+    _parse_debug_args(uso_parser)
     _parse_quiet_args(uso_parser)
     _parse_storage_type_args(uso_parser)
     _parse_password_args(uso_parser, required=True)
@@ -258,6 +264,7 @@ def build_usu_parser(subparsers):
         help='update current storage'
     )
 
+    _parse_debug_args(usu_parser)
     _parse_quiet_args(usu_parser)
     _parse_storage_type_args(usu_parser)
     _parse_password_args(usu_parser, required=True)
@@ -293,6 +300,7 @@ def build_usc_parser(subparsers):
              .format(USBStorage._STORAGE_BASE)
     )
 
+    _parse_debug_args(usc_parser)
     _parse_quiet_args(usc_parser)
     _parse_storage_type_args(usc_parser)
     _parse_password_args(usc_parser, required=False)
@@ -326,6 +334,7 @@ def build_usp_parser(subparsers):
         help='change storage password'
     )
 
+    _parse_debug_args(usp_parser)
     _parse_quiet_args(usp_parser)
     _parse_storage_type_args(usp_parser)
     _parse_old_new_passwords_args(usp_parser)
@@ -360,6 +369,7 @@ def build_uis_parser(subparsers):
              .format(root_dir_join('usb_ids/usb.ids'))
     )
 
+    _parse_debug_args(uis_parser)
     _parse_quiet_args(uis_parser)
 
     uis_parser.add_argument(
@@ -394,12 +404,21 @@ def build_uid_parser(subparsers):
              .format(root_dir_join('usb_ids/usb.ids'))
     )
 
+    _parse_debug_args(uid_parser)
     _parse_quiet_args(uid_parser)
 
 
 # ----------------------------------------------------------
 # ----------------------- Utilities ------------------------
 # ----------------------------------------------------------
+
+
+def _parse_debug_args(parser):
+    parser.add_argument(
+        '--debug',
+        action='store_true',
+        help='DEBUG mode'
+    )
 
 
 def _parse_quiet_args(parser):

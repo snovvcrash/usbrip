@@ -38,9 +38,11 @@ from collections import OrderedDict, Callable
 
 from termcolor import colored, cprint
 
+import lib.utils.debug as debug
+
 
 # ----------------------------------------------------------
-# ----------------------- Constants ------------------------
+# ----------------- Cross-module constants -----------------
 # ----------------------------------------------------------
 
 
@@ -50,8 +52,6 @@ SEPARATOR = '\u2212'  # '−', U_MINUS_SIGN
 
 # Enable colored text when terminal output (True), else (| or > for example) no color (False)
 ISATTY = True if sys.stdout.isatty() else False
-
-DEBUG = False
 
 
 # ----------------------------------------------------------
@@ -96,33 +96,8 @@ BANNER = BANNER.replace('^', I, 1)
 
 
 # ----------------------------------------------------------
-# ------------------------- Debug --------------------------
+# -------------------- Exception class ---------------------
 # ----------------------------------------------------------
-
-
-def time_it(func):
-	import functools
-	import time
-
-	@functools.wraps(func)
-	def wrapper(*args, **kwargs):
-		start = time.time()
-		result = func(*args, **kwargs)
-		end = time.time()
-		print('{}: {:.3f} seconds'.format(func.__name__, end-start))
-		return result
-	return wrapper
-
-
-class time_it_if_debug():
-	def __init__(self, condition, decorator):
-		self._condition = condition
-		self._decorator = decorator
-
-	def __call__(self, func):
-		if not self._condition:
-			return func
-		return self._decorator(func)
 
 
 class USBRipError(Exception):
@@ -270,8 +245,8 @@ def is_correct(password):
 # ----------------------------------------------------------
 
 
-def print_info(message, *, quiet=False):
-	if quiet:
+def print_info(message):
+	if debug.QUIET:
 		return
 
 	if ISATTY:
@@ -280,11 +255,11 @@ def print_info(message, *, quiet=False):
 		print('[INFO] {}'.format(message))
 
 
-def print_warning(message, *, errcode=0, initial_error='', quiet=False):
-	if quiet:
+def print_warning(message, *, errcode=0, initial_error=''):
+	if debug.QUIET:
 		return
 
-	if DEBUG:
+	if debug.DEBUG:
 		if errcode:
 			print('ERRCODE: {}'.format(errcode))
 		if initial_error:
@@ -297,7 +272,7 @@ def print_warning(message, *, errcode=0, initial_error='', quiet=False):
 
 
 def print_critical(message, *, errcode=0, initial_error=''):
-	if DEBUG:
+	if debug.DEBUG:
 		if errcode:
 			print('ERRCODE: {}'.format(errcode))
 		if initial_error:
