@@ -48,7 +48,7 @@ $ python3 usbrip.py <module> <submodule> -h
 
 Examples
 ==========
-* Show the event history of all USB devices, supressing banner output, info messages and user iteraction (`-q`, `--quite`), represented as a list (`-l`, `--list`) with latest 100 entries (`-n NUMBER`, `--number NUMBER`):
+* Show the event history of all USB devices, supressing banner output, info messages and user iteraction (`-q`, `--quiet`), represented as a list (`-l`, `--list`) with latest 100 entries (`-n NUMBER`, `--number NUMBER`):
   ```
   $ python3 usbrip.py events history -ql -n 100
   ```
