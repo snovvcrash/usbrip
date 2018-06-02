@@ -5,7 +5,7 @@ usbrip
 
 [![Logo](https://user-images.githubusercontent.com/23141800/38119848-68883eea-33cd-11e8-98b5-4a33abbdd1dc.png)](#usbrip)
 
-usbrip (derived from "USB Ripper", not "USB R.I.P." :hushed:) is an open source forensics tool with CLI interface that lets you keep track of USB device artifacts (a.k.a. *USB event history*: "Connected" and "Disconnected" events) on Linux machines.
+**usbrip** (derived from "USB Ripper", not "USB R.I.P." :hushed:) is an open source forensics tool with CLI interface that lets you keep track of USB device artifacts (a.k.a. *USB event history*: "Connected" and "Disconnected" events) on Linux machines.
 
 Table of Contents:
   * [**Description**](#description)  
@@ -20,8 +20,10 @@ Description
 usbrip is a small piece of software written in pure Python 3 (using some external modules though, see [Dependencies](#dependencies)) which parses Linux log files (`/var/log/syslog*` or `/var/log/messages*` depending on the distro) for constructing USB event history tables. Such tables may contain the following columns: "Connected" (date & time), "User", "VID" (vendor ID), "PID" (product ID), "Product", "Manufacturer", "Serial Number", "Port" and "Disconnected" (date & time).
 
 Besides, it also can:
+* export gathered information as a JSON file (and import such files, of course (: );
 * generate a list of authorized (trusted) USB devices as a JSON (call it `auth.json`);
-* search for "violation events" based on `auth.json`: show (or generate another JSON with) USB devices that do appear in history and do NOT appear in `auth.json`;
+* search for "violation events" based on the `auth.json`: show (or generate another JSON with) USB devices that do appear in history and do NOT appear in the `auth.json`;
+* *[when installed]* create crypted storages (7zip archives) to automatically backup and accumulate USB events with the help of `crontab` utility;
 * search additional details about a specific USB device based on its VID and/or PID.
 
 Screenshots
