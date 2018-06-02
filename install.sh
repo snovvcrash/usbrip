@@ -29,18 +29,13 @@ along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 @endlicense
 '
 
-# python3
-# python pip
-# python virtualenv
-# p7zip-full
-
 shopt -s expand_aliases
 
 alias createHistoryStorage="usbrip storage create history -e -q"
 
 alias generateAuthorizedDeviceList="usbrip events gen_auth /var/opt/usbrip/trusted/auth.json -e -a vid pid -q"
 
-alias createViolationsStorage="usbrip storage create violations -i /var/opt/usbrip/trusted/auth.json -a vid pid -q"
+alias createViolationsStorage="usbrip storage create violations -i /var/opt/usbrip/trusted/auth.json -e -a vid pid -q"
 
 # ----------------------- Constants ------------------------
 
@@ -142,7 +137,7 @@ fi
 
 # Copy
 
-if cp -a . "${OPT}"; then
+if cp -r --no-preserve=ownership * "${OPT}"; then
 	printf "${G}>>>>${NC} Copied current folder's contents to ${OPT}\n"
 fi
 
