@@ -68,10 +68,10 @@ $ python3 usbrip.py storage open <STORAGE_TYPE> -p <PASSWORD> [-t | -l] [-e] [-n
 Open selected storage (7zip archive). Behaves similary to the EVENTS OPEN submodule.
 
 $ python3 usbrip.py storage update <STORAGE_TYPE> -p <PASSWORD> [-a <ATTRIBUTE> [<ATTRIBUTE> ...]] [-e] [-n <NUMBER_OF_EVENTS>] [-d <DATE> [<DATE> ...]] [--user <USER> [<USER> ...]] [--vid <VID> [<VID> ...]] [--pid <PID> [<PID> ...]] [--prod <PROD> [<PROD> ...]] [--manufact <MANUFACT> [<MANUFACT> ...]] [--serial <SERIAL> [<SERIAL> ...]] [--port <PORT> [<PORT> ...]] [--lvl <COMPRESSION_LEVEL>] [-q] [--debug]
-Update storage — add events to the existing storage (7zip archive). COMPRESSION_LEVEL is a number in [0..9].
+Update storage — add USB events to the existing storage (7zip archive). COMPRESSION_LEVEL is a number in [0..9].
 
 $ python3 usbrip.py storage create <STORAGE_TYPE> [-p <PASSWORD>] [-a <ATTRIBUTE> [<ATTRIBUTE> ...]] [-e] [-n <NUMBER_OF_EVENTS>] [-d <DATE> [<DATE> ...]] [--user <USER> [<USER> ...]] [--vid <VID> [<VID> ...]] [--pid <PID> [<PID> ...]] [--prod <PROD> [<PROD> ...]] [--manufact <MANUFACT> [<MANUFACT> ...]] [--serial <SERIAL> [<SERIAL> ...]] [--port <PORT> [<PORT> ...]] [--lvl <COMPRESSION_LEVEL>] [-q] [--debug]
-Create storage — create 7zip archive and add events to it according to the selected options.
+Create storage — create 7zip archive and add USB events to it according to the selected options.
 
 $ python3 usbrip.py storage passwd <STORAGE_TYPE> -o <OLD_PASSWORD> -n <NEW_PASSWORD> [--lvl <COMPRESSION_LEVEL>] [-q] [--debug]
 Change password of the existing storage.
@@ -79,7 +79,7 @@ Change password of the existing storage.
 # ---------- IDs ----------
 
 $ python3 usbrip.py ids search [--vid <VID>] [--pid <PID>] [--offline] [-q] [--debug]
-Get extra details about a specific USB device by its <VID> and/or <PID> from ID database.
+Get extra details about a specific USB device by its <VID> and/or <PID> from the USB ID database.
 
 $ python3 usbrip.py ids download [-q] [--debug]
 Update (download) the USB ID database.
@@ -149,11 +149,11 @@ Installation
 usbrip can work in portable mode (when you run it explicity with `python3` command like in [Examples](#examples)) but it also can be installed on the system with the `install.sh` script.
 
 When using the `install.sh` some extra features become available:
-* all the necessary [Python-requirements](#python) are installed automatically (by creating virtual environment);
+* all the necessary [Python requirements](#python) are installed automatically (by creating virtual environment);
 * you can run usbrip from anywhere in your terminal with `usbrip` command;
-* you can set a crontab job to backup USB events on a schedule (the example of crontab job can be found in `usbrip.cron`).
+* you can set a crontab job to backup USB events on a schedule (the example of crontab jobs can be found in `usbrip.cron`).
 
-*Remark*: if you are using the crontab scheduling, you want to use the `sudo crontab -e` to protect the passwords of the USB event storages.
+*Remark*: if you are using the crontab scheduling, you want to configure the cron job with `sudo crontab -e` in order to force the `storage update` submodule run as root as well as protect the passwords of the USB event storages.
 
 The `uninstall.sh` script removes all the installation artifacts from your system.
 
@@ -182,7 +182,7 @@ When installed, the usbrip uses the following paths:
 
 Dependencies
 ==========
-usbrip can work with **non**-modified structure of system log files only, so, unfortunately, it won't be able to parse USB history if you change the format of syslogs (with `syslog-ng` or `rsyslog` for example). That's why the timestamps of "Connected" and "Disconnected" fields don't have the year, by the way. Keep that in mind.
+usbrip works with **non**-modified structure of system log files only, so, unfortunately, it won't be able to parse USB history if you change the format of syslogs (with `syslog-ng` or `rsyslog` for example). That's why the timestamps of "Connected" and "Disconnected" fields don't have the year, by the way. Keep that in mind.
 
 ## System
 * python3.x interpreter
