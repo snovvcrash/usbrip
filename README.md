@@ -40,12 +40,12 @@ Usage
 ==========
 ## Synopsis
 ```
-# BANNER
+# ---------- BANNER ----------
 
 $ python3 usbrip.py banner
 Get usbrip banner.
 
-# EVENTS
+# ---------- EVENTS ----------
 
 $ python3 usbrip.py events history [-t | -l] [-e] [-n <NUMBER_OF_EVENTS>] [-d <DATE> [<DATE> ...]] [--user <USER> [<USER> ...]] [--vid <VID> [<VID> ...]] [--pid <PID> [<PID> ...]] [--prod <PROD> [<PROD> ...]] [--manufact <MANUFACT> [<MANUFACT> ...]] [--serial <SERIAL> [<SERIAL> ...]] [--port <PORT> [<PORT> ...]] [-c <COLUMN> [<COLUMN> ...]] [-f <FILE> [<FILE> ...]] [-q] [--debug]
 Get USB event history.
@@ -59,7 +59,7 @@ Generate a list of trusted (authorized) USB devices.
 $ python3 usbrip.py events violations <IN_AUTH.JSON> [-a <ATTRIBUTE> [<ATTRIBUTE> ...]] [-t | -l] [-e] [-n <NUMBER_OF_EVENTS>] [-d <DATE> [<DATE> ...]] [--user <USER> [<USER> ...]] [--vid <VID> [<VID> ...]] [--pid <PID> [<PID> ...]] [--prod <PROD> [<PROD> ...]] [--manufact <MANUFACT> [<MANUFACT> ...]] [--serial <SERIAL> [<SERIAL> ...]] [--port <PORT> [<PORT> ...]] [-c <COLUMN> [<COLUMN> ...]] [-f <FILE> [<FILE> ...]] [-q] [--debug]
 Get USB violation events based on the list of trusted devices.
 
-# STORAGE
+# ---------- STORAGE ----------
 
 $ python3 usbrip.py storage list <STORAGE_TYPE> -p <PASSWORD> [-q] [--debug]
 List contents of the selected storage (7zip archive). STORAGE_TYPE is "history" or "violations".
@@ -76,7 +76,7 @@ Create storage — create 7zip archive and add events to it according to the sel
 $ python3 usbrip.py storage passwd <STORAGE_TYPE> -o <OLD_PASSWORD> -n <NEW_PASSWORD> [--lvl <COMPRESSION_LEVEL>] [-q] [--debug]
 Change password of the existing storage.
 
-# IDs
+# ---------- IDs ----------
 
 $ python3 usbrip.py ids search [--vid <VID>] [--pid <PID>] [--offline] [-q] [--debug]
 Get extra details about a specific USB device by its <VID> and/or <PID> from ID database.
