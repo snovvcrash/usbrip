@@ -105,8 +105,10 @@ def _update_database(filename):
 	try:
 		usb_ids = open(filename, 'r+', encoding='utf-8')
 	except PermissionError as e:
-		print_critical('Permission denied: \'{}\''.format(filename), initial_error=str(e))
-		return None
+		raise USBRipError(
+			'Permission denied: \'{}\''.format(filename),
+			errors={'initial_error': str(e)}
+		)
 
 	print_info('Getting current database version')
 	curr_ver, curr_date = _get_current_version(usb_ids)
@@ -161,16 +163,17 @@ def _download_database(filename):
 		dirname = os.path.dirname(filename)
 		os_makedirs(dirname)
 	except USBRipError as e:
-		print_critical(str(e), initial_error=e.errors['initial_error'])
-		return None
+		raise USBRipError(str(e), errors={'initial_error': e.errors['initial_error']})
 	else:
 		print_info('Created \'{}\''.format(dirname))
 
 	try:
 		usb_ids = open(filename, 'w+', encoding='utf-8')
 	except PermissionError as e:
-		print_critical('Permission denied: \'{}\''.format(filename), initial_error=str(e))
-		return None
+		raise USBRipError(
+			'Permission denied: \'{}\''.format(filename),
+			errors={'initial_error': str(e)}
+		)
 
 	db, latest_ver, latest_date, errcode, e = _get_latest_version()
 
@@ -295,3 +298,5 @@ def _search_ids_helper(usb_ids, vid, pid):
 					print('|     {}'.format(match))
 				else:
 					print('|_    {}'.format(match))
+
+	print()
