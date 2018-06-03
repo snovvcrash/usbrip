@@ -16,8 +16,8 @@ Table of Contents:
   * [**Examples**](#examples)
   * [**Installation**](#installation)
   * [**Dependencies**](#dependencies)
-    * [System-requirements](#system-requirements)
-    * [Python-requirements](#python-requirements)
+    * [System](#system)
+    * [Python](#python)
   * [**Post Scriptum**](#post-scriptum)
 
 Description
@@ -146,25 +146,26 @@ Examples
 
 Installation
 ==========
-usbrip can work in portable mode (when you run it explicity with `python3` command) but it also can be installed on the system with the `install.sh` script.
+usbrip can work in portable mode (when you run it explicity with `python3` command like in [Examples](#examples)) but it also can be installed on the system with the `install.sh` script.
 
 When using the `install.sh` some extra features become available:
-* all the necessary [Python-requirements](#python-requirements) are installed automatically (by creating virtual environment);
+* all the necessary [Python-requirements](#python) are installed automatically (by creating virtual environment);
 * you can run usbrip from anywhere in your terminal with `usbrip` command;
 * you can set a crontab job to backup USB events on a schedule (the example of crontab job can be found in `usbrip.cron`).
+
 *Remark*: if you are using the crontab scheduling, you want to use the `sudo crontab -e` to protect the passwords of the USB event storages.
 
 The `uninstall.sh` script removes all the installation artifacts from your system.
 
-To install usbrip run:
+To install usbrip use:
 ```
 $ git clone https://github.com/snovvcrash/usbrip.git usbrip && cd usbrip
 $ chmod +x install.sh
 $ sudo -H ./install.sh
 ```
-After the installation completes feel free to remove the usbrip folder.
+After the installation completes, feel free to remove the usbrip folder.
 
-To uninstall usbrip run:
+To uninstall usbrip use:
 ```
 $ chmod +x uninstall.sh
 
@@ -174,26 +175,26 @@ $ sudo ./uninstall.sh [--all]
 
 When installed, the usbrip uses the following paths:
 * `/opt/usbrip/` — project's main directory;
-* `/var/opt/usbrip/storage/` — USB event storages;
+* `/var/opt/usbrip/storage/` — USB event storages: `history.7z` and `violations.7z` (created during the installation process);
 * `/var/opt/usbrip/log/` — usbrip logs (recommended to log usbrip activity when using crontab, see `usbrip.cron`);
 * `/var/opt/usbrip/trusted/` — list of trusted USB devices (created during the installation process);
 * `/usr/local/bin/usbrip` — symlink to the `/opt/usbrip/usbrip.py` file.
 
 Dependencies
 ==========
-usbrip can work with **non**-modified structure of system log files only, so, unfortunately, it won't be able to parse USB history if you change the format of syslogs (with `syslog-ng` or `rsyslog` for example). That's why the timestamp of "Connected" and "Disconnected" fields don't have the year, by the way. Keep that in mind.
+usbrip can work with **non**-modified structure of system log files only, so, unfortunately, it won't be able to parse USB history if you change the format of syslogs (with `syslog-ng` or `rsyslog` for example). That's why the timestamps of "Connected" and "Disconnected" fields don't have the year, by the way. Keep that in mind.
 
-## System-requirements
+## System
 * python3.x interpreter
-* virtualenv
+* python3-virtualenv
 * p7zip-full
 
-## Python-requirements
+## Python
 usbrip makes use of the following external modules:
 * [terminaltables](https://robpol86.github.io/terminaltables/v3.1.0/index.html "terminaltables 3.1.0 — terminaltables")
 * [termcolor](https://pypi.python.org/pypi/termcolor "termcolor 1.1.0 : Python Package Index")
 
-All Python-requirements are stated in `requirements.txt`.
+All Python requirements are stated in `requirements.txt`.
 
 Post Scriptum
 ==========
