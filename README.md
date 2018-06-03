@@ -169,7 +169,7 @@ To uninstall usbrip use:
 ```
 $ chmod +x uninstall.sh
 
-# When --all switch is enabled, not only the usbrip project directory is deleted but all the storages and usbrip logs are deleted too.
+# When --all switch is enabled, not only the usbrip project directory is deleted but all the storages and usbrip logs are deleted too
 $ sudo ./uninstall.sh [--all]
 ```
 
