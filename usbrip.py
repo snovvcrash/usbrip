@@ -372,7 +372,7 @@ def _validate_file_args(args):
 
 
 def _validate_vid_pid_args(args):
-	if not args.vid and not args.pid:
+	if 'vid' in args and 'pid' in args and not args.vid and not args.pid:
 		usbrip_arg_error('At least one of --vid/--pid or --download option should be specified')
 
 
