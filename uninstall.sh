@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# Usage: sudo ./uninstall.sh [--all]
-
 : '
 @file uninstall.sh
 @author Sam Freeside <snovvcrash@protonmail.com>
@@ -28,6 +26,9 @@ You should have received a copy of the GNU General Public License
 along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 @endlicense
 '
+
+# Usage:
+# sudo ./uninstall.sh [--all]
 
 # ----------------------- Constants ------------------------
 

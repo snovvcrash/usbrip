@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# Usage: sudo -H ./install.sh
-
 : '
 @file install.sh
 @author Sam Freeside <snovvcrash@protonmail.com>
@@ -29,7 +27,12 @@ along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 @endlicense
 '
 
+# Usage:
+# sudo -H ./install.sh
+
 shopt -s expand_aliases
+
+# --------------------- usbrip aliases ---------------------
 
 alias createHistoryStorage="usbrip storage create history -e -q"
 
