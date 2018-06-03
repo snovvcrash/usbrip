@@ -33,7 +33,7 @@ Besides, it also can:
 
 Screenshots
 ==========
-![Screenshot-1](https://user-images.githubusercontent.com/23141800/40886609-f6fd112e-6743-11e8-8f3e-1f936b779cc6.png "Get USB event history")
+![Screenshot-1](https://user-images.githubusercontent.com/23141800/40887882-e00d4d3a-6757-11e8-962c-c77331782b19.png "Get USB event history")
 ![Screenshot-2](https://user-images.githubusercontent.com/23141800/40886876-46c349d6-6748-11e8-92cf-0b0790ea9505.png "Search for extra details about a specific USB device")
 
 Usage
