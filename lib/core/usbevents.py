@@ -38,6 +38,7 @@ monitoring - Monitor history of USB flash drives - Unix & Linux Stack Exchange
 """
 
 import re
+import codecs
 import gzip
 import json
 import itertools
@@ -309,14 +310,14 @@ def _read_log_file(filename):
 			filename = filename[:-3]
 
 	else:
-		log = open(filename, 'r', encoding='utf-8')
+		log = codecs.open(filename, 'r', encoding='utf-8', errors='ignore')
 		end_of_file = ''
 
 	print_info('Reading \'{}\''.format(filename))
 	regex = re.compile(r'usb')
 	for line in iter(log.readline, end_of_file):
 		if isinstance(line, bytes):
-			line = line.decode(encoding='utf-8')
+			line = line.decode(encoding='utf-8', errors='ignore')
 		if regex.search(line):
 			filtered[line[:15]].append(line)  # line[:15] == 'Mon dd hh:mm:ss'
 
