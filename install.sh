@@ -34,11 +34,11 @@ shopt -s expand_aliases
 
 # --------------------- usbrip aliases ---------------------
 
-alias createHistoryStorage="usbrip storage create history -e -q"
+alias createHistoryStorage="usbrip storage create history -e"
 
-alias generateAuthorizedDeviceList="usbrip events gen_auth /var/opt/usbrip/trusted/auth.json -e -a vid pid -q"
+alias generateAuthorizedDeviceList="usbrip events gen_auth /var/opt/usbrip/trusted/auth.json -e -a vid pid"
 
-alias createViolationsStorage="usbrip storage create violations -i /var/opt/usbrip/trusted/auth.json -e -a vid pid -q"
+alias createViolationsStorage="usbrip storage create violations -i /var/opt/usbrip/trusted/auth.json -e -a vid pid"
 
 # ----------------------- Constants ------------------------
 
