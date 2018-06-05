@@ -42,7 +42,7 @@ usbrip works with **non**-modified structure of system log files only, so, unfor
 
 ## System
 * python3.x interpreter
-* python3-virtualenv
+* python-virtualenv
 * p7zip-full
 
 ## Python
