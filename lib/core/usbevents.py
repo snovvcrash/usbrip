@@ -305,16 +305,16 @@ def _read_log_file(filename):
 			)
 			return filtered
 		else:
-			sentinel = b''
+			end_of_file = b''
 			filename = filename[:-3]
 
 	else:
 		log = open(filename, 'r', encoding='utf-8')
-		sentinel = ''
+		end_of_file = ''
 
 	print_info('Reading \'{}\''.format(filename))
 	regex = re.compile(r'usb')
-	for line in iter(log.readline, sentinel):
+	for line in iter(log.readline, end_of_file):
 		if isinstance(line, bytes):
 			line = line.decode(encoding='utf-8')
 		if regex.search(line):
