@@ -59,13 +59,21 @@ if [[ $EUID -ne 0 ]]; then
 	exit 1
 fi
 
+# -------------------- Handle switches ---------------------
+
+if [[ "$1" == "-s" ]] || [[ "$1" == "--storages" ]]; then
+	STORAGES=true
+else
+	STORAGES=false
+fi
+
 # -------------- Check for required packages ---------------
 
 # virtualenv
 
 if ! virtualenv --version > /dev/null; then
 	printf "${R}>>>>${NC} Unresolved dependency: virtualenv. To install this package run:\n%s\n" \
-           "sudo apt install python-virtualenv"
+           "sudo apt install python-virtualenv virtualenv"
 	exit 1
 fi
 
@@ -179,37 +187,39 @@ fi
 
 # ----------------- Create usbrip storages -----------------
 
-# History
+if $STORAGES; then
+	# History
 
-printf "${W}>>>>${NC} Creating usbrip history storage\n"
+	printf "${W}>>>>${NC} Creating usbrip history storage\n"
 
-if createHistoryStorage; then
-	printf "${G}>>>>${NC} Successfully created usbrip history storage\n\n"
-else
-	printf "${R}>>>>${NC} Failed to create usbrip history storage\n"
-	exit 1
-fi
+	if createHistoryStorage; then
+		printf "${G}>>>>${NC} Successfully created usbrip history storage\n\n"
+	else
+		printf "${R}>>>>${NC} Failed to create usbrip history storage\n"
+		exit 1
+	fi
 
-# Gen Auth
+	# Gen Auth
 
-printf "${W}>>>>${NC} Generating authorized device list\n"
+	printf "${W}>>>>${NC} Generating authorized device list\n"
 
-if generateAuthorizedDeviceList; then
-	printf "${G}>>>>${NC} Successfully generated authorized device list\n\n"
-else
-	printf "${R}>>>>${NC} Failed to generate authorized device list\n"
-	exit 1
-fi
+	if generateAuthorizedDeviceList; then
+		printf "${G}>>>>${NC} Successfully generated authorized device list\n\n"
+	else
+		printf "${R}>>>>${NC} Failed to generate authorized device list\n"
+		exit 1
+	fi
 
-# Violations
+	# Violations
 
-printf "${W}>>>>${NC} Creating usbrip violations storage\n"
+	printf "${W}>>>>${NC} Creating usbrip violations storage\n"
 
-if createViolationsStorage; then
-	printf "${G}>>>>${NC} Successfully created usbrip violations storage\n\n"
-else
-	printf "${R}>>>>${NC} Failed to create usbrip violations storage\n"
-	exit 1
+	if createViolationsStorage; then
+		printf "${G}>>>>${NC} Successfully created usbrip violations storage\n\n"
+	else
+		printf "${R}>>>>${NC} Failed to create usbrip violations storage\n"
+		exit 1
+	fi
 fi
 
 # -------------------------- Done --------------------------

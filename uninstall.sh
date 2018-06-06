@@ -49,7 +49,7 @@ fi
 
 # -------------------- Handle switches ---------------------
 
-if [[ "$1" == "--all" ]]; then
+if [[ "$1" == "-a" ]] || [[ "$1" == "--all" ]]; then
 	ALL=true
 else
 	ALL=false
