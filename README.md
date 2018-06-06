@@ -69,16 +69,20 @@ To install usbrip use:
 ```
 $ git clone https://github.com/snovvcrash/usbrip.git usbrip && cd usbrip
 $ chmod +x install.sh
-$ sudo -H ./install.sh
+
+# When -s switch is enabled, not only the usbrip project is installed, but also the list of trusted USB devices, history and violations storages are created
+$ sudo -H ./install.sh [-s, --storages]
 ```
+**Warning**: when using `-s` option during installation, make sure that system logs do contain at least one *external* USB device entry. It is a necessary condition for usbrip to successfully create the list of trusted devices (and as a result, successfully create the violations storage).
+
 After the installation completes, feel free to remove the usbrip folder.
 
 To uninstall usbrip use:
 ```
 $ chmod +x uninstall.sh
 
-# When --all switch is enabled, not only the usbrip project directory is deleted but all the storages and usbrip logs are deleted too
-$ sudo ./uninstall.sh [--all]
+# When -a switch is enabled, not only the usbrip project directory is deleted, but also all the storages and usbrip logs are deleted too
+$ sudo ./uninstall.sh [-a, --all]
 ```
 
 When installed, the usbrip uses the following paths:
