@@ -33,12 +33,12 @@ import json
 import subprocess
 import os
 
-import lib.utils.debug as debug
+import lib.core.config as cfg
 
 from base64 import b64encode
 from datetime import datetime
 
-from lib.core import USBEvents
+from lib.core.usbevents import USBEvents
 
 from lib.core.usbevents import _filter_events
 from lib.core.usbevents import _dump_events
@@ -50,7 +50,6 @@ from lib.core.common import print_warning
 from lib.core.common import print_critical
 from lib.core.common import print_secret
 from lib.core.common import USBRipError
-from lib.utils.debug import DEBUG
 from lib.utils.debug import time_it
 from lib.utils.debug import time_it_if_debug
 
@@ -71,7 +70,7 @@ class USBStorage:
 	# -------------------- USB Storage List --------------------
 
 	@staticmethod
-	@time_it_if_debug(DEBUG, time_it)
+	@time_it_if_debug(cfg.DEBUG, time_it)
 	def list_storage(storage_type, password):
 		storage_full_path = '{}/{}.7z'.format(USBStorage._STORAGE_BASE, storage_type)
 		if not os.path.isfile(storage_full_path):
@@ -92,7 +91,7 @@ class USBStorage:
 	# -------------------- USB Storage Open --------------------
 
 	@staticmethod
-	@time_it_if_debug(DEBUG, time_it)
+	@time_it_if_debug(cfg.DEBUG, time_it)
 	def open_storage(storage_type, password, columns, *, sieve=None, repres=None):
 		storage_full_path = '{}/{}.7z'.format(USBStorage._STORAGE_BASE, storage_type)
 		if not os.path.isfile(storage_full_path):
@@ -116,7 +115,7 @@ class USBStorage:
 	# ------------------- USB Storage Update -------------------
 
 	@staticmethod
-	@time_it_if_debug(DEBUG, time_it)
+	@time_it_if_debug(cfg.DEBUG, time_it)
 	def update_storage(
 		storage_type,
 		password=None,
@@ -195,7 +194,7 @@ class USBStorage:
 	# ------------------- USB Storage Create -------------------
 
 	@staticmethod
-	@time_it_if_debug(DEBUG, time_it)
+	@time_it_if_debug(cfg.DEBUG, time_it)
 	def create_storage(
 		storage_type,
 		*,
@@ -255,7 +254,7 @@ class USBStorage:
 	# ------------------- USB Storage Passwd -------------------
 
 	@staticmethod
-	@time_it_if_debug(DEBUG, time_it)
+	@time_it_if_debug(cfg.DEBUG, time_it)
 	def change_password(storage_type, old_password, new_password, *, compression_level='5'):
 		storage_full_path = '{}/{}.7z'.format(USBStorage._STORAGE_BASE, storage_type)
 		if not os.path.isfile(storage_full_path):

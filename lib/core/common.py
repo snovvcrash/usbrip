@@ -32,26 +32,23 @@ import random
 import os
 import sys
 
+import lib.core.config as cfg
+
 from string import printable
 from calendar import month_name
 from collections import OrderedDict, Callable
 
 from termcolor import colored, cprint
 
-import lib.utils.debug as debug
-
 
 # ----------------------------------------------------------
-# ----------------- Cross-module constants -----------------
+# ------------------- Unicode constants --------------------
 # ----------------------------------------------------------
 
 
 BULLET    = '\u2022'  # '•', U_BULLET
 ABSENCE   = '\u2205'  # '∅', U_EMPTY_SET
 SEPARATOR = '\u2212'  # '−', U_MINUS_SIGN
-
-# Enable colored text when terminal output (True), else (| or > for example) no color (False)
-ISATTY = True if sys.stdout.isatty() else False
 
 
 # ----------------------------------------------------------
@@ -81,7 +78,7 @@ I = ('I', 'i', '1', '!')
 
 E,N,S,I = list(map(lambda x: random.choice(x), (E,N,S,I)))
 
-if ISATTY:
+if cfg.ISATTY:
 	E,N,S,I = list(map(lambda x: colored(x, 'green', 'on_blue') + '\033[1;33m', (E,N,S,I)))
 else:
 	mid_start = 55 + len(VERSION_FORMATTED)
@@ -117,7 +114,7 @@ class USBRipError(Exception):
 
 COLUMN_NAMES = OrderedDict()
 
-if ISATTY:
+if cfg.ISATTY:
 	COLUMN_NAMES['conn']     = colored('Connected',     'magenta', attrs=['bold'])
 	COLUMN_NAMES['user']     = colored('User',          'magenta', attrs=['bold'])
 	COLUMN_NAMES['vid']      = colored('VID',           'magenta', attrs=['bold'])
@@ -246,46 +243,46 @@ def is_correct(password):
 
 
 def print_info(message):
-	if debug.QUIET:
+	if cfg.QUIET:
 		return
 
-	if ISATTY:
+	if cfg.ISATTY:
 		cprint('[INFO] {}'.format(message), 'green')
 	else:
 		print('[INFO] {}'.format(message))
 
 
 def print_warning(message, *, errcode=0, initial_error=''):
-	if debug.QUIET:
+	if cfg.QUIET:
 		return
 
-	if debug.DEBUG:
+	if cfg.DEBUG:
 		if errcode:
 			print('ERRCODE: {}'.format(errcode))
 		if initial_error:
 			print(initial_error, file=sys.stderr)
 
-	if ISATTY:
+	if cfg.ISATTY:
 		cprint('[WARNING] {}'.format(message), 'yellow')
 	else:
 		print('[WARNING] {}'.format(message))
 
 
 def print_critical(message, *, errcode=0, initial_error=''):
-	if debug.DEBUG:
+	if cfg.DEBUG:
 		if errcode:
 			print('ERRCODE: {}'.format(errcode))
 		if initial_error:
 			print(initial_error, file=sys.stderr)
 
-	if ISATTY:
+	if cfg.ISATTY:
 		cprint('[CRITICAL] {}'. format(message), 'white', 'on_red', attrs=['bold'])
 	else:
 		print('[CRITICAL] {}'. format(message))
 
 
 def print_secret(message, *, secret=''):
-	if ISATTY:
+	if cfg.ISATTY:
 		cprint(
 			'[SECRET] {} {}'.format(
 				colored(message, 'white', attrs=['bold']),

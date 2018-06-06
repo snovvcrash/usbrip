@@ -2,11 +2,11 @@
 # -*- coding: UTF-8 -*-
 
 """
-@file debug.py
+@file config.py
 @author Sam Freeside <snovvcrash@protonmail.com>
-@date 2018-05
+@date 2018-06
 
-@brief Debug utils.
+@brief Config file containing cross-module vars.
 
 @license
 Copyright (C) 2018 Sam Freeside
@@ -28,31 +28,11 @@ along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 @endlicense
 """
 
-import functools
-import time
+import sys
 
-import lib.core.config as cfg
+DEBUG = False
 
+QUIET = False
 
-def time_it(func):
-	@functools.wraps(func)
-	def wrapper(*args, **kwargs):
-		start = time.time()
-		result = func(*args, **kwargs)
-		end = time.time()
-		print('{}: {:.3f} seconds'.format(func.__name__, end-start))
-		return result
-
-	return wrapper
-
-
-class time_it_if_debug:
-	def __init__(self, condition, decorator):
-		self._condition = cfg.DEBUG
-		self._decorator = decorator
-
-	def __call__(self, func):
-		if not self._condition:
-			return func
-
-		return self._decorator(func)
+# Enable colored text when terminal output (True), else (| or > for example) no color (False)
+ISATTY = True if sys.stdout.isatty() else False

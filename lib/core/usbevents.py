@@ -45,7 +45,7 @@ import itertools
 import operator
 import os
 
-import lib.utils.debug as debug
+import lib.core.config as cfg
 
 from collections import OrderedDict, defaultdict
 from string import printable
@@ -56,7 +56,6 @@ from termcolor import colored, cprint
 from lib.core.common import BULLET
 from lib.core.common import ABSENCE
 from lib.core.common import SEPARATOR
-from lib.core.common import ISATTY
 from lib.core.common import COLUMN_NAMES
 from lib.core.common import MONTH_ENUM
 from lib.core.common import DefaultOrderedDict
@@ -67,7 +66,6 @@ from lib.core.common import print_info
 from lib.core.common import print_warning
 from lib.core.common import print_critical
 from lib.core.common import USBRipError
-from lib.utils.debug import DEBUG
 from lib.utils.debug import time_it
 from lib.utils.debug import time_it_if_debug
 
@@ -80,9 +78,9 @@ from lib.utils.debug import time_it_if_debug
 class USBEvents:
 
 	# SingleTable (uses ANSI escape codes) when termianl output, else (| or > for example) AsciiTable (only ASCII)
-	TableClass = SingleTable if ISATTY else AsciiTable
+	TableClass = SingleTable if cfg.ISATTY else AsciiTable
 
-	@time_it_if_debug(DEBUG, time_it)
+	@time_it_if_debug(cfg.DEBUG, time_it)
 	def __new__(cls, files=None):
 		if files:
 			raw_history = DefaultOrderedDict(default_factory=list)
@@ -106,14 +104,14 @@ class USBEvents:
 
 	# ------------------- USB Events History -------------------
 
-	@time_it_if_debug(DEBUG, time_it)
+	@time_it_if_debug(cfg.DEBUG, time_it)
 	def event_history(self, columns, *, indent=4, sieve=None, repres=None):
 		self._events_to_show = _filter_events(self._all_events, sieve)
 		if not self._events_to_show:
 			print_info('No USB events found!')
 			return
 
-		if not debug.QUIET and ISATTY:
+		if not cfg.QUIET and cfg.ISATTY:
 			number, filename = _output_choice('event history', 'history.json', 'history/')
 			if number is None:
 				return
@@ -135,7 +133,7 @@ class USBEvents:
 	# -------------------- USB Events Open ---------------------
 
 	@staticmethod
-	@time_it_if_debug(DEBUG, time_it)
+	@time_it_if_debug(cfg.DEBUG, time_it)
 	def open_dump(input_dump, columns, *, sieve=None, repres=None):
 		print_info('Opening USB event dump: \'{}\''.format(os.path.abspath(input_dump)))
 
@@ -165,7 +163,7 @@ class USBEvents:
 
 	# ------------------ USB Events Gen Auth -------------------
 
-	@time_it_if_debug(DEBUG, time_it)
+	@time_it_if_debug(cfg.DEBUG, time_it)
 	def generate_auth_json(self, output_auth, attributes, *, indent=4, sieve=None):
 		self._events_to_show = _filter_events(self._all_events, sieve)
 		if not self._events_to_show:
@@ -210,7 +208,7 @@ class USBEvents:
 
 	# ----------------- USB Events Violations ------------------
 
-	@time_it_if_debug(DEBUG, time_it)
+	@time_it_if_debug(cfg.DEBUG, time_it)
 	def search_violations(self, input_auth, attributes, columns, *, indent=4, sieve=None, repres=None):
 		print_info('Opening authorized device list: \'{}\''.format(os.path.abspath(input_auth)))
 
@@ -240,7 +238,7 @@ class USBEvents:
 			print_info('No USB violation events found!')
 			return
 
-		if not debug.QUIET and ISATTY:
+		if not cfg.QUIET and cfg.ISATTY:
 			number, filename = _output_choice('violation', 'viol.json', 'violations/')
 			if number is None:
 				return
@@ -533,16 +531,16 @@ def _represent_events(events_to_show, columns, table_data, title, repres):
 				event[name] = ABSENCE
 
 			item = event[name]
-			if name == 'conn' and ISATTY:
+			if name == 'conn' and cfg.ISATTY:
 				item = colored(item, 'green')
-			elif name == 'disconn' and ISATTY:
+			elif name == 'disconn' and cfg.ISATTY:
 				item = colored(item, 'red')
 
 			row.append(item)
 
 		table_data.append(row)
 
-	if ISATTY:
+	if cfg.ISATTY:
 		event_table = _build_single_table(USBEvents.TableClass, table_data, colored(title, 'white', attrs=['bold']))
 	else:
 		event_table = _build_single_table(USBEvents.TableClass, table_data, title)
@@ -565,7 +563,7 @@ def _represent_events(events_to_show, columns, table_data, title, repres):
 		if not max_len // 2: max_len += 1
 		date_sep_len = (max_len - 8) // 2
 
-		if ISATTY:
+		if cfg.ISATTY:
 			cprint('\n' + title, 'white', attrs=['bold'])
 		else:
 			print('\n' + title)
@@ -581,7 +579,7 @@ def _represent_events(events_to_show, columns, table_data, title, repres):
 				print(SEPARATOR * max_len)
 			prev_cday = curr_cday
 
-			if ISATTY:
+			if cfg.ISATTY:
 				print(colored('Connected:      ', 'magenta', attrs=['bold']) + colored(event['conn'], 'green'))
 				print(colored('User:           ', 'magenta', attrs=['bold']) + event['user'])
 				print(colored('VID:            ', 'magenta', attrs=['bold']) + event['vid'])

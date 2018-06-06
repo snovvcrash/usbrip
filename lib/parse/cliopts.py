@@ -30,7 +30,7 @@ along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 
 from argparse import ArgumentParser
 
-from lib.core import USBStorage
+from lib.core.usbstorage import USBStorage
 
 from lib.core.common import root_dir_join
 

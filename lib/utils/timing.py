@@ -32,7 +32,7 @@ import atexit
 import time
 import datetime
 
-import lib.utils.debug as debug
+import lib.core.config as cfg
 
 START = time.time()
 
@@ -53,6 +53,6 @@ def final():
 
 
 def begin():
-	if not debug.QUIET:
+	if not cfg.QUIET:
 		atexit.register(final)
 		tick('[*] Started at')

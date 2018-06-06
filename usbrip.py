@@ -32,14 +32,19 @@ import re
 import os
 import sys
 
-import lib.utils.debug as debug
-debug.DEBUG = '--debug' in sys.argv
+try:
+	import lib.core.config as cfg
+	cfg.DEBUG = '--debug' in sys.argv
 
-import lib.utils.timing as timing
+	import lib.utils.timing as timing
 
-from lib.core import USBEvents
-from lib.core import USBStorage
-from lib.core import USBIDs
+	from lib.core.usbevents import USBEvents
+	from lib.core.usbstorage import USBStorage
+	from lib.core.usbids import USBIDs
+
+except PermissionError:
+	print('Permission denied. Retry with sudo')
+	sys.exit(1)
 
 from lib.core.common import BANNER
 from lib.core.common import COLUMN_NAMES
@@ -65,7 +70,7 @@ def main():
 	if not args.quiet:
 		print(BANNER + '\n')
 	else:
-		debug.QUIET = True
+		cfg.QUIET = True
 
 	# ----------------------------------------------------------
 	# ------------------------- Banner -------------------------
@@ -87,13 +92,22 @@ def main():
 			timing.begin()
 			ueh = USBEvents(args.file)
 			if ueh:
-				ueh.event_history(args.column, sieve=sieve, repres=repres)
+				ueh.event_history(
+					args.column,
+					sieve=sieve,
+					repres=repres
+				)
 
 		# -------------------- USB Events Open ---------------------
 
 		elif args.ue_subparser == 'open':
 			timing.begin()
-			USBEvents.open_dump(args.input, args.column, sieve=sieve, repres=repres)
+			USBEvents.open_dump(
+				args.input,
+				args.column,
+				sieve=sieve,
+				repres=repres
+			)
 
 		# ------------------ USB Events Gen Auth -------------------
 
@@ -101,7 +115,11 @@ def main():
 			timing.begin()
 			ueg = USBEvents(args.file)
 			if ueg:
-				if ueg.generate_auth_json(args.output, args.attribute, sieve=sieve):
+				if ueg.generate_auth_json(
+					args.output,
+					args.attribute,
+					sieve=sieve
+				):
 					usbrip_internal_error()
 			else:
 				usbrip_internal_error()
@@ -112,7 +130,13 @@ def main():
 			timing.begin()
 			uev = USBEvents(args.file)
 			if uev:
-				uev.search_violations(args.input, args.attribute, args.column, sieve=sieve, repres=repres)
+				uev.search_violations(
+					args.input,
+					args.attribute,
+					args.column,
+					sieve=sieve,
+					repres=repres
+				)
 
 	# ----------------------------------------------------------
 	# ---------------------- USB Storage -----------------------
@@ -126,12 +150,21 @@ def main():
 		# -------------------- USB Storage List --------------------
 
 		if args.us_subparser == 'list':
-			us.list_storage(args.storage_type, args.password)
+			us.list_storage(
+				args.storage_type,
+				args.password
+			)
 
 		# -------------------- USB Storage Open --------------------
 
 		elif args.us_subparser == 'open':
-			us.open_storage(args.storage_type, args.password, args.column, sieve=sieve, repres=repres)
+			us.open_storage(
+				args.storage_type,
+				args.password,
+				args.column,
+				sieve=sieve,
+				repres=repres
+			)
 
 		# ------------------- USB Storage Update -------------------
 
@@ -162,7 +195,12 @@ def main():
 		# ------------------- USB Storage Passwd -------------------
 
 		elif args.us_subparser == 'passwd':
-			us.change_password(args.storage_type, args.old, args.new, compression_level=args.lvl)
+			us.change_password(
+				args.storage_type,
+				args.old,
+				args.new,
+				compression_level=args.lvl
+			)
 
 	# ----------------------------------------------------------
 	# ------------------------ USB IDs -------------------------
@@ -176,7 +214,11 @@ def main():
 		# --------------------- USB IDs Search ---------------------
 
 		if args.ui_subparser == 'search':
-			ui.search_ids(args.vid, args.pid, offline=args.offline)
+			ui.search_ids(
+				args.vid,
+				args.pid,
+				offline=args.offline
+			)
 
 		# -------------------- USB IDs Download --------------------
 

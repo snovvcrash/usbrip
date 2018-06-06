@@ -37,7 +37,7 @@ import re
 import socket
 import os
 
-import lib.utils.debug as debug
+import lib.core.config as cfg
 
 from urllib.request import urlopen
 
@@ -47,7 +47,6 @@ from lib.core.common import print_info
 from lib.core.common import print_warning
 from lib.core.common import print_critical
 from lib.core.common import USBRipError
-from lib.utils.debug import DEBUG
 from lib.utils.debug import time_it
 from lib.utils.debug import time_it_if_debug
 
@@ -64,7 +63,7 @@ class USBIDs:
 	_SERVER_CONTENT_ERROR      = -3
 
 	@staticmethod
-	@time_it_if_debug(DEBUG, time_it)
+	@time_it_if_debug(cfg.DEBUG, time_it)
 	def search_ids(vid, pid, *, offline=True):
 		if offline:
 			print_warning('Offline mode')
@@ -78,7 +77,7 @@ class USBIDs:
 			usb_ids.close()
 
 	@staticmethod
-	@time_it_if_debug(DEBUG, time_it)
+	@time_it_if_debug(cfg.DEBUG, time_it)
 	def prepare_database(*, offline=True):
 		filename = root_dir_join('usb_ids/usb.ids')
 		file_exists = os.path.isfile(filename)
