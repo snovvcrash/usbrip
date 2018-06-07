@@ -43,8 +43,8 @@ usbrip works with **non**-modified structure of system log files only, so, unfor
 
 ## System
 * python3.x interpreter
-* python-virtualenv (optional for portable mode)
-* p7zip-full (used by `storages` module)
+* python-virtualenv *(optional for portable mode)*
+* p7zip-full *(used by `storages` module)*
 
 ## Python
 usbrip makes use of the following external modules:
