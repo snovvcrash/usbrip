@@ -34,6 +34,7 @@ Besides, it also can:
 Screenshots
 ==========
 ![Screenshot-1](https://user-images.githubusercontent.com/23141800/40887882-e00d4d3a-6757-11e8-962c-c77331782b19.png "Get USB event history")
+---
 ![Screenshot-2](https://user-images.githubusercontent.com/23141800/40886876-46c349d6-6748-11e8-92cf-0b0790ea9505.png "Search for extra details about a specific USB device")
 
 Dependencies
@@ -42,8 +43,8 @@ usbrip works with **non**-modified structure of system log files only, so, unfor
 
 ## System
 * python3.x interpreter
-* python-virtualenv
-* p7zip-full
+* python-virtualenv *(optional for portable mode)*
+* p7zip-full *(used by `storages` module)*
 
 ## Python
 usbrip makes use of the following external modules:
