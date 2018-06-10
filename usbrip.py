@@ -67,7 +67,7 @@ def main():
 	parser = cmd_line_options()
 	args = parser.parse_args()
 
-	if not args.quiet:
+	if 'quiet' in args and not args.quiet:
 		print(BANNER + '\n')
 	else:
 		cfg.QUIET = True
