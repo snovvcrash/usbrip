@@ -43,8 +43,7 @@ try:
 	from lib.core.usbids import USBIDs
 
 except PermissionError:
-	print('Permission denied. Retry with sudo')
-	sys.exit(1)
+	sys.exit('Permission denied. Retry with sudo')
 
 from lib.core.common import BANNER
 from lib.core.common import COLUMN_NAMES
@@ -143,6 +142,9 @@ def main():
 	# ----------------------------------------------------------
 
 	elif args.subparser == 'storage' and args.us_subparser:
+		if os.geteuid() != 0:
+			sys.exit('Permission denied. Retry with sudo')
+
 		sieve, repres = validate_us_args(args)
 		timing.begin()
 		us = USBStorage()
