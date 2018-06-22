@@ -11,8 +11,8 @@ Table of Contents:
   * [**Description**](#description)
   * [**Screenshots**](#screenshots)
   * [**Dependencies**](#dependencies)
-    * [System](#system)
-    * [Python](#python)
+    * [DEB](#deb)
+    * [PIP](#pip)
   * [**Installation**](#installation)
   * [**Usage**](#usage)
     * [Synopsis](#synopsis)
@@ -41,12 +41,12 @@ Dependencies
 ==========
 usbrip works with **non**-modified structure of system log files only, so, unfortunately, it won't be able to parse USB history if you change the format of syslogs (with `syslog-ng` or `rsyslog` for example). That's why the timestamps of "Connected" and "Disconnected" fields don't have the year, by the way. Keep that in mind.
 
-## System
+## DEB
 * python3.x interpreter
 * python-virtualenv *(optional for portable mode)*
 * p7zip-full *(used by `storages` module)*
 
-## Python
+## PIP
 usbrip makes use of the following external modules:
 * [terminaltables](https://robpol86.github.io/terminaltables/v3.1.0/index.html "terminaltables 3.1.0 — terminaltables")
 * [termcolor](https://pypi.python.org/pypi/termcolor "termcolor 1.1.0 : Python Package Index")
