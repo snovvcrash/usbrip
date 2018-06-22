@@ -22,7 +22,7 @@ Table of Contents:
 
 Description
 ==========
-usbrip is a small piece of software written in pure Python 3 (using some external modules though, see [Dependencies](#dependencies)) which parses Linux log files (`/var/log/syslog*` or `/var/log/messages*` depending on the distro) for constructing USB event history tables. Such tables may contain the following columns: "Connected" (date & time), "User", "VID" (vendor ID), "PID" (product ID), "Product", "Manufacturer", "Serial Number", "Port" and "Disconnected" (date & time).
+usbrip is a small piece of software written in pure Python 3 (using some external modules though, see [Dependencies/PIP](#pip)) which parses Linux log files (`/var/log/syslog*` or `/var/log/messages*` depending on the distro) for constructing USB event history tables. Such tables may contain the following columns: "Connected" (date & time), "User", "VID" (vendor ID), "PID" (product ID), "Product", "Manufacturer", "Serial Number", "Port" and "Disconnected" (date & time).
 
 Besides, it also can:
 * export gathered information as a JSON dump (and open such dumps, of course (: );
