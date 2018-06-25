@@ -11,8 +11,8 @@ Table of Contents:
   * [**Description**](#description)
   * [**Screenshots**](#screenshots)
   * [**Dependencies**](#dependencies)
-    * [DEB](#deb)
-    * [PIP](#pip)
+    * [DEB Packages](#deb-packages)
+    * [PIP Packages](#pip-packages)
   * [**Installation**](#installation)
   * [**Usage**](#usage)
     * [Synopsis](#synopsis)
@@ -22,7 +22,7 @@ Table of Contents:
 
 Description
 ==========
-usbrip is a small piece of software written in pure Python 3 (using some external modules though, see [Dependencies/PIP](#pip)) which parses Linux log files (`/var/log/syslog*` or `/var/log/messages*` depending on the distro) for constructing USB event history tables. Such tables may contain the following columns: "Connected" (date & time), "User", "VID" (vendor ID), "PID" (product ID), "Product", "Manufacturer", "Serial Number", "Port" and "Disconnected" (date & time).
+usbrip is a small piece of software written in pure Python 3 (using some external modules though, see [Dependencies/PIP](#pip-packages)) which parses Linux log files (`/var/log/syslog*` or `/var/log/messages*` depending on the distro) for constructing USB event history tables. Such tables may contain the following columns: "Connected" (date & time), "User", "VID" (vendor ID), "PID" (product ID), "Product", "Manufacturer", "Serial Number", "Port" and "Disconnected" (date & time).
 
 Besides, it also can:
 * export gathered information as a JSON dump (and open such dumps, of course (: );
@@ -41,12 +41,12 @@ Dependencies
 ==========
 usbrip works with **non**-modified structure of system log files only, so, unfortunately, it won't be able to parse USB history if you change the format of syslogs (with `syslog-ng` or `rsyslog` for example). That's why the timestamps of "Connected" and "Disconnected" fields don't have the year, by the way. Keep that in mind.
 
-## DEB
+## DEB Packages
 * python3.x interpreter
 * python-virtualenv *(optional for portable mode)*
 * p7zip-full *(used by `storages` module)*
 
-## PIP
+## PIP Packages
 usbrip makes use of the following external modules:
 * [terminaltables](https://robpol86.github.io/terminaltables/v3.1.0/index.html "terminaltables 3.1.0 — terminaltables")
 * [termcolor](https://pypi.python.org/pypi/termcolor "termcolor 1.1.0 : Python Package Index")
