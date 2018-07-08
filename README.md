@@ -65,7 +65,7 @@ When using the `install.sh` some extra features become available:
 * you can run usbrip from anywhere in your terminal with `usbrip` command;
 * you can set a crontab job to backup USB events on a schedule (the example of crontab jobs can be found in `usbrip.cron`).
 
-*Remark*: if you are using the crontab scheduling, you want to configure the cron job with `sudo crontab -e` in order to force the `storage update` submodule run as root as well as protect the passwords of the USB event storages.
+:warning: **Warning**: if you are using the crontab scheduling, you want to configure the cron job with `sudo crontab -e` in order to force the `storage update` submodule run as root as well as protect the passwords of the USB event storages.
 
 The `uninstall.sh` script removes all the installation artifacts from your system.
 
@@ -77,7 +77,7 @@ $ chmod +x install.sh
 # When -s switch is enabled, not only the usbrip project is installed, but also the list of trusted USB devices, history and violations storages are created
 $ sudo -H ./install.sh [-s, --storages]
 ```
-**Warning**: when using `-s` option during installation, make sure that system logs do contain at least one *external* USB device entry. It is a necessary condition for usbrip to successfully create the list of trusted devices (and as a result, successfully create the violations storage).
+:warning: **Warning**: when using `-s` option during installation, make sure that system logs do contain at least one *external* USB device entry. It is a necessary condition for usbrip to successfully create the list of trusted devices (and as a result, successfully create the violations storage).
 
 After the installation completes, feel free to remove the usbrip folder.
 
@@ -206,7 +206,7 @@ Examples
 
 Post Scriptum
 ==========
-Yep, the banner and info messages style is inspired by the *sqlmap* project :see_no_evil:
+Yep, the banner and info messages style is inspired by the *sqlmap* project. :see_no_evil:
 
 If this tool has been useful for you, feel free to buy me a coffee :coffee:
 
