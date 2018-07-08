@@ -208,6 +208,6 @@ Post Scriptum
 ==========
 Yep, the banner and info messages style is inspired by the *sqlmap* project :see_no_evil:
 
-If this tool has been useful for you, feel free to buy me a coffee:
+If this tool has been useful for you, feel free to buy me a coffee :coffee:
 
 [![Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoff.ee/snovvcrash)
