@@ -42,7 +42,7 @@ Dependencies
 usbrip works with **non**-modified structure of system log files only, so, unfortunately, it won't be able to parse USB history if you change the format of syslogs (with `syslog-ng` or `rsyslog` for example). That's why the timestamps of "Connected" and "Disconnected" fields don't have the year, by the way. Keep that in mind.
 
 ## DEB Packages
-* python3.x interpreter
+* python3.x (or newer) interpreter
 * python-virtualenv *(optional for portable mode)*
 * p7zip-full *(used by `storages` module)*
 
@@ -51,7 +51,10 @@ usbrip makes use of the following external modules:
 * [terminaltables](https://robpol86.github.io/terminaltables/v3.1.0/index.html "terminaltables 3.1.0 — terminaltables")
 * [termcolor](https://pypi.python.org/pypi/termcolor "termcolor 1.1.0 : Python Package Index")
 
-All Python requirements are stated in `requirements.txt`.
+Resolve all Python dependencies with one click:
+```
+$ python3 -m pip install -r requirements.txt
+```
 
 Installation
 ==========
@@ -204,3 +207,7 @@ Examples
 Post Scriptum
 ==========
 Yep, the banner and info messages style is inspired by the *sqlmap* project :see_no_evil:
+
+If this tool has been useful for you, feel free to buy me a coffee:
+
+[![Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoff.ee/snovvcrash)
