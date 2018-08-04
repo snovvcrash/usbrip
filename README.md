@@ -52,7 +52,7 @@ usbrip makes use of the following external modules:
 * [terminaltables](https://robpol86.github.io/terminaltables/v3.1.0/index.html "terminaltables 3.1.0 — terminaltables")
 * [termcolor](https://pypi.python.org/pypi/termcolor "termcolor 1.1.0 : Python Package Index")
 
-Resolve all Python dependencies with one click with `pip`:
+Resolve all Python dependencies with `pip` one-liner:
 ```
 $ python3 -m pip install -r requirements.txt
 ```
