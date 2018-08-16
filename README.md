@@ -211,4 +211,4 @@ Yep, the banner and info messages style is inspired by the *sqlmap* project. :se
 
 If this tool has been useful for you, feel free to buy me a coffee :coffee:
 
-[![Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoff.ee/snovvcrash)
+[![Coffee](https://user-images.githubusercontent.com/23141800/44239262-2cf7d680-a1c1-11e8-96b4-c4949f84e94e.png)](https://buymeacoff.ee/snovvcrash)
