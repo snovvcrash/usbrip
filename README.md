@@ -66,7 +66,7 @@ When using the `install.sh` some extra features become available:
   * you can run usbrip from anywhere in your terminal with `usbrip` command;
   * you can set a crontab job to backup USB events on a schedule (the example of crontab jobs can be found in `usbrip.cron`).
 
-:warning: **Warning**: if you are using the crontab scheduling, you want to configure the cron job with `sudo crontab -e` in order to force the `storage update` submodule run as root as well as protect the passwords of the USB event storages.
+:warning: **Warning**: if you are using the crontab scheduling, you want to configure the cron job with `sudo crontab -e` in order to force the `storage update` submodule run as root as well as protect the passwords of the USB event storages. It's obviously **not a truly secure way** to input passwords (no secrets should be ever stored as plain text / passed as arguments on the command line due to a variety of ways of exposing such secrets, e. g. scanning `/proc` directory for new PIDs to catch short-lived processes), but this is just an educational project in the end (interactive mode for secure password prompting is in TODO list :neutral_face:).
 
 The `uninstall.sh` script removes all the installation artifacts from your system.
 
@@ -207,7 +207,7 @@ Examples
 
 Post Scriptum
 ==========
-Yep, the banner and info messages style is inspired by the *sqlmap* project. :see_no_evil:
+Yep, the banner and info messages style is inspired by the *sqlmap* project :see_no_evil:
 
 If this tool has been useful for you, feel free to buy me a coffee :coffee:
 
