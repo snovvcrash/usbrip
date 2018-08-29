@@ -44,7 +44,7 @@ usbrip works with **non**-modified structure of system log files only, so, unfor
 
 ## DEB Packages
   * python3.x (or newer) interpreter
-  * python-virtualenv *(optional for portable mode)*
+  * python-virtualenv *(optionally for portable mode)*
   * p7zip-full *(used by `storages` module)*
 
 ## PIP Packages
