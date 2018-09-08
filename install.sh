@@ -2,7 +2,7 @@
 
 : '
 @file install.sh
-@author Sam Freeside <snovvcrash@protonmail.com>
+@author Sam Freeside <scr.im/emsnovvcrash>
 @date 2018-05
 
 @brief usbrip installer.

@@ -3,7 +3,7 @@
 
 """
 @file common.py
-@author Sam Freeside <snovvcrash@protonmail.com>
+@author Sam Freeside <scr.im/emsnovvcrash>
 @date 2018-03
 
 @brief Common items.

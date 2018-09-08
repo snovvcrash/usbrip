@@ -3,7 +3,7 @@
 
 """
 @file config.py
-@author Sam Freeside <snovvcrash@protonmail.com>
+@author Sam Freeside <scr.im/emsnovvcrash>
 @date 2018-06
 
 @brief Config file containing cross-module vars.

@@ -3,7 +3,7 @@
 
 """
 @file timing.py
-@author Sam Freeside <snovvcrash@protonmail.com>
+@author Sam Freeside <scr.im/emsnovvcrash>
 @date 2018-04
 
 @brief Program run time meter.
