@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 
 """
 @file timing.py
-@author Sam Freeside <scr.im/emsnovvcrash>
+@author Sam Freeside <snovvcrash@protonmail[.]ch>
 @date 2018-04
 
 @brief Program run time meter.

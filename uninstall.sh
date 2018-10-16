@@ -2,7 +2,7 @@
 
 : '
 @file uninstall.sh
-@author Sam Freeside <scr.im/emsnovvcrash>
+@author Sam Freeside <snovvcrash@protonmail[.]ch>
 @date 2018-05
 
 @brief usbrip uninstaller.

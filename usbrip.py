@@ -1,9 +1,9 @@
 #!/opt/usbrip/venv/bin/python
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 
 """
 @file usbrip.py
-@author Sam Freeside <scr.im/emsnovvcrash>
+@author Sam Freeside <snovvcrash@protonmail[.]ch>
 @date 2018-03
 
 @brief usbrip project's driver program.
