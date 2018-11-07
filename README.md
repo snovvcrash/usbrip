@@ -52,7 +52,7 @@ usbrip makes use of the following external modules:
   * [terminaltables](https://github.com/Robpol86/terminaltables "Robpol86/terminaltables: Generate simple tables in terminals from a nested list of strings.")
   * [termcolor](https://pypi.org/project/termcolor "termcolor · PyPI")
 
-To resolve all Python dependencies create a virtual environment and run `pip` from within:
+To resolve Python dependencies create a *virtual environment* and run `pip` from within:
 ```
 $ virtualenv -p python3 venv && . venv/bin/activate
 (venv) $ pip install -r requirements.txt
@@ -65,7 +65,7 @@ $ pipenv install && pipenv shell
 
 Installation
 ==========
-First of all, usbrip in pip installable. This means you can simply git clone the repo, fire the pip installation process and run usbrip from anywhere in your terminal:
+First of all, usbrip is pip installable. This means you can simply git clone the repo, fire the pip installation process and run usbrip from anywhere in your terminal like so:
 ```
 (venv) $ git clone https://github.com/snovvcrash/usbrip.git usbrip && cd usbrip
 (venv) $ pip install .
@@ -73,7 +73,7 @@ First of all, usbrip in pip installable. This means you can simply git clone the
 (venv) $ usbrip -h
 ```
 
-:exclamation: **Note**: you likely want to run the installer while the *python virtual environment* is active (like it is shown above).
+:alien: **Note**: you likely want to run the installer while the Python virtual environment is active (like it is shown above).
 
 Secondly, usbrip can also be installed into the system with the `install.sh` script.
 
@@ -87,14 +87,13 @@ The `uninstall.sh` script removes all the installation artifacts from your syste
 
 To install usbrip use:
 ```
-$ git clone https://github.com/snovvcrash/usbrip.git usbrip && cd usbrip
 $ chmod +x install.sh
 
 # When -s switch is enabled, not only the usbrip project is installed, but also the list of trusted USB devices, history and violations storages are created
 $ sudo -H ./install.sh [-s, --storages]
 ```
 
-:exclamation: **Note**: when using `-s` option during installation, make sure that system logs do contain at least one *external* USB device entry. It is a necessary condition for usbrip to successfully create the list of trusted devices (and as a result, successfully create the violations storage).
+:alien: **Note**: when using `-s` option during installation, make sure that system logs do contain at least one *external* USB device entry. It is a necessary condition for usbrip to successfully create the list of trusted devices (and as a result, successfully create the violations storage).
 
 After the installation completes, feel free to remove the usbrip folder.
 
@@ -111,7 +110,7 @@ When installed, the usbrip uses the following paths:
   * `/var/opt/usbrip/storage/` — USB event storages: `history.7z` and `violations.7z` (created during the installation process);
   * `/var/opt/usbrip/log/` — usbrip logs (recommended to log usbrip activity when using crontab, see `usbrip.cron`);
   * `/var/opt/usbrip/trusted/` — list of trusted USB devices (created during the installation process);
-  * `/usr/local/bin/usbrip` — symlink to the `/opt/usbrip/venv/bin/usbrip` file.
+  * `/usr/local/bin/usbrip` — symlink to the `/opt/usbrip/venv/bin/usbrip` script.
 
 Usage
 ==========
