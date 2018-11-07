@@ -54,43 +54,51 @@ usbrip makes use of the following external modules:
 
 To resolve Python dependencies create a *virtual environment* and run `pip` from within:
 ```
-$ virtualenv -p python3 venv && . venv/bin/activate
-(venv) $ pip install -r requirements.txt
+~/usbrip$ virtualenv -p python3 venv && . venv/bin/activate
+(venv) ~/usbrip$ pip install -r requirements.txt
 ```
 
 Or let the `pipenv` one-liner do all the dirty work for you:
 ```
-$ pipenv install && pipenv shell
+~/usbrip$ pipenv install && pipenv shell
 ```
 
 Installation
 ==========
 First of all, usbrip is pip installable. This means you can simply git clone the repo, fire the pip installation process and run usbrip from anywhere in your terminal like so:
 ```
-(venv) $ git clone https://github.com/snovvcrash/usbrip.git usbrip && cd usbrip
-(venv) $ pip install .
+(venv) ~$ git clone https://github.com/snovvcrash/usbrip.git usbrip && cd usbrip
+(venv) ~/usbrip$ pip install .
 
-(venv) $ usbrip -h
+(venv) ~/usbrip$ usbrip -h
 ```
 
 :alien: **Note**: you likely want to run the installer while the Python virtual environment is active (like it is shown above).
 
-Secondly, usbrip can also be installed into the system with the `install.sh` script.
+Secondly, usbrip can also be installed into the system with the `installers/install.sh` script.
 
-When using the `install.sh` some extra features become available:
+When using the `installers/install.sh` some extra features become available:
   * the virtual environment is created automatically;
-  * you can set a crontab job to backup USB events on a schedule (the example of crontab jobs can be found in `usbrip.cron`).
+  * you can set a crontab job to backup USB events on a schedule (the example of crontab jobs can be found in `usbrip/usbrip.cron`).
+
+Cron jobs can be set as follows:
+```
+~/usbrip$ sudo crontab -l > tmpcron && echo "" >> tmpcron
+~/usbrip$ cat usbrip/usbrip.cron | tee -a tmpcron
+~/usbrip$ sudo crontab tmpcron
+~/usbrip$ rm tmpcron
+```
 
 :warning: **Warning**: if you are using the crontab scheduling, you want to configure the cron job with `sudo crontab -e` in order to force the `storage update` submodule run as root as well as protect the passwords of the USB event storages. It's obviously **not a truly secure way** to input passwords (no secrets should be ever stored as plain text / passed as arguments on the command line due to a variety of ways of exposing such secrets, e. g. scanning `/proc` directory for new PIDs to catch short-lived processes with all the corresponding CLI args), but this is just an educational project in the end (interactive mode for secure password prompting is in the TODO list :neutral_face:).
 
-The `uninstall.sh` script removes all the installation artifacts from your system.
+The `installers/uninstall.sh` script removes all the installation artifacts from your system.
 
 To install usbrip use:
 ```
-$ chmod +x install.sh
+~/usbrip$ chmod +x installers/install.sh
 
 # When -s switch is enabled, not only the usbrip project is installed, but also the list of trusted USB devices, history and violations storages are created
-$ sudo -H ./install.sh [-s, --storages]
+~/usbrip$ sudo -H installers/install.sh [-s, --storages]
 ```
 
 :alien: **Note**: when using `-s` option during installation, make sure that system logs do contain at least one *external* USB device entry. It is a necessary condition for usbrip to successfully create the list of trusted devices (and as a result, successfully create the violations storage).
@@ -99,16 +107,16 @@ After the installation completes, feel free to remove the usbrip folder.
 
 To uninstall usbrip use:
 ```
-$ chmod +x uninstall.sh
+~/usbrip$ chmod +x installers/uninstall.sh
 
 # When -a switch is enabled, not only the usbrip project directory is deleted, but also all the storages and usbrip logs are deleted too
-$ sudo ./uninstall.sh [-a, --all]
+~/usbrip$ sudo installers/uninstall.sh [-a, --all]
 ```
 
 When installed, the usbrip uses the following paths:
   * `/opt/usbrip/` — project's main directory;
   * `/var/opt/usbrip/storage/` — USB event storages: `history.7z` and `violations.7z` (created during the installation process);
-  * `/var/opt/usbrip/log/` — usbrip logs (recommended to log usbrip activity when using crontab, see `usbrip.cron`);
+  * `/var/opt/usbrip/log/` — usbrip logs (recommended to log usbrip activity when using crontab, see `usbrip/usbrip.cron`);
   * `/var/opt/usbrip/trusted/` — list of trusted USB devices (created during the installation process);
   * `/usr/local/bin/usbrip` — symlink to the `/opt/usbrip/venv/bin/usbrip` script.
 
