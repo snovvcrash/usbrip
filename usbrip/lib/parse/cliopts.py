@@ -1,14 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""
-@file cliopts.py
-@author Sam Freeside <snovvcrash@protonmail[.]ch>
-@date 2018-03
+"""LICENSE
 
-@brief Command line option parser.
-
-@license
 Copyright (C) 2018 Sam Freeside
 
 This file is part of usbrip.
@@ -25,14 +19,20 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
-@endlicense
 """
+
+__author__ = 'Sam Freeside (@snovvcrash)'
+__email__  = 'snovvcrash@protonmail[.]ch'
+
+__site__  = 'https://github.com/snovvcrash/usbrip'
+__brief__ = 'Command line option parser.'
+
 
 from argparse import ArgumentParser
 
-from lib.core.usbstorage import USBStorage
+from usbrip.lib.core.usbstorage import USBStorage
 
-from lib.core.common import root_dir_join
+from usbrip.lib.core.common import root_dir_join
 
 
 def cmd_line_options():

@@ -1,14 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""
-@file usbevents.py
-@author Sam Freeside <snovvcrash@protonmail[.]ch>
-@date 2018-03
+"""LICENSE
 
-@brief USB events handler.
-
-@license
 Copyright (C) 2018 Sam Freeside
 
 This file is part of usbrip.
@@ -25,17 +19,23 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
-@endlicense
 """
 
-"""
+__author__ = 'Sam Freeside (@snovvcrash)'
+__email__  = 'snovvcrash@protonmail[.]ch'
+
+__site__  = 'https://github.com/snovvcrash/usbrip'
+__brief__ = 'USB events handler.'
+
+
+'''
 mount - Does Ubuntu log when USB devices are connected? - Ask Ubuntu
 	https://askubuntu.com/questions/142050/does-ubuntu-log-when-usb-devices-are-connected
 ubuntu 14.04 - method by which I can track down a list of flash drives - Super User
 	https://superuser.com/questions/1041548/method-by-which-i-can-track-down-a-list-of-flash-drives
 monitoring - Monitor history of USB flash drives - Unix & Linux Stack Exchange
 	https://unix.stackexchange.com/questions/152240/monitor-history-of-usb-flash-drives
-"""
+'''
 
 import re
 import codecs
@@ -45,29 +45,29 @@ import itertools
 import operator
 import os
 
-import lib.core.config as cfg
-
 from collections import OrderedDict, defaultdict
 from string import printable
 
 from terminaltables import AsciiTable, SingleTable
 from termcolor import colored, cprint
 
-from lib.core.common import BULLET
-from lib.core.common import ABSENCE
-from lib.core.common import SEPARATOR
-from lib.core.common import COLUMN_NAMES
-from lib.core.common import MONTH_ENUM
-from lib.core.common import DefaultOrderedDict
-from lib.core.common import root_dir_join
-from lib.core.common import os_makedirs
-from lib.core.common import list_files
-from lib.core.common import print_info
-from lib.core.common import print_warning
-from lib.core.common import print_critical
-from lib.core.common import USBRipError
-from lib.utils.debug import time_it
-from lib.utils.debug import time_it_if_debug
+import usbrip.lib.core.config as cfg
+
+from usbrip.lib.core.common import BULLET
+from usbrip.lib.core.common import ABSENCE
+from usbrip.lib.core.common import SEPARATOR
+from usbrip.lib.core.common import COLUMN_NAMES
+from usbrip.lib.core.common import MONTH_ENUM
+from usbrip.lib.core.common import DefaultOrderedDict
+from usbrip.lib.core.common import root_dir_join
+from usbrip.lib.core.common import os_makedirs
+from usbrip.lib.core.common import list_files
+from usbrip.lib.core.common import print_info
+from usbrip.lib.core.common import print_warning
+from usbrip.lib.core.common import print_critical
+from usbrip.lib.core.common import USBRipError
+from usbrip.lib.utils.debug import time_it
+from usbrip.lib.utils.debug import time_it_if_debug
 
 
 # ----------------------------------------------------------

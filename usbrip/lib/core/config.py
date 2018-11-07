@@ -1,14 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""
-@file config.py
-@author Sam Freeside <snovvcrash@protonmail[.]ch>
-@date 2018-06
+"""LICENSE
 
-@brief Config file containing cross-module vars.
-
-@license
 Copyright (C) 2018 Sam Freeside
 
 This file is part of usbrip.
@@ -25,8 +19,14 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
-@endlicense
 """
+
+__author__ = 'Sam Freeside (@snovvcrash)'
+__email__  = 'snovvcrash@protonmail[.]ch'
+
+__site__  = 'https://github.com/snovvcrash/usbrip'
+__brief__ = 'Config file containing cross-module variables.'
+
 
 import sys
 

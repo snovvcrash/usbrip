@@ -1,14 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""
-@file __init__.py
-@author Sam Freeside <snovvcrash@protonmail[.]ch>
-@date 2018-03
+"""LICENSE
 
-@brief Python __init__ file.
-
-@license
 Copyright (C) 2018 Sam Freeside
 
 This file is part of usbrip.
@@ -25,7 +19,6 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
-@endlicense
 """
 
 pass

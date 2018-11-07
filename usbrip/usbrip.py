@@ -1,14 +1,10 @@
-#!/opt/usbrip/venv/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""
-@file usbrip.py
-@author Sam Freeside <snovvcrash@protonmail[.]ch>
-@date 2018-03
+# Usage: python3 usbrip.py [-h]
 
-@brief usbrip project's driver program.
+"""LICENSE
 
-@license
 Copyright (C) 2018 Sam Freeside
 
 This file is part of usbrip.
@@ -25,32 +21,40 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
-@endlicense
 """
+
+__author__ = 'Sam Freeside (@snovvcrash)'
+__email__  = 'snovvcrash@protonmail[.]ch'
+
+__date__    = '2018-03-21'
+__version__ = '2.1'
+__site__    = 'https://github.com/snovvcrash/usbrip'
+__brief__   = 'usbrip project\'s driver program.'
+
 
 import re
 import os
 import sys
 
 try:
-	import lib.core.config as cfg
+	import usbrip.lib.core.config as cfg
 	cfg.DEBUG = '--debug' in sys.argv
 
-	import lib.utils.timing as timing
+	import usbrip.lib.utils.timing as timing
 
-	from lib.core.usbevents import USBEvents
-	from lib.core.usbstorage import USBStorage
-	from lib.core.usbids import USBIDs
+	from usbrip.lib.core.usbevents import USBEvents
+	from usbrip.lib.core.usbstorage import USBStorage
+	from usbrip.lib.core.usbids import USBIDs
 
 except PermissionError:
 	sys.exit('Permission denied. Retry with sudo')
 
-from lib.core.common import BANNER
-from lib.core.common import COLUMN_NAMES
-from lib.core.common import is_correct
-from lib.core.common import print_critical
-from lib.core.common import USBRipError
-from lib.parse.cliopts import cmd_line_options
+from usbrip.lib.core.common import BANNER
+from usbrip.lib.core.common import COLUMN_NAMES
+from usbrip.lib.core.common import is_correct
+from usbrip.lib.core.common import print_critical
+from usbrip.lib.core.common import USBRipError
+from usbrip.lib.parse.cliopts import cmd_line_options
 
 
 # ----------------------------------------------------------
@@ -280,10 +284,10 @@ def validate_ui_args(args):
 
 def usbrip_arg_error(message=None, *, subparser=' '):
 	if message:
-		print('usage: python3 {}{}[-h]\n'.format(sys.argv[0], subparser))
+		print('Usage: python3 {}{}[-h]\n'.format(sys.argv[0], subparser))
 		print(sys.argv[0].rsplit('/', 1)[-1] + ': argument error: ' + message, file=sys.stderr)
 	else:
-		print('usage: python3 {} [-h]'.format(sys.argv[0]))
+		print('Usage: python3 {} [-h]'.format(sys.argv[0]))
 
 	sys.exit(1)
 

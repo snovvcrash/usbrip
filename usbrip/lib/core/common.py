@@ -1,14 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""
-@file common.py
-@author Sam Freeside <snovvcrash@protonmail[.]ch>
-@date 2018-03
+"""LICENSE
 
-@brief Common items.
-
-@license
 Copyright (C) 2018 Sam Freeside
 
 This file is part of usbrip.
@@ -25,20 +19,28 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
-@endlicense
 """
+
+__author__ = 'Sam Freeside (@snovvcrash)'
+__email__  = 'snovvcrash@protonmail[.]ch'
+
+__site__  = 'https://github.com/snovvcrash/usbrip'
+__brief__ = 'Common items.'
+
 
 import random
 import os
 import sys
-
-import lib.core.config as cfg
 
 from string import printable
 from calendar import month_name
 from collections import OrderedDict, Callable
 
 from termcolor import colored, cprint
+
+import usbrip.lib.core.config as cfg
+
+from usbrip.usbrip import __version__, __site__
 
 
 # ----------------------------------------------------------
@@ -56,8 +58,8 @@ SEPARATOR = '\u2212'  # '−', U_MINUS_SIGN
 # ----------------------------------------------------------
 
 
-VERSION = '2.0'
-SITE = 'https://github.com/snovvcrash/usbrip'
+VERSION = __version__
+SITE = __site__
 
 VERSION_FORMATTED = '\033[1;37m{\033[1;34mv%s\033[1;37m}\033[1;33m' % VERSION
 SITE_FORMATTED = '\033[0m\033[4;37m%s\033[0m' % SITE

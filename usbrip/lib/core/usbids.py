@@ -1,14 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""
-@file usbids.py
-@author Sam Freeside <snovvcrash@protonmail[.]ch>
-@date 2018-03
+"""LICENSE
 
-@brief USB IDs handler.
-
-@license
 Copyright (C) 2018 Sam Freeside
 
 This file is part of usbrip.
@@ -25,30 +19,36 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
-@endlicense
 """
 
-"""
+__author__ = 'Sam Freeside (@snovvcrash)'
+__email__  = 'snovvcrash@protonmail[.]ch'
+
+__site__  = 'https://github.com/snovvcrash/usbrip'
+__brief__ = 'USB IDs handler.'
+
+
+'''
 USB Vendor/Device IDs Database - Linux-USB.org
 	http://www.linux-usb.org/usb.ids
-"""
+'''
 
 import re
 import socket
 import os
 
-import lib.core.config as cfg
-
 from urllib.request import urlopen
 
-from lib.core.common import root_dir_join
-from lib.core.common import os_makedirs
-from lib.core.common import print_info
-from lib.core.common import print_warning
-from lib.core.common import print_critical
-from lib.core.common import USBRipError
-from lib.utils.debug import time_it
-from lib.utils.debug import time_it_if_debug
+import usbrip.lib.core.config as cfg
+
+from usbrip.lib.core.common import root_dir_join
+from usbrip.lib.core.common import os_makedirs
+from usbrip.lib.core.common import print_info
+from usbrip.lib.core.common import print_warning
+from usbrip.lib.core.common import print_critical
+from usbrip.lib.core.common import USBRipError
+from usbrip.lib.utils.debug import time_it
+from usbrip.lib.utils.debug import time_it_if_debug
 
 
 # ----------------------------------------------------------

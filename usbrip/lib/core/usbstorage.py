@@ -1,14 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""
-@file usbstorage.py
-@author Sam Freeside <snovvcrash@protonmail[.]ch>
-@date 2018-05
+"""LICENSE
 
-@brief USB Storage handler.
-
-@license
 Copyright (C) 2018 Sam Freeside
 
 This file is part of usbrip.
@@ -25,33 +19,39 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
-@endlicense
 """
+
+__author__ = 'Sam Freeside (@snovvcrash)'
+__email__  = 'snovvcrash@protonmail[.]ch'
+
+__site__  = 'https://github.com/snovvcrash/usbrip'
+__brief__ = 'USB Storage handler.'
+
 
 import re
 import json
 import subprocess
 import os
 
-import lib.core.config as cfg
-
 from base64 import b64encode
 from datetime import datetime
 
-from lib.core.usbevents import USBEvents
+import usbrip.lib.core.config as cfg
 
-from lib.core.usbevents import _filter_events
-from lib.core.usbevents import _dump_events
-from lib.core.usbevents import _process_auth_list
-from lib.core.common import MONTH_ENUM
-from lib.core.common import is_correct
-from lib.core.common import print_info
-from lib.core.common import print_warning
-from lib.core.common import print_critical
-from lib.core.common import print_secret
-from lib.core.common import USBRipError
-from lib.utils.debug import time_it
-from lib.utils.debug import time_it_if_debug
+from usbrip.lib.core.usbevents import USBEvents
+
+from usbrip.lib.core.usbevents import _filter_events
+from usbrip.lib.core.usbevents import _dump_events
+from usbrip.lib.core.usbevents import _process_auth_list
+from usbrip.lib.core.common import MONTH_ENUM
+from usbrip.lib.core.common import is_correct
+from usbrip.lib.core.common import print_info
+from usbrip.lib.core.common import print_warning
+from usbrip.lib.core.common import print_critical
+from usbrip.lib.core.common import print_secret
+from usbrip.lib.core.common import USBRipError
+from usbrip.lib.utils.debug import time_it
+from usbrip.lib.utils.debug import time_it_if_debug
 
 
 # ----------------------------------------------------------

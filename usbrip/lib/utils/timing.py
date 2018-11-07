@@ -1,14 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""
-@file debug.py
-@author Sam Freeside <snovvcrash@protonmail[.]ch>
-@date 2018-05
+"""LICENSE
 
-@brief Debug utils.
-
-@license
 Copyright (C) 2018 Sam Freeside
 
 This file is part of usbrip.
@@ -25,34 +19,40 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
-@endlicense
 """
 
-import functools
+__author__ = 'Sam Freeside (@snovvcrash)'
+__email__  = 'snovvcrash@protonmail[.]ch'
+
+__site__  = 'https://github.com/snovvcrash/usbrip'
+__brief__ = 'Program runtime meter.'
+
+
+import atexit
 import time
+import datetime
 
-import lib.core.config as cfg
+import usbrip.lib.core.config as cfg
 
-
-def time_it(func):
-	@functools.wraps(func)
-	def wrapper(*args, **kwargs):
-		start = time.time()
-		result = func(*args, **kwargs)
-		end = time.time()
-		print('{}: {:.3f} seconds'.format(func.__name__, end-start))
-		return result
-
-	return wrapper
+START = time.time()
 
 
-class time_it_if_debug:
-	def __init__(self, condition, decorator):
-		self._condition = cfg.DEBUG
-		self._decorator = decorator
+def tick(msg, fmt='%H:%M:%S', taken=None):
+	#fmt = '%Y-%m-%d %H:%M:%S'
+	now = time.strftime(fmt, time.localtime())
+	print('%s %s' % (msg, now))
+	if taken:
+		taken = datetime.timedelta(seconds=taken)
+		print('[*] Time taken: %s' % taken)
 
-	def __call__(self, func):
-		if not self._condition:
-			return func
 
-		return self._decorator(func)
+def final():
+	end = time.time()
+	taken = end - START
+	tick('[*] Shutted down at', taken=taken)
+
+
+def begin():
+	if not cfg.QUIET:
+		atexit.register(final)
+		tick('[*] Started at')
