@@ -65,7 +65,7 @@ $ pipenv install && pipenv shell
 
 Installation
 ==========
-First of all, usbrip in pip installable. This means you can simply git clone the repo, fire the pip installation process and run usbrip from anywhere in your terminal:
+First of all, usbrip is pip installable. This means you can simply git clone the repo, fire the pip installation process and run usbrip from anywhere in your terminal like so:
 ```
 (venv) $ git clone https://github.com/snovvcrash/usbrip.git usbrip && cd usbrip
 (venv) $ pip install .
@@ -87,7 +87,6 @@ The `uninstall.sh` script removes all the installation artifacts from your syste
 
 To install usbrip use:
 ```
-$ git clone https://github.com/snovvcrash/usbrip.git usbrip && cd usbrip
 $ chmod +x install.sh
 
 # When -s switch is enabled, not only the usbrip project is installed, but also the list of trusted USB devices, history and violations storages are created
@@ -111,7 +110,7 @@ When installed, the usbrip uses the following paths:
   * `/var/opt/usbrip/storage/` — USB event storages: `history.7z` and `violations.7z` (created during the installation process);
   * `/var/opt/usbrip/log/` — usbrip logs (recommended to log usbrip activity when using crontab, see `usbrip.cron`);
   * `/var/opt/usbrip/trusted/` — list of trusted USB devices (created during the installation process);
-  * `/usr/local/bin/usbrip` — symlink to the `/opt/usbrip/venv/bin/usbrip` file.
+  * `/usr/local/bin/usbrip` — symlink to the `/opt/usbrip/venv/bin/usbrip` script.
 
 Usage
 ==========
