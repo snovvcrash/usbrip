@@ -94,7 +94,7 @@ setup(
 	packages=find_packages(),
 
 	data_files=[
-		('', ['README.rst', 'requirements.txt', 'usbrip.cron']),
+		('', ['README.md', 'requirements.txt', 'usbrip.cron']),
 		('usbrip/usb_ids', ['usbrip/usb_ids/usb.ids'])
 	],
 
