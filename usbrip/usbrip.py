@@ -27,7 +27,6 @@ __author__ = 'Sam Freeside (@snovvcrash)'
 __email__  = 'snovvcrash@protonmail[.]ch'
 
 __date__    = '2018-03-21'
-__version__ = '2.1'
 __site__    = 'https://github.com/snovvcrash/usbrip'
 __brief__   = 'usbrip project\'s driver program.'
 
@@ -422,12 +421,3 @@ def _validate_file_args(args):
 def _validate_vid_pid_args(args):
 	if 'vid' in args and 'pid' in args and not args.vid and not args.pid:
 		usbrip_arg_error('At least one of --vid/--pid or --download option should be specified')
-
-
-# ----------------------------------------------------------
-# ------------------------- Start --------------------------
-# ----------------------------------------------------------
-
-
-if __name__ == '__main__':
-	main()

@@ -25,8 +25,6 @@ __author__ = 'Sam Freeside (@snovvcrash)'
 __email__  = 'snovvcrash@protonmail[.]ch'
 
 __license__ = 'GPL-3.0'
-__date__    = '2018-03-21'
-__version__ = '2.1'
 __site__    = 'https://github.com/snovvcrash/usbrip'
 __brief__   = 'USB device artifacts tracker.'
 
@@ -36,6 +34,8 @@ import shutil
 import os
 
 from setuptools import setup, find_packages, Command
+
+from usbrip import __version__
 
 
 class CleanCommand(Command):

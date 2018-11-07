@@ -40,7 +40,7 @@ from termcolor import colored, cprint
 
 import usbrip.lib.core.config as cfg
 
-from usbrip.usbrip import __version__, __site__
+from usbrip import __version__
 
 
 # ----------------------------------------------------------
