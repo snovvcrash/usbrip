@@ -1,6 +1,7 @@
 usbrip
 ==========
-[![Python Version](https://img.shields.io/badge/python-3.x-blue.svg)](https://www.python.org/downloads/)
+![usbrip Version](https://img.shields.io/badge/ver-2.1-red.svg)
+[![Python Version](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://raw.githubusercontent.com/snovvcrash/usbrip/master/LICENSE)
 [![Built with Love](https://img.shields.io/badge/built%20with-%F0%9F%92%97%F0%9F%92%97%F0%9F%92%97-lightgrey.svg)](https://emojipedia.org/growing-heart/)
 
@@ -42,8 +43,8 @@ Dependencies
 usbrip works with **non**-modified structure of system log files only, so, unfortunately, it won't be able to parse USB history if you change the format of syslogs (with `syslog-ng` or `rsyslog` for example). That's why the timestamps of "Connected" and "Disconnected" fields don't have the year, by the way. Keep that in mind.
 
 ## DEB Packages
-  * python3.x (or newer) interpreter
-  * python-virtualenv *(optionally if used in portable mode only)*
+  * python3.6 (or newer) interpreter
+  * python-virtualenv
   * p7zip-full *(used by `storages` module)*
 
 ## PIP Packages
@@ -51,18 +52,33 @@ usbrip makes use of the following external modules:
   * [terminaltables](https://github.com/Robpol86/terminaltables "Robpol86/terminaltables: Generate simple tables in terminals from a nested list of strings.")
   * [termcolor](https://pypi.org/project/termcolor "termcolor · PyPI")
 
-Resolve all Python dependencies with the `pip` one-liner:
+To resolve all Python dependencies create a virtual environment and run `pip` from within:
 ```
-$ python3 -m pip install -r requirements.txt
+$ virtualenv -p python3 venv && . venv/bin/activate
+(venv) $ pip install -r requirements.txt
+```
+
+Or let the `pipenv` one-liner do all the dirty work for you:
+```
+$ pipenv install && pipenv shell
 ```
 
 Installation
 ==========
-usbrip can work in portable mode (when you run it explicity with `python3` command like in [Examples](#examples)) but it also can be installed on the system with the `install.sh` script.
+First of all, usbrip in pip installable. This means you can simply git clone the repo, fire the pip installation process and run usbrip from anywhere in your terminal:
+```
+(venv) $ git clone https://github.com/snovvcrash/usbrip.git usbrip && cd usbrip
+(venv) $ pip install .
+
+(venv) $ usbrip -h
+```
+
+:exclamation: **Note**: you likely want to run the installer while the *python virtual environment* is active (like it is shown above).
+
+Secondly, usbrip can also be installed into the system with the `install.sh` script.
 
 When using the `install.sh` some extra features become available:
-  * all the necessary [Python requirements](#python) are installed automatically (by creating virtual environment);
-  * you can run usbrip from anywhere in your terminal with `usbrip` command;
+  * the virtual environment is created automatically;
   * you can set a crontab job to backup USB events on a schedule (the example of crontab jobs can be found in `usbrip.cron`).
 
 :warning: **Warning**: if you are using the crontab scheduling, you want to configure the cron job with `sudo crontab -e` in order to force the `storage update` submodule run as root as well as protect the passwords of the USB event storages. It's obviously **not a truly secure way** to input passwords (no secrets should be ever stored as plain text / passed as arguments on the command line due to a variety of ways of exposing such secrets, e. g. scanning `/proc` directory for new PIDs to catch short-lived processes with all the corresponding CLI args), but this is just an educational project in the end (interactive mode for secure password prompting is in the TODO list :neutral_face:).
@@ -77,7 +93,8 @@ $ chmod +x install.sh
 # When -s switch is enabled, not only the usbrip project is installed, but also the list of trusted USB devices, history and violations storages are created
 $ sudo -H ./install.sh [-s, --storages]
 ```
-:warning: **Warning**: when using `-s` option during installation, make sure that system logs do contain at least one *external* USB device entry. It is a necessary condition for usbrip to successfully create the list of trusted devices (and as a result, successfully create the violations storage).
+
+:exclamation: **Note**: when using `-s` option during installation, make sure that system logs do contain at least one *external* USB device entry. It is a necessary condition for usbrip to successfully create the list of trusted devices (and as a result, successfully create the violations storage).
 
 After the installation completes, feel free to remove the usbrip folder.
 
@@ -94,7 +111,7 @@ When installed, the usbrip uses the following paths:
   * `/var/opt/usbrip/storage/` — USB event storages: `history.7z` and `violations.7z` (created during the installation process);
   * `/var/opt/usbrip/log/` — usbrip logs (recommended to log usbrip activity when using crontab, see `usbrip.cron`);
   * `/var/opt/usbrip/trusted/` — list of trusted USB devices (created during the installation process);
-  * `/usr/local/bin/usbrip` — symlink to the `/opt/usbrip/usbrip.py` file.
+  * `/usr/local/bin/usbrip` — symlink to the `/opt/usbrip/venv/bin/usbrip` file.
 
 Usage
 ==========
