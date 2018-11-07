@@ -52,7 +52,7 @@ usbrip makes use of the following external modules:
   * [terminaltables](https://github.com/Robpol86/terminaltables "Robpol86/terminaltables: Generate simple tables in terminals from a nested list of strings.")
   * [termcolor](https://pypi.org/project/termcolor "termcolor · PyPI")
 
-To resolve all Python dependencies create a virtual environment and run `pip` from within:
+To resolve Python dependencies create a *virtual environment* and run `pip` from within:
 ```
 $ virtualenv -p python3 venv && . venv/bin/activate
 (venv) $ pip install -r requirements.txt
@@ -73,7 +73,7 @@ First of all, usbrip is pip installable. This means you can simply git clone the
 (venv) $ usbrip -h
 ```
 
-:exclamation: **Note**: you likely want to run the installer while the *python virtual environment* is active (like it is shown above).
+:alien: **Note**: you likely want to run the installer while the Python virtual environment is active (like it is shown above).
 
 Secondly, usbrip can also be installed into the system with the `install.sh` script.
 
@@ -93,7 +93,7 @@ $ chmod +x install.sh
 $ sudo -H ./install.sh [-s, --storages]
 ```
 
-:exclamation: **Note**: when using `-s` option during installation, make sure that system logs do contain at least one *external* USB device entry. It is a necessary condition for usbrip to successfully create the list of trusted devices (and as a result, successfully create the violations storage).
+:alien: **Note**: when using `-s` option during installation, make sure that system logs do contain at least one *external* USB device entry. It is a necessary condition for usbrip to successfully create the list of trusted devices (and as a result, successfully create the violations storage).
 
 After the installation completes, feel free to remove the usbrip folder.
 
