@@ -26,9 +26,9 @@ along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 __author__ = 'Sam Freeside (@snovvcrash)'
 __email__  = 'snovvcrash@protonmail[.]ch'
 
-__date__    = '2018-03-21'
-__site__    = 'https://github.com/snovvcrash/usbrip'
-__brief__   = 'usbrip project\'s driver program.'
+__date__  = '2018-03-21'
+__site__  = 'https://github.com/snovvcrash/usbrip'
+__brief__ = 'usbrip project\'s driver program.'
 
 
 import re
