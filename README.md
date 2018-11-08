@@ -1,9 +1,9 @@
 usbrip
 ==========
-![usbrip Version](https://img.shields.io/badge/ver-2.1-red.svg)
-[![Python Version](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/)
-[![License](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://raw.githubusercontent.com/snovvcrash/usbrip/master/LICENSE)
-[![Built with Love](https://img.shields.io/badge/built%20with-%F0%9F%92%97%F0%9F%92%97%F0%9F%92%97-lightgrey.svg)](https://emojipedia.org/growing-heart/)
+![usbrip-version](https://img.shields.io/badge/ver-2.1-red.svg)
+[![python-version](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/)
+[![license](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://raw.githubusercontent.com/snovvcrash/usbrip/master/LICENSE)
+[![built-with-love](https://img.shields.io/badge/built%20with-%F0%9F%92%97%F0%9F%92%97%F0%9F%92%97-lightgrey.svg)](https://emojipedia.org/growing-heart/)
 
 [![Logo](https://user-images.githubusercontent.com/23141800/38119848-68883eea-33cd-11e8-98b5-4a33abbdd1dc.png)](#usbrip)
 
