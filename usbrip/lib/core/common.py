@@ -61,18 +61,18 @@ SEPARATOR = '\u2212'  # '−', U_MINUS_SIGN
 VERSION = __version__
 SITE = __site__
 
-VERSION_FORMATTED = '\033[1;37m{\033[1;34mv%s\033[1;37m}\033[1;33m' % VERSION
+VERSION_FORMATTED = '\033[0m\033[1;37m{\033[1;34mv%s\033[1;37m}\033[0m' % VERSION
 SITE_FORMATTED = '\033[0m\033[4;37m%s\033[0m' % SITE
 
-BANNER = """\033[1;33m\
+BANNER = '''\033[1;33m\
                        
-         _     {{4}}    %s
+         _     {{4}}    %s\033[1;33m
  _ _ ___| |_ ___[+]___ 
 | | |_ -| . |  _[*] . |
 |___|___|___|_| [?]  _|
                x[^]_|   %s
                        \
-""" % (VERSION_FORMATTED, SITE_FORMATTED)
+''' % (VERSION_FORMATTED, SITE_FORMATTED)
 
 E = ('E', 'e', '3')
 N = ('N', 'n')
