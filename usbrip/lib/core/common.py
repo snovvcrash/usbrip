@@ -144,7 +144,7 @@ else:
 # ----------------------------------------------------------
 
 
-MONTH_ENUM = {m[:3]: str(i+1) for i, m in enumerate(month_name[1:])}
+MONTH_ENUM = {m[:3]: hex(i+1)[2:].upper() for i, m in enumerate(month_name[1:])}
 
 
 # ----------------------------------------------------------
