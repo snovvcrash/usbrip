@@ -21,6 +21,7 @@ You should have received a copy of the GNU General Public License
 along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+
 __author__ = 'Sam Freeside (@snovvcrash)'
 __email__  = 'snovvcrash@protonmail[.]ch'
 
@@ -29,6 +30,7 @@ __brief__ = 'Config file containing cross-module variables.'
 
 
 import sys
+
 
 DEBUG = False
 

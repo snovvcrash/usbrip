@@ -21,11 +21,22 @@ You should have received a copy of the GNU General Public License
 along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+
+# ----------------------------------------------------------
+# ------------------------ Headers -------------------------
+# ----------------------------------------------------------
+
+
 __author__ = 'Sam Freeside (@snovvcrash)'
 __email__  = 'snovvcrash@protonmail[.]ch'
 
 __site__  = 'https://github.com/snovvcrash/usbrip'
 __brief__ = 'USB Storage handler.'
+
+
+# ----------------------------------------------------------
+# ------------------------- Import -------------------------
+# ----------------------------------------------------------
 
 
 import re

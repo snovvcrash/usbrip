@@ -21,13 +21,6 @@ You should have received a copy of the GNU General Public License
 along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-__author__ = 'Sam Freeside (@snovvcrash)'
-__email__  = 'snovvcrash@protonmail[.]ch'
-
-__site__  = 'https://github.com/snovvcrash/usbrip'
-__brief__ = 'USB events handler.'
-
-
 '''
 mount - Does Ubuntu log when USB devices are connected? - Ask Ubuntu
 	https://askubuntu.com/questions/142050/does-ubuntu-log-when-usb-devices-are-connected
@@ -36,6 +29,24 @@ ubuntu 14.04 - method by which I can track down a list of flash drives - Super U
 monitoring - Monitor history of USB flash drives - Unix & Linux Stack Exchange
 	https://unix.stackexchange.com/questions/152240/monitor-history-of-usb-flash-drives
 '''
+
+
+# ----------------------------------------------------------
+# ------------------------ Headers -------------------------
+# ----------------------------------------------------------
+
+
+__author__ = 'Sam Freeside (@snovvcrash)'
+__email__  = 'snovvcrash@protonmail[.]ch'
+
+__site__  = 'https://github.com/snovvcrash/usbrip'
+__brief__ = 'USB events handler.'
+
+
+# ----------------------------------------------------------
+# -------------------------- Main --------------------------
+# ----------------------------------------------------------
+
 
 import re
 import codecs

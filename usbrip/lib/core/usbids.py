@@ -21,6 +21,17 @@ You should have received a copy of the GNU General Public License
 along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+'''
+USB Vendor/Device IDs Database - Linux-USB.org
+	http://www.linux-usb.org/usb.ids
+'''
+
+
+# ----------------------------------------------------------
+# ------------------------ Headers -------------------------
+# ----------------------------------------------------------
+
+
 __author__ = 'Sam Freeside (@snovvcrash)'
 __email__  = 'snovvcrash@protonmail[.]ch'
 
@@ -28,10 +39,10 @@ __site__  = 'https://github.com/snovvcrash/usbrip'
 __brief__ = 'USB IDs handler.'
 
 
-'''
-USB Vendor/Device IDs Database - Linux-USB.org
-	http://www.linux-usb.org/usb.ids
-'''
+# ----------------------------------------------------------
+# ------------------------- Import -------------------------
+# ----------------------------------------------------------
+
 
 import re
 import socket

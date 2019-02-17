@@ -21,6 +21,7 @@ You should have received a copy of the GNU General Public License
 along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+
 __author__ = 'Sam Freeside (@snovvcrash)'
 __email__  = 'snovvcrash@protonmail[.]ch'
 
@@ -33,6 +34,7 @@ import time
 import datetime
 
 import usbrip.lib.core.config as cfg
+
 
 START = time.time()
 

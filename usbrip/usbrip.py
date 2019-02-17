@@ -23,12 +23,23 @@ You should have received a copy of the GNU General Public License
 along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+
+# ----------------------------------------------------------
+# ------------------------ Headers -------------------------
+# ----------------------------------------------------------
+
+
 __author__ = 'Sam Freeside (@snovvcrash)'
 __email__  = 'snovvcrash@protonmail[.]ch'
 
 __date__  = '2018-03-21'
 __site__  = 'https://github.com/snovvcrash/usbrip'
 __brief__ = 'usbrip project"s driver program.'
+
+
+# ----------------------------------------------------------
+# ------------------------- Import -------------------------
+# ----------------------------------------------------------
 
 
 import re
@@ -53,7 +64,7 @@ from usbrip.lib.core.common import COLUMN_NAMES
 from usbrip.lib.core.common import is_correct
 from usbrip.lib.core.common import print_critical
 from usbrip.lib.core.common import USBRipError
-from usbrip.lib.parse.cliopts import cmd_line_options
+from usbrip.lib.parse.argparser import cmd_line_options
 
 
 # ----------------------------------------------------------
