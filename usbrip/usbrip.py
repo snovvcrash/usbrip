@@ -28,7 +28,7 @@ __email__  = 'snovvcrash@protonmail[.]ch'
 
 __date__  = '2018-03-21'
 __site__  = 'https://github.com/snovvcrash/usbrip'
-__brief__ = 'usbrip project\'s driver program.'
+__brief__ = 'usbrip project"s driver program.'
 
 
 import re
@@ -237,7 +237,7 @@ def main():
 
 	else:
 		subparser = ' ' + args.subparser + ' '
-		usbrip_arg_error('Choose one of the usbrip {} actions'.format(args.subparser), subparser=subparser)
+		usbrip_arg_error(f'Choose one of the usbrip {args.subparser} actions', subparser=subparser)
 
 
 # ----------------------------------------------------------
@@ -283,10 +283,10 @@ def validate_ui_args(args):
 
 def usbrip_arg_error(message=None, *, subparser=' '):
 	if message:
-		print('Usage: python3 {}{}[-h]\n'.format(sys.argv[0], subparser))
+		print(f'Usage: python3 {sys.argv[0]}{subparser}[-h]\n')
 		print(sys.argv[0].rsplit('/', 1)[-1] + ': argument error: ' + message, file=sys.stderr)
 	else:
-		print('Usage: python3 {} [-h]'.format(sys.argv[0]))
+		print(f'Usage: python3 {sys.argv[0]} [-h]')
 
 	sys.exit(1)
 
@@ -381,9 +381,9 @@ def _validate_storage_type_args(args):
 
 	if args.storage_type == 'history':
 		if 'input' in args and args.input:
-			usbrip_arg_error('Cannot use \'--input\' swith with history storage')
+			usbrip_arg_error('Cannot use "--input" swith with history storage')
 		if 'attribute' in args and args.attribute:
-			usbrip_arg_error('Cannot use \'--attribute\' swith with history storage')
+			usbrip_arg_error('Cannot use "--attribute" swith with history storage')
 	elif args.storage_type == 'violations':
 		if 'input' in args and args.input is None:
 			usbrip_arg_error('Please specify input path for the list of authorized devices (-i)')

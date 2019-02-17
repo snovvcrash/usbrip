@@ -159,11 +159,11 @@ def build_ueg_parser(subparsers):
     _parse_attribute_args(
         ueg_parser,
         help_msg='attributes to include in authorized device list '
-                 '(options: \'vid\', '
-                 '\'pid\', '
-                 '\'prod\', '
-                 '\'manufact\', '
-                 '\'serial\'.)'
+                 '(options: "vid", '
+                 '"pid", '
+                 '"prod", '
+                 '"manufact", '
+                 '"serial".)'
     )
 
 
@@ -194,11 +194,11 @@ def build_uev_parser(subparsers):
     _parse_attribute_args(
         uev_parser,
         help_msg='attributes to look through when searching for USB violation events '
-                 '(options: \'vid\', '
-                 '\'pid\', '
-                 '\'prod\', '
-                 '\'manufact\', '
-                 '\'serial\'.)'
+                 '(options: "vid", '
+                 '"pid", '
+                 '"prod", '
+                 '"manufact", '
+                 '"serial".)'
     )
 
 
@@ -273,11 +273,11 @@ def build_usu_parser(subparsers):
     _parse_attribute_args(
         usu_parser,
         help_msg='attributes to look through when searching for USB violation events '
-                 '(options: \'vid\', '
-                 '\'pid\', '
-                 '\'prod\', '
-                 '\'manufact\', '
-                 '\'serial\'.)'
+                 '(options: "vid", '
+                 '"pid", '
+                 '"prod", '
+                 '"manufact", '
+                 '"serial".)'
     )
 
     usu_parser.add_argument(
@@ -295,9 +295,8 @@ def build_usu_parser(subparsers):
 def build_usc_parser(subparsers):
     usc_parser = subparsers.add_parser(
         'create',
-        help='create initial history/violations storage; '
-             'storage path is \'{}\''
-             .format(USBStorage._STORAGE_BASE)
+        help=f'create initial history/violations storage; '
+             f'storage path is "{USBStorage._STORAGE_BASE}"'
     )
 
     _parse_debug_args(usc_parser)
@@ -309,11 +308,11 @@ def build_usc_parser(subparsers):
     _parse_attribute_args(
         usc_parser,
         help_msg='attributes to look through when searching for USB violation events '
-                 '(options: \'vid\', '
-                 '\'pid\', '
-                 '\'prod\', '
-                 '\'manufact\', '
-                 '\'serial\'.)'
+                 '(options: "vid", '
+                 '"pid", '
+                 '"prod", '
+                 '"manufact", '
+                 '"serial".)'
     )
 
     usc_parser.add_argument(
@@ -364,9 +363,8 @@ def build_ui_parser(subparsers):
 def build_uis_parser(subparsers):
     uis_parser = subparsers.add_parser(
         'search',
-        help='search by VID and/or PID; '
-             'ids database path is \'{}\''
-             .format(root_dir_join('usb_ids/usb.ids'))
+        help=f'search by VID and/or PID; '
+             f'ids database path is "{root_dir_join("usb_ids/usb.ids")}"'
     )
 
     _parse_debug_args(uis_parser)
@@ -399,9 +397,8 @@ def build_uis_parser(subparsers):
 def build_uid_parser(subparsers):
     uid_parser = subparsers.add_parser(
         'download',
-        help='download/update database;'
-             'ids database path is \'{}\''
-             .format(root_dir_join('usb_ids/usb.ids'))
+        help=f'download/update database;'
+             f'ids database path is "{root_dir_join("usb_ids/usb.ids")}"'
     )
 
     _parse_debug_args(uid_parser)
@@ -438,15 +435,15 @@ def _parse_column_args(parser):
         nargs='+',
         type=str,
         default=[],
-        help='columns to show (options: \'conn\', '
-             '\'user\', '
-             '\'vid\', '
-             '\'pid\', '
-             '\'prod\', '
-             '\'manufact\', '
-             '\'serial\', '
-             '\'port\', '
-             '\'disconn\'.)'
+        help='columns to show (options: "conn", '
+             '"user", '
+             '"vid", '
+             '"pid", '
+             '"prod", '
+             '"manufact", '
+             '"serial", '
+             '"port", '
+             '"disconn".)'
     )
 
 
@@ -455,7 +452,7 @@ def _parse_sieve_args(parser):
         '-e',
         '--external',
         action='store_true',
-        help='show only those devices which have \'disconnect\' date'
+        help='show only those devices which have "disconnect" date'
     )
 
     parser.add_argument(
@@ -565,7 +562,7 @@ def _parse_storage_type_args(parser):
     parser.add_argument(
         'storage_type',
         type=str,
-        help='storage type (options: \'history\', \'violations\')'
+        help='storage type (options: "history", "violations")'
     )
 
 

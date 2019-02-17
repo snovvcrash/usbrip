@@ -40,7 +40,7 @@ def time_it(func):
 		start = time.time()
 		result = func(*args, **kwargs)
 		end = time.time()
-		print('{}: {:.3f} seconds'.format(func.__name__, end-start))
+		print(f'{func.__name__}: {end-start:.3f} seconds')
 		return result
 
 	return wrapper

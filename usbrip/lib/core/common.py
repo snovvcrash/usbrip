@@ -189,7 +189,7 @@ class DefaultOrderedDict(OrderedDict):
 		return type(self)(self._default_factory, copy.deepcopy(self.items()))
 
 	def __repr__(self):
-		return 'OrderedDefaultDict({!s}, {!s})'.format(self._default_factory, OrderedDict.__repr__(self))
+		return f'OrderedDefaultDict({self._default_factory!s}, {OrderedDict.__repr__(self)!s})'
 
 
 # ----------------------------------------------------------
@@ -206,13 +206,13 @@ def os_makedirs(dirname):
 		os.makedirs(dirname)
 	except PermissionError as e:
 		raise USBRipError(
-			'Permission denied: \'{}\''.format(dirname),
+			f'Permission denied: "{dirname}"',
 			errors={'initial_error': str(e)}
 		)
 	except OSError as e:  # exists
 		if not os.path.isdir(dirname):
 			raise USBRipError(
-				'Path exists and it is not a directory: \'{}\''.format(dirname),
+				f'Path exists and it is not a directory: "{dirname}"',
 				errors={'initial_error': str(e)}
 			)
 
@@ -250,9 +250,9 @@ def print_info(message):
 		return
 
 	if cfg.ISATTY:
-		cprint('[INFO] {}'.format(message), 'green')
+		cprint(f'[INFO] {message}', 'green')
 	else:
-		print('[INFO] {}'.format(message))
+		print(f'[INFO] {message}')
 
 
 def print_warning(message, *, errcode=0, initial_error=''):
@@ -261,27 +261,27 @@ def print_warning(message, *, errcode=0, initial_error=''):
 
 	if cfg.DEBUG:
 		if errcode:
-			print('ERRCODE: {}'.format(errcode))
+			print(f'ERRCODE: {errcode}')
 		if initial_error:
 			print(initial_error, file=sys.stderr)
 
 	if cfg.ISATTY:
-		cprint('[WARNING] {}'.format(message), 'yellow')
+		cprint(f'[WARNING] {message}', 'yellow')
 	else:
-		print('[WARNING] {}'.format(message))
+		print(f'[WARNING] {message}')
 
 
 def print_critical(message, *, errcode=0, initial_error=''):
 	if cfg.DEBUG:
 		if errcode:
-			print('ERRCODE: {}'.format(errcode))
+			print(f'ERRCODE: {errcode}')
 		if initial_error:
 			print(initial_error, file=sys.stderr)
 
 	if cfg.ISATTY:
-		cprint('[CRITICAL] {}'. format(message), 'white', 'on_red', attrs=['bold'])
+		cprint(f'[CRITICAL] {message}', 'white', 'on_red', attrs=['bold'])
 	else:
-		print('[CRITICAL] {}'. format(message))
+		print(f'[CRITICAL] {message}')
 
 
 def print_secret(message, *, secret=''):
@@ -294,4 +294,4 @@ def print_secret(message, *, secret=''):
 			'white', attrs=['bold']
 		)
 	else:
-		print('[SECRET] {} {}'.format(message, secret))
+		print(f'[SECRET] {message} {secret}')

@@ -72,9 +72,9 @@ class USBStorage:
 	@staticmethod
 	@time_it_if_debug(cfg.DEBUG, time_it)
 	def list_storage(storage_type, password):
-		storage_full_path = '{}/{}.7z'.format(USBStorage._STORAGE_BASE, storage_type)
+		storage_full_path = f'{USBStorage._STORAGE_BASE}/{storage_type}.7z'
 		if not os.path.isfile(storage_full_path):
-			print_critical('Storage not found: \'{}\''.format(storage_full_path))
+			print_critical(f'Storage not found: "{storage_full_path}"')
 			return
 
 		try:
@@ -93,9 +93,9 @@ class USBStorage:
 	@staticmethod
 	@time_it_if_debug(cfg.DEBUG, time_it)
 	def open_storage(storage_type, password, columns, *, sieve=None, repres=None):
-		storage_full_path = '{}/{}.7z'.format(USBStorage._STORAGE_BASE, storage_type)
+		storage_full_path = f'{USBStorage._STORAGE_BASE}/{storage_type}.7z'
 		if not os.path.isfile(storage_full_path):
-			print_critical('Storage not found: \'{}\''.format(storage_full_path))
+			print_critical(f'Storage not found: "{storage_full_path}"')
 			return
 
 		try:
@@ -106,7 +106,7 @@ class USBStorage:
 
 		if 'Everything is Ok' in out:
 			base_filename = re.search(r'Extracting\s*(.*?$)', out, re.MULTILINE).group(1)
-			json_file = '{}/{}'.format(USBStorage._STORAGE_BASE, base_filename)
+			json_file = f'{USBStorage._STORAGE_BASE}/{base_filename}'
 			USBEvents.open_dump(json_file, columns, sieve=sieve, repres=repres)
 			os.remove(json_file)
 		else:
@@ -144,12 +144,12 @@ class USBStorage:
 			print_info('No events to append')
 			return 1
 
-		storage_full_path = '{}/{}.7z'.format(USBStorage._STORAGE_BASE, storage_type)
+		storage_full_path = f'{USBStorage._STORAGE_BASE}/{storage_type}.7z'
 		if not os.path.isfile(storage_full_path):
-			print_critical('Storage not found: \'{}\''.format(storage_full_path))
+			print_critical(f'Storage not found: "{storage_full_path}"')
 			return 1
 
-		print_info('Updating storage: \'{}\''.format(storage_full_path))
+		print_info(f'Updating storage: "{storage_full_path}"')
 
 		try:
 			out = _7zip_unpack(storage_full_path, password)
@@ -160,7 +160,7 @@ class USBStorage:
 		if 'Everything is Ok' in out:
 			os.remove(storage_full_path)
 			base_filename = re.search(r'Extracting\s*(.*?$)', out, re.MULTILINE).group(1)
-			json_file = '{}/{}'.format(USBStorage._STORAGE_BASE, base_filename)
+			json_file = f'{USBStorage._STORAGE_BASE}/{base_filename}'
 
 			with open(json_file, 'r', encoding='utf-8') as dump:
 				events_dumped = json.load(dump)
@@ -171,7 +171,7 @@ class USBStorage:
 			if len(base_filename) > 9:  # len('mmdd.json') == 9
 				min_date = base_filename[:4]
 
-			new_json_file = '{}/{}-{}.json'.format(USBStorage._STORAGE_BASE, min_date, max_date)
+			new_json_file = f'{USBStorage._STORAGE_BASE}/{min_date}-{max_date}.json'
 			_dump_events(merged_events, storage_type, new_json_file, indent)
 
 			try:
@@ -219,9 +219,9 @@ class USBStorage:
 
 		if events_to_show:
 			min_date, max_date = _get_dates(events_to_show)
-			json_file = '{}/{}-{}.json'.format(USBStorage._STORAGE_BASE, min_date, max_date)
+			json_file = f'{USBStorage._STORAGE_BASE}/{min_date}-{max_date}.json'
 		else:
-			json_file = '{}/{}.json'.format(USBStorage._STORAGE_BASE, datetime.now().strftime('%m%d'))
+			json_file = f'{USBStorage._STORAGE_BASE}/{datetime.now().strftime("%m%d")}.json'
 
 		try:
 			_dump_events(events_to_show, storage_type, json_file, indent)
@@ -233,7 +233,7 @@ class USBStorage:
 			print_warning('No password provided, generating random one')
 			password = _gen_random_password(12)
 
-		storage_full_path = '{}/{}.7z'.format(USBStorage._STORAGE_BASE, storage_type)
+		storage_full_path = f'{USBStorage._STORAGE_BASE}/{storage_type}.7z'
 		if os.path.exists(storage_full_path):
 			os.remove(storage_full_path)
 
@@ -245,7 +245,7 @@ class USBStorage:
 			return 1
 
 		if 'Everything is Ok' in out:
-			print_info('New {} storage: \'{}\''.format(storage_type, storage_full_path))
+			print_info(f'New {storage_type} storage: "{storage_full_path}"')
 			print_secret('Your password is', secret=password)
 			os.remove(json_file)
 		else:
@@ -256,9 +256,9 @@ class USBStorage:
 	@staticmethod
 	@time_it_if_debug(cfg.DEBUG, time_it)
 	def change_password(storage_type, old_password, new_password, *, compression_level='5'):
-		storage_full_path = '{}/{}.7z'.format(USBStorage._STORAGE_BASE, storage_type)
+		storage_full_path = f'{USBStorage._STORAGE_BASE}/{storage_type}.7z'
 		if not os.path.isfile(storage_full_path):
-			print_critical('Storage not found: \'{}\''.format(storage_full_path))
+			print_critical(f'Storage not found: "{storage_full_path}"')
 			return
 
 		try:
@@ -267,7 +267,7 @@ class USBStorage:
 				os.remove(storage_full_path)
 
 				base_filename = re.search(r'Extracting\s*(.*?$)', out, re.MULTILINE).group(1)
-				json_file = '{}/{}'.format(USBStorage._STORAGE_BASE, base_filename)
+				json_file = f'{USBStorage._STORAGE_BASE}/{base_filename}'
 
 				out = _7zip_pack(storage_full_path, json_file, new_password, compression_level)
 				if 'Everything is Ok' in out:
@@ -366,7 +366,7 @@ def _merge_json_events(events_dumped, events_to_show):
 
 
 def _7zip_list(archive, password):
-	print_info('Listing archive: \'{}\''.format(archive))
+	print_info(f'Listing archive: "{archive}"')
 
 	cmd = [
 		'7z',
@@ -383,7 +383,7 @@ def _7zip_list(archive, password):
 
 
 def _7zip_unpack(archive, password):
-	print_info('Unpacking archive: \'{}\''.format(archive))
+	print_info(f'Unpacking archive: "{archive}"')
 
 	cmd = [
 		'7z',
@@ -402,7 +402,7 @@ def _7zip_unpack(archive, password):
 
 
 def _7zip_pack(archive, file, password, compression_level):
-	print_info('Creating storage (7-Zip): \'{}\''.format(archive))
+	print_info(f'Creating storage (7-Zip): "{archive}"')
 
 	cmd = [
 		'7z',

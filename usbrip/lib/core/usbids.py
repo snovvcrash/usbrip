@@ -105,14 +105,14 @@ def _update_database(filename):
 		usb_ids = open(filename, 'r+', encoding='utf-8')
 	except PermissionError as e:
 		raise USBRipError(
-			'Permission denied: \'{}\''.format(filename),
+			f'Permission denied: "{filename}"',
 			errors={'initial_error': str(e)}
 		)
 
 	print_info('Getting current database version')
 	curr_ver, curr_date = _get_current_version(usb_ids)
-	print('Version:  {}'.format(curr_ver))
-	print('Date:     {}'.format(curr_date))
+	print(f'Version:  {curr_ver}')
+	print(f'Date:     {curr_date}')
 
 	print_info('Checking local database for update')
 	db, latest_ver, latest_date, errcode, e = _get_latest_version()
@@ -149,8 +149,8 @@ def _update_database(filename):
 
 		print('Done\n')
 
-		print('Version:  {}'.format(latest_ver))
-		print('Date:     {}'.format(latest_date))
+		print(f'Version:  {latest_ver}')
+		print(f'Date:     {latest_date}')
 
 	print_info('Local database is up-to-date')
 
@@ -164,13 +164,13 @@ def _download_database(filename):
 	except USBRipError as e:
 		raise USBRipError(str(e), errors={'initial_error': e.errors['initial_error']})
 	else:
-		print_info('Created \'{}\''.format(dirname))
+		print_info(f'Created "{dirname}"')
 
 	try:
 		usb_ids = open(filename, 'w+', encoding='utf-8')
 	except PermissionError as e:
 		raise USBRipError(
-			'Permission denied: \'{}\''.format(filename),
+			f'Permission denied: "{filename}"',
 			errors={'initial_error': str(e)}
 		)
 
@@ -194,8 +194,8 @@ def _download_database(filename):
 
 	print_info('Database downloaded')
 
-	print('Version:  {}'.format(latest_ver))
-	print('Date:     {}'.format(latest_date))
+	print(f'Version:  {latest_ver}')
+	print(f'Date:     {latest_date}')
 
 	return usb_ids
 
@@ -257,8 +257,8 @@ def _search_ids_helper(usb_ids, vid, pid):
 	print('Searching for matches... ', end='')
 
 	if vid and pid:
-		re_vid = re.compile(r'^{}  (.*?$)'.format(vid))
-		re_pid = re.compile(r'^\t{}  (.*?$)'.format(pid))
+		re_vid = re.compile(rf'^{vid}  (.*?$)')
+		re_pid = re.compile(rf'^\t{pid}  (.*?$)')
 
 		for line in iter(usb_ids.readline, ''):
 			vid_match = re_vid.match(line)
@@ -268,8 +268,8 @@ def _search_ids_helper(usb_ids, vid, pid):
 						pid_match = re_pid.match(subline)
 						if pid_match:
 							print('Done\n')
-							print('Vendor:   {}'.format(vid_match.group(1)))
-							print('Product:  {}'.format(pid_match.group(1)))
+							print(f'Vendor:   {vid_match.group(1)}')
+							print(f'Product:  {pid_match.group(1)}')
 							break
 					else:
 						print('Done\n')
@@ -282,9 +282,9 @@ def _search_ids_helper(usb_ids, vid, pid):
 
 	else:  # if (vid and not pid) or (pid and not vid):
 		if vid and not pid:
-			matches = re.findall(r'^{}  (.*?$)'.format(vid), usb_ids.read(), re.MULTILINE)
+			matches = re.findall(rf'^{vid}  (.*?$)', usb_ids.read(), re.MULTILINE)
 		else:  # if pid and not vid
-			matches = re.findall(r'^\t{}  (.*?$)'.format(pid), usb_ids.read(), re.MULTILINE)
+			matches = re.findall(rf'^\t{pid}  (.*?$)', usb_ids.read(), re.MULTILINE)
 
 		print('Done\n')
 		print('| Possible products:')
@@ -294,8 +294,8 @@ def _search_ids_helper(usb_ids, vid, pid):
 		else:
 			for i, match in enumerate(matches):
 				if i != len(matches)-1:
-					print('|     {}'.format(match))
+					print(f'|     {match}')
 				else:
-					print('|_    {}'.format(match))
+					print(f'|_    {match}')
 
 	print()

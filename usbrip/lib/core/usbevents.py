@@ -135,7 +135,7 @@ class USBEvents:
 	@staticmethod
 	@time_it_if_debug(cfg.DEBUG, time_it)
 	def open_dump(input_dump, columns, *, sieve=None, repres=None):
-		print_info('Opening USB event dump: \'{}\''.format(os.path.abspath(input_dump)))
+		print_info(f'Opening USB event dump: "{os.path.abspath(input_dump)}"')
 
 		try:
 			with open(input_dump, 'r', encoding='utf-8') as dump:
@@ -177,12 +177,12 @@ class USBEvents:
 			print_critical(str(e), initial_error=e.errors['initial_error'])
 			return 1
 		else:
-			print_info('Created \'{}\''.format(dirname))
+			print_info(f'Created "{dirname}"')
 
 		try:
 			auth_json = open(output_auth, 'w', encoding='utf-8')
 		except PermissionError as e:
-			print_critical('Permission denied: \'{}\'. Retry with sudo'.format(output_auth), initial_error=str(e))
+			print_critical(f'Permission denied: "{output_auth}". Retry with sudo', initial_error=str(e))
 			return 1
 
 		print_info('Generating authorized device list (JSON)')
@@ -204,13 +204,13 @@ class USBEvents:
 		json.dump(auth, auth_json, sort_keys=True, indent=indent)
 		auth_json.close()
 
-		print_info('New authorized device list: \'{}\''.format(os.path.abspath(output_auth)))
+		print_info(f'New authorized device list: "{os.path.abspath(output_auth)}"')
 
 	# ----------------- USB Events Violations ------------------
 
 	@time_it_if_debug(cfg.DEBUG, time_it)
 	def search_violations(self, input_auth, attributes, columns, *, indent=4, sieve=None, repres=None):
-		print_info('Opening authorized device list: \'{}\''.format(os.path.abspath(input_auth)))
+		print_info(f'Opening authorized device list: "{os.path.abspath(input_auth)}"')
 
 		try:
 			auth = _process_auth_list(input_auth, indent)
@@ -266,7 +266,7 @@ class USBEvents:
 def _get_raw_history():
 	raw_history = DefaultOrderedDict(default_factory=list)
 
-	print_info('Searching for log files: \'/var/log/syslog*\' or \'/var/log/messages*\'')
+	print_info('Searching for log files: "/var/log/syslog*" or "/var/log/messages*"')
 
 	syslog_files = sorted([filename
                            for filename in list_files('/var/log/')
@@ -293,13 +293,13 @@ def _read_log_file(filename):
 	filtered = DefaultOrderedDict(default_factory=list)
 
 	if filename.endswith('.gz'):
-		print_info('Unpacking \'{}\''.format(filename))
+		print_info(f'Unpacking "{filename}"')
 
 		try:
 			log = gzip.open(filename, 'rb')
 		except PermissionError as e:
 			print_warning(
-				'Permission denied: \'{}\'. Retry with sudo'.format(filename),
+				f'Permission denied: "{filename}". Retry with sudo',
 				initial_error=str(e)
 			)
 			return filtered
@@ -311,7 +311,7 @@ def _read_log_file(filename):
 		log = codecs.open(filename, 'r', encoding='utf-8', errors='ignore')
 		end_of_file = ''
 
-	print_info('Reading \'{}\''.format(filename))
+	print_info(f'Reading "{filename}"')
 	regex = re.compile(r'usb')
 	for line in iter(log.readline, end_of_file):
 		if isinstance(line, bytes):
@@ -484,9 +484,8 @@ def _filter_events(all_events, sieve):
 	if sieve['number'] == -1 or sieve['number'] >= SIZE:
 		if sieve['number'] > SIZE:
 			print_warning(
-				'USB action history has only {} entries instead of requested {}, '
-				'displaying all of them...'
-				.format(SIZE, sieve['number'])
+				f'USB action history has only {SIZE} entries instead of requested {sieve["number"]}, '
+				f'displaying all of them...'
 			)
 
 		sieve['number'] = SIZE
@@ -521,7 +520,7 @@ def _represent_events(events_to_show, columns, table_data, title, repres):
 		if 'conn' in columns:
 			curr_cday = event['conn'][:6]
 			if prev_cday != curr_cday:
-				cday = ['{} {}'.format(curr_cday, BULLET*8)]  # 8 == len(event['conn'] - event['conn'][:6] - 1)
+				cday = [f'{curr_cday} {BULLET*8}']  # 8 == len(event['conn'] - event['conn'][:6] - 1)
 				table_data.append(cday + [SEPARATOR*max_len[name] for name in columns if name != 'conn'])
 			prev_cday = curr_cday
 
@@ -573,7 +572,7 @@ def _represent_events(events_to_show, columns, table_data, title, repres):
 			curr_cday = event['conn'][:6]
 			if prev_cday != curr_cday:
 				print(SEPARATOR * max_len)
-				print('{} {} {}'.format(BULLET*date_sep_len, curr_cday, BULLET*date_sep_len))
+				print(f'{BULLET*date_sep_len} {curr_cday} {BULLET*date_sep_len}')
 				print(SEPARATOR * max_len)
 			else:
 				print(SEPARATOR * max_len)
@@ -613,7 +612,7 @@ def _build_single_table(TableClass, table_data, title, align='right', inner_row_
 
 
 def _dump_events(events_to_show, list_name, filename, indent):
-	print_info('Generating {} list (JSON)'.format(list_name))
+	print_info(f'Generating {list_name} list (JSON)')
 
 	out = []
 	for event in events_to_show:
@@ -627,16 +626,16 @@ def _dump_events(events_to_show, list_name, filename, indent):
 			json.dump(out, out_json, indent=indent)
 	except PermissionError as e:
 		raise USBRipError(
-			'Permission denied: \'{}\'. Retry with sudo'.format(filename),
+			f'Permission denied: "{filename}". Retry with sudo',
 			errors={'initial_error': str(e)}
 		)
 
-	print_info('New {} list: \'{}\''.format(list_name, os.path.abspath(filename)))
+	print_info(f'New {list_name} list: "{os.path.abspath(filename)}"')
 
 
 def _output_choice(list_name, default_filename, dirname):
 	while True:
-		print('[?] How would you like your {} list to be generated?\n'.format(list_name))
+		print(f'[?] How would you like your {list_name} list to be generated?\n')
 
 		print('    1. JSON-file')
 		print('    2. Terminal stdout')
@@ -645,9 +644,10 @@ def _output_choice(list_name, default_filename, dirname):
 
 		if number == '1':
 			while True:
-				filename = input('[>] Please enter the base name for the output file '
-                                 '(default is \'{}\'): '
-                                 .format(default_filename))
+				filename = input(
+					f'[>] Please enter the base name for the output file '
+					f'(default is "{default_filename}"): '
+				)
 
 				if all(c in printable for c in filename) and len(filename) < 256:
 					if not filename:
@@ -664,7 +664,7 @@ def _output_choice(list_name, default_filename, dirname):
 						print_critical(str(e), initial_error=e.errors['initial_error'])
 						return (None, '')
 					else:
-						print_info('Created \'{}\''.format(dirname))
+						print_info(f'Created "{dirname}"')
 
 					overwrite = True
 					if os.path.isfile(filename):
