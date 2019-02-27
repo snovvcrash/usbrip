@@ -97,14 +97,6 @@ When using the `installers/install.sh` some extra features become available:
   * the virtual environment is created automatically;
   * you can set a crontab job to backup USB events on a schedule (the example of crontab jobs can be found in `usbrip/usbrip.cron`).
 
-Cron jobs can be set as follows:
-```
-~/usbrip$ sudo crontab -l > tmpcron && echo "" >> tmpcron
-~/usbrip$ cat usbrip/usbrip.cron | tee -a tmpcron
-~/usbrip$ sudo crontab tmpcron
-~/usbrip$ rm tmpcron
-```
-
 :warning: **Warning**: if you are using the crontab scheduling, you want to configure the cron job with `sudo crontab -e` in order to force the `storage update` submodule run as root as well as protect the passwords of the USB event storages. It's obviously **not a truly secure way** to input passwords (no secrets should be ever stored as plain text / passed as arguments on the command line due to a variety of ways of exposing such secrets, e. g. scanning `/proc` directory for new PIDs to catch short-lived processes with all the corresponding CLI args), but this is just an educational project in the end (interactive mode for secure password prompting is in the TODO list :neutral_face:).
 
 The `installers/uninstall.sh` script removes all the installation artifacts from your system.
@@ -112,6 +104,8 @@ The `installers/uninstall.sh` script removes all the installation artifacts from
 To install usbrip use:
 ```
 ~/usbrip$ chmod +x installers/install.sh
+~/usbrip$ cd
+~$ usbrip -h
 
 # When -s switch is enabled, not only the usbrip project is installed, but also the list of trusted USB devices, history and violations storages are created
 ~/usbrip$ sudo -H installers/install.sh [-s, --storages]
@@ -121,6 +115,14 @@ To install usbrip use:
 
 After the installation completes, feel free to remove the usbrip folder.
 
+Cron jobs can be set as follows:
+```
+~/usbrip$ sudo crontab -l > tmpcron && echo "" >> tmpcron
+~/usbrip$ cat usbrip/usbrip.cron | tee -a tmpcron
+~/usbrip$ sudo crontab tmpcron
+~/usbrip$ rm tmpcron
+```
+
 To uninstall usbrip use:
 ```
 ~/usbrip$ chmod +x installers/uninstall.sh
@@ -128,6 +130,8 @@ To uninstall usbrip use:
 # When -a switch is enabled, not only the usbrip project directory is deleted, but also all the storages and usbrip logs are deleted too
 ~/usbrip$ sudo installers/uninstall.sh [-a, --all]
 ```
+
+And don't forget to remove the cron job.
 
 When installed, the usbrip uses the following paths:
   * `/opt/usbrip/` — project's main directory;
