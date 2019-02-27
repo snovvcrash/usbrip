@@ -32,11 +32,25 @@ __brief__   = 'USB device artifacts tracker.'
 
 import glob
 import shutil
+import subprocess
 import os
 
 from setuptools import setup, find_packages, Command
+from setuptools.command.install import install
 
 from usbrip import __version__
+
+
+class LocalInstallCommand(install):
+	"""Custom install command to install local Python dependencies."""
+	def run(self):
+		install.run(self)
+		tools_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)), '3rdPartyTools')
+		for dependency in os.listdir(tools_dir):
+			args = ['pip', 'install', os.path.join(tools_dir, dependency)]
+			proc = subprocess.Popen(args, shell=False)
+			proc.communicate()
+			print(f'resolved local dependency: {dependency}')
 
 
 class CleanCommand(Command):
@@ -74,11 +88,11 @@ def parse_requirements(file):
 	return required
 
 
-long_description = '''
-Simple command line forensics tool for tracking \
-USB device artifacts (history of USB events) \
-on GNU/Linux.\
-'''
+long_description = '''\
+	Simple command line forensics tool for tracking \
+	USB device artifacts (history of USB events) \
+	on GNU/Linux.\
+'''.replace('\t', '')
 
 keywords = 'forensics cybersecurity infosec usb-history usb-devices'
 
@@ -106,7 +120,7 @@ setup(
 	],
 
 	python_requires='>=3.6',
-	install_requires=parse_requirements('requirements.txt'),
+	# _install_requires=parse_requirements('requirements.txt'),
 
 	entry_points={
 		'console_scripts': [
@@ -115,8 +129,9 @@ setup(
 	},
 
 	cmdclass={
-        'clean': CleanCommand,
-    },
+		'install': LocalInstallCommand,
+		'clean': CleanCommand
+	},
 
 	zip_safe=False
 )
