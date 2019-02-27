@@ -16,6 +16,8 @@ Table of Contents:
     * [DEB Packages](#deb-packages)
     * [PIP Packages](#pip-packages)
   * [**Installation**](#installation)
+    * [`pip` or `setup.py`](#pip-or-setuppy)
+    * [`install.sh`](#installsh)
   * [**Usage**](#usage)
     * [Synopsis](#synopsis)
     * [Help](#help)
@@ -52,7 +54,7 @@ usbrip makes use of the following external modules:
   * [terminaltables](https://github.com/Robpol86/terminaltables "Robpol86/terminaltables: Generate simple tables in terminals from a nested list of strings.")
   * [termcolor](https://pypi.org/project/termcolor "termcolor · PyPI")
 
-To resolve Python dependencies create a *virtual environment* and run `pip` from within:
+To resolve Python dependencies manually (it's not necessary actually because `pip` or `setup.py` can automate the process, see [Installation](#installation)) create a *virtual environment* and run `pip` from within:
 ```
 ~/usbrip$ virtualenv -p python3 venv && . venv/bin/activate
 (venv) ~/usbrip$ pip install -r requirements.txt
@@ -65,16 +67,30 @@ Or let the `pipenv` one-liner do all the dirty work for you:
 
 Installation
 ==========
+There are two ways to install usbrip into the system.
+
+## `pip` or `setup.py`
 First of all, usbrip is pip installable. This means you can simply git clone the repo, fire the pip installation process and run usbrip from anywhere in your terminal like so:
 ```
-(venv) ~$ git clone https://github.com/snovvcrash/usbrip.git usbrip && cd usbrip
+~$ git clone https://github.com/snovvcrash/usbrip.git usbrip && cd usbrip
+~/usbrip$ virtualenv -p python3 venv && . venv/bin/activate
 (venv) ~/usbrip$ pip install .
 
 (venv) ~/usbrip$ usbrip -h
 ```
 
-:alien: **Note**: you likely want to run the installer while the Python virtual environment is active (like it is shown above).
+Or if you want to resolve Python dependencies locally (without bothering PyPI), use `setup.py`:
+```
+~$ git clone https://github.com/snovvcrash/usbrip.git usbrip && cd usbrip
+~/usbrip$ virtualenv -p python3 venv && . venv/bin/activate
+(venv) ~/usbrip$ python setup.py install
 
+(venv) ~/usbrip$ usbrip -h
+```
+
+:alien: **Note**: you'd likely want to run the installation process while the Python virtual environment is active (like it is shown above).
+
+## `install.sh`
 Secondly, usbrip can also be installed into the system with the `installers/install.sh` script.
 
 When using the `installers/install.sh` some extra features become available:
