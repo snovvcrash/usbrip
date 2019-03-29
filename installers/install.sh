@@ -153,7 +153,7 @@ fi
 
 /usr/bin/printf "${W}>>>>${NC} (PIP-)Installing usbrip\n"
 
-if "${OPT}/venv/bin/pip" install "$(pwd)"; then
+if "${OPT}/venv/bin/pip" install "${PWD}"; then
 	/usr/bin/printf "${G}>>>>${NC} Successfully (PIP-)installed usbrip\n\n"
 else
 	/usr/bin/printf "${R}>>>>${NC} Failed to (PIP-)install usbrip\n"
