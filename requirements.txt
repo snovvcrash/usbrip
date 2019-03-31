@@ -1,2 +1,3 @@
-termcolor==1.1.0
-terminaltables==3.1.0
+termcolor
+terminaltables
+wheel

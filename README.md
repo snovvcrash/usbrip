@@ -12,6 +12,7 @@ usbrip
 Table of Contents:
   * [**Description**](#description)
   * [**Screenshots**](#screenshots)
+  * [**Git clone**](#git-clone)
   * [**Dependencies**](#dependencies)
     * [DEB Packages](#deb-packages)
     * [PIP Packages](#pip-packages)
@@ -32,7 +33,7 @@ Besides, it also can:
 * export gathered information as a JSON dump (and open such dumps, of course (: );
 * generate a list of authorized (trusted) USB devices as a JSON (call it `auth.json`);
 * search for "violation events" based on the `auth.json`: show (or generate another JSON with) USB devices that do appear in history and do NOT appear in the `auth.json`;
-* *[when installed]* create crypted storages (7zip archives) to automatically backup and accumulate USB events with the help of `crontab` utility;
+* *\*when installed with `-s` flag\** create crypted storages (7zip archives) to automatically backup and accumulate USB events with the help of `crontab` utility;
 * search additional details about a specific USB device based on its VID and/or PID.
 
 Screenshots
@@ -40,14 +41,26 @@ Screenshots
 ![Screenshot-1](https://user-images.githubusercontent.com/23141800/40887882-e00d4d3a-6757-11e8-962c-c77331782b19.png "Get USB event history")
 ![Screenshot-2](https://user-images.githubusercontent.com/23141800/40886876-46c349d6-6748-11e8-92cf-0b0790ea9505.png "Search for extra details about a specific USB device")
 
+Git clone
+==========
+For simplicity, lets agree that all the commands where `~/usbrip$` prefix is appeared are executed in the `~/usbrip` directory which is created as a result of git clone:
+```
+~$ git clone https://github.com/snovvcrash/usbrip.git usbrip && cd usbrip
+~/usbrip$
+```
+
 Dependencies
 ==========
 usbrip works with **non**-modified structure of system log files only, so, unfortunately, it won't be able to parse USB history if you change the format of syslogs (with `syslog-ng` or `rsyslog` for example). That's why the timestamps of "Connected" and "Disconnected" fields don't have the year, by the way. Keep that in mind.
 
 ## DEB Packages
   * python3.6 (or newer) interpreter
-  * python-virtualenv
+  * python3-venv
   * p7zip-full *(used by `storages` module)*
+
+```
+~$ sudo apt install -y python3-venv p7zip-full
+```
 
 ## PIP Packages
 usbrip makes use of the following external modules:
@@ -56,7 +69,7 @@ usbrip makes use of the following external modules:
 
 To resolve Python dependencies manually (it's not necessary actually because `pip` or `setup.py` can automate the process, see [Installation](#installation)) create a *virtual environment* and run `pip` from within:
 ```
-~/usbrip$ virtualenv -p python3 venv && . venv/bin/activate
+~/usbrip$ python3 -m venv venv && source venv/bin/activate
 (venv) ~/usbrip$ pip install -r requirements.txt
 ```
 
@@ -67,13 +80,12 @@ Or let the `pipenv` one-liner do all the dirty work for you:
 
 Installation
 ==========
-There are two ways to install usbrip into the system.
+There are two ways to install usbrip into the system: `pip` or `setup.py`.
 
 ## `pip` or `setup.py`
-First of all, usbrip is pip installable. This means you can simply git clone the repo, fire the pip installation process and run usbrip from anywhere in your terminal like so:
+First of all, usbrip is pip installable. This means that after git clonning the repo you can simply fire up the pip installation process and after that run usbrip from anywhere in your terminal like so:
 ```
-~$ git clone https://github.com/snovvcrash/usbrip.git usbrip && cd usbrip
-~/usbrip$ virtualenv -p python3 venv && . venv/bin/activate
+~/usbrip$ python3 -m venv venv && source venv/bin/activate
 (venv) ~/usbrip$ pip install .
 
 (venv) ~/usbrip$ usbrip -h
@@ -81,8 +93,7 @@ First of all, usbrip is pip installable. This means you can simply git clone the
 
 Or if you want to resolve Python dependencies locally (without bothering PyPI), use `setup.py`:
 ```
-~$ git clone https://github.com/snovvcrash/usbrip.git usbrip && cd usbrip
-~/usbrip$ virtualenv -p python3 venv && . venv/bin/activate
+~/usbrip$ python3 -m venv venv && source venv/bin/activate
 (venv) ~/usbrip$ python setup.py install
 
 (venv) ~/usbrip$ usbrip -h
@@ -107,8 +118,9 @@ To install usbrip use:
 ~/usbrip$ cd
 ~$ usbrip -h
 
+# When -l switch is enabled, Python dependencies are resolved from local .tar packages instead of PyPI
 # When -s switch is enabled, not only the usbrip project is installed, but also the list of trusted USB devices, history and violations storages are created
-~/usbrip$ sudo -H installers/install.sh [-s, --storages]
+~/usbrip$ sudo -H installers/install.sh [-l/--local] [-s/--storages]
 ```
 
 :alien: **Note**: when using `-s` option during installation, make sure that system logs do contain at least one *external* USB device entry. It is a necessary condition for usbrip to successfully create the list of trusted devices (and as a result, successfully create the violations storage).
@@ -128,7 +140,7 @@ To uninstall usbrip use:
 ~/usbrip$ chmod +x installers/uninstall.sh
 
 # When -a switch is enabled, not only the usbrip project directory is deleted, but also all the storages and usbrip logs are deleted too
-~/usbrip$ sudo installers/uninstall.sh [-a, --all]
+~/usbrip$ sudo installers/uninstall.sh [-a/--all]
 ```
 
 And don't forget to remove the cron job.
@@ -250,7 +262,7 @@ Examples
 
 Post Scriptum
 ==========
-Yep, the banner and info messages style is inspired by the *sqlmap* project :see_no_evil:
+Yep, the banner and info messages style is inspired by the *sqlmap* project ^^
 
 If this tool has been useful for you, feel free to buy me a coffee :coffee:
 

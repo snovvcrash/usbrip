@@ -33,6 +33,7 @@ __brief__   = 'USB device artifacts tracker.'
 import glob
 import shutil
 import subprocess
+import sys
 import os
 
 from setuptools import setup, find_packages, Command
@@ -43,14 +44,29 @@ from usbrip import __version__
 
 class LocalInstallCommand(install):
 	"""Custom install command to install local Python dependencies."""
+	def resolve(self, dep, path):
+		pip = os.path.join(sys.executable.rsplit('/', 1)[0], 'pip')
+		args = [pip, 'install', os.path.join(path, dep)]
+		proc = subprocess.Popen(args, shell=False)
+		proc.communicate()
+		if proc.returncode == 0:
+			print(f'[*] Resolved local dependency: {dep}')
+
 	def run(self):
 		install.run(self)
 		tools_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)), '3rdPartyTools')
-		for dependency in os.listdir(tools_dir):
-			args = ['pip', 'install', os.path.join(tools_dir, dependency)]
-			proc = subprocess.Popen(args, shell=False)
-			proc.communicate()
-			print(f'resolved local dependency: {dependency}')
+
+		deps = []
+		for dep in os.listdir(tools_dir):
+			if dep.startswith('wheel-'):
+				wheel = dep
+			else:
+				deps.append(dep)
+
+		self.resolve(wheel, tools_dir)
+
+		for dep in deps:
+			self.resolve(dep, tools_dir)
 
 
 class CleanCommand(Command):
@@ -74,7 +90,7 @@ class CleanCommand(Command):
 				if not path.startswith(here):
 					# Die if path in CLEAN_FILES is absolute + outside this directory
 					raise ValueError(f'{path} is not a path inside {here}')
-				print(f'removing {os.path.relpath(path)}')
+				print(f'[*] Removing {os.path.relpath(path)}')
 				shutil.rmtree(path)
 
 
@@ -120,7 +136,7 @@ setup(
 	],
 
 	python_requires='>=3.6',
-	# _install_requires=parse_requirements('requirements.txt'),
+	install_requires=parse_requirements('requirements.txt'),
 
 	entry_points={
 		'console_scripts': [

@@ -27,7 +27,7 @@ along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 %endlicense
 '
 
-# Usage: sudo ./uninstall.sh [--all]
+# Usage: sudo ./uninstall.sh [-a/--all]
 
 # ----------------------- Constants ------------------------
 
@@ -42,7 +42,7 @@ NC="\033[0m"    # NO COLOR
 # --------------- Check for root privileges ----------------
 
 if [[ $EUID -ne 0 ]]; then
-	/usr/bin/printf "${R}>>>>${NC} Please run as root:\nsudo -H %s\n" "${0}"
+	/usr/bin/printf "${R}[!]${NC} Please run as root:\nsudo -H %s\n" "${0}"
 	exit 1
 fi
 
@@ -59,24 +59,24 @@ fi
 # OPT
 
 if /bin/rm -r "${OPT}" 2> /dev/null; then
-	/usr/bin/printf "${G}>>>>${NC} Removed directory: '${OPT}'\n"
+	/usr/bin/printf "${G}[+]${NC} Removed directory: '${OPT}'\n"
 fi
 
 # VAR_OPT
 
 if $ALL; then
 	if /bin/rm -r "${VAR_OPT}" 2> /dev/null; then
-		/usr/bin/printf "${G}>>>>${NC} Removed directory: '${VAR_OPT}'\n"
+		/usr/bin/printf "${G}[+]${NC} Removed directory: '${VAR_OPT}'\n"
 	fi
 fi
 
 # --------------------- Remove symlink ---------------------
 
 if /bin/rm "${SYMLINK}" 2> /dev/null; then
-	/usr/bin/printf "${G}>>>>${NC} Removed symlink: '${SYMLINK}'\n"
+	/usr/bin/printf "${G}[+]${NC} Removed symlink: '${SYMLINK}'\n"
 fi
 
 # -------------------------- Done --------------------------
 
 /usr/bin/printf "\n"
-/usr/bin/printf "${G}>>>>${NC} Done.\n"
+/usr/bin/printf "${G}[+]${NC} Done.\n"
