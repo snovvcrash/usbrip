@@ -32,9 +32,9 @@ __brief__   = 'USB device artifacts tracker.'
 
 import glob
 import shutil
-import subprocess
 import sys
 import os
+from subprocess import check_output
 
 from setuptools import setup, find_packages, Command
 from setuptools.command.install import install
@@ -91,14 +91,13 @@ def resolve(dep, path=None):
 
 		if path:
 			args = [pip, 'install', os.path.join(path, dep)]
+			dep_type = 'local'
 		else:
 			args = [pip, 'install', dep]
+			dep_type = 'remote'
 
-		proc = subprocess.Popen(args, shell=False)
-		proc.communicate()
-
-		if proc.returncode == 0:
-			print(f'[*] Resolved local dependency: {dep}')
+		if 'Successfully installed' in check_output(args).decode('utf-8'):
+			print(f'[*] Resolved ({dep_type}) dependency: {dep}')
 
 
 def parse_requirements(file):

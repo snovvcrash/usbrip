@@ -46,18 +46,12 @@ import re
 import os
 import sys
 
-try:
-	import usbrip.lib.core.config as cfg
-	cfg.DEBUG = '--debug' in sys.argv
+import usbrip.lib.core.config as cfg; cfg.DEBUG = '--debug' in sys.argv
+import usbrip.lib.utils.timing as timing
 
-	import usbrip.lib.utils.timing as timing
-
-	from usbrip.lib.core.usbevents import USBEvents
-	from usbrip.lib.core.usbstorage import USBStorage
-	from usbrip.lib.core.usbids import USBIDs
-
-except PermissionError:
-	sys.exit('Permission denied. Retry with sudo')
+from usbrip.lib.core.usbevents import USBEvents
+from usbrip.lib.core.usbstorage import USBStorage
+from usbrip.lib.core.usbids import USBIDs
 
 from usbrip.lib.core.common import BANNER
 from usbrip.lib.core.common import COLUMN_NAMES
