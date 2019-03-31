@@ -44,14 +44,6 @@ from usbrip import __version__
 
 class LocalInstallCommand(install):
 	"""Custom install command to install local Python dependencies."""
-	def resolve(self, dep, path):
-		pip = os.path.join(sys.executable.rsplit('/', 1)[0], 'pip')
-		args = [pip, 'install', os.path.join(path, dep)]
-		proc = subprocess.Popen(args, shell=False)
-		proc.communicate()
-		if proc.returncode == 0:
-			print(f'[*] Resolved local dependency: {dep}')
-
 	def run(self):
 		install.run(self)
 		tools_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)), '3rdPartyTools')
@@ -63,10 +55,10 @@ class LocalInstallCommand(install):
 			else:
 				deps.append(dep)
 
-		self.resolve(wheel, tools_dir)
+		resolve(wheel, tools_dir)
 
 		for dep in deps:
-			self.resolve(dep, tools_dir)
+			resolve(dep, tools_dir)
 
 
 class CleanCommand(Command):
@@ -94,6 +86,21 @@ class CleanCommand(Command):
 				shutil.rmtree(path)
 
 
+def resolve(dep, path=None):
+		pip = os.path.join(sys.executable.rsplit('/', 1)[0], 'pip')
+
+		if path:
+			args = [pip, 'install', os.path.join(path, dep)]
+		else:
+			args = [pip, 'install', dep]
+
+		proc = subprocess.Popen(args, shell=False)
+		proc.communicate()
+
+		if proc.returncode == 0:
+			print(f'[*] Resolved local dependency: {dep}')
+
+
 def parse_requirements(file):
 	required = []
 	with open(file, 'r') as f:
@@ -111,6 +118,8 @@ long_description = '''\
 '''.replace('\t', '')
 
 keywords = 'forensics cybersecurity infosec usb-history usb-devices'
+
+resolve('wheel')
 
 setup(
 	name='usbrip',
