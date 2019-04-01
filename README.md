@@ -262,7 +262,7 @@ Examples
 
 Post Scriptum
 ==========
-Yep, the banner and info messages style is inspired by the *sqlmap* project ^^
+Yep, the banner and info messages style is inspired by the *sqlmap* project (*^.^*)
 
 If this tool has been useful for you, feel free to buy me a coffee :coffee:
 
