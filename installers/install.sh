@@ -38,9 +38,10 @@ LOG="/var/opt/usbrip/log"
 STORAGE="/var/opt/usbrip/storage"
 SYMLINK="/usr/local/bin/usbrip"
 
-W="\033[1;37m"  # WHITE
 G="\033[1;32m"  # GREEN
+Y="\033[1;33m"  # YELLOW
 R="\033[1;31m"  # RED
+W="\033[1;37m"  # WHITE
 NC="\033[0m"    # NO COLOR
 
 # --------------------- usbrip aliases ---------------------
@@ -80,17 +81,37 @@ fi
 # python3-venv
 
 if /usr/bin/python3 -m venv 2>&1 | /bin/grep "is not available" > /dev/null; then
-	/usr/bin/printf "${R}>>>>${NC} Unresolved dependency: python3-venv. To install this package run:\n%s\n" \
-                    "sudo apt install -y python3-venv"
-	exit 1
+	/usr/bin/printf "${Y}>>>>${NC} Unresolved dependency: python3-venv. Do you want to install this package as:\n%s\n" \
+                    "\"sudo apt install -y python3-venv\"?"
+	select YN in "Yes" "No"; do
+		case ${YN} in
+			"Yes" )
+				/usr/local/bin/apt install -y "python3-venv"
+				break
+				;;
+			"No" )
+				exit 1
+				;;
+		esac
+	done
 fi
 
 # p7zip-full
 
-if ! /usr/bin/dpkg-query -W -f='${Status}' p7zip-full 2>&1 | /bin/grep "ok installed" > /dev/null; then
-	/usr/bin/printf "${R}>>>>${NC} Unresolved dependency: p7zip-full. To install this package run:\n%s\n" \
-                    "sudo apt install -y p7zip-full"
-	exit 1
+if ! /usr/bin/dpkg-query -W -f='${Status}' p7zip-full 2>&1 | /bin/grep "ok installed" > /dev/null && ${STORAGES}; then
+	/usr/bin/printf "${Y}>>>>${NC} Unresolved dependency: p7zip-full. Do you want to install this package as:\n%s\n" \
+                    "\"sudo apt install -y p7zip-full\"?"
+	select YN in "Yes" "No"; do
+		case ${YN} in
+			"Yes" )
+				/usr/local/bin/apt install -y "p7zip-full"
+				break
+				;;
+			"No" )
+				exit 1
+				;;
+		esac
+	done
 fi
 
 # ------------------- Create directories -------------------
@@ -178,7 +199,7 @@ else
 fi
 
 ${OPT}/venv/bin/python "${PWD}/setup.py" clean
-/usr/bin/printf "\n"
+echo
 
 # --------------------- Create symlink ---------------------
 
@@ -192,7 +213,7 @@ fi
 
 # ----------------- Create usbrip storages -----------------
 
-if $STORAGES; then
+if ${STORAGES}; then
 	# History
 
 	/usr/bin/printf "${W}>>>>${NC} Creating usbrip history storage\n"
