@@ -80,13 +80,13 @@ fi
 
 # python3-venv
 
-if /usr/bin/python3 -m venv 2>&1 | /bin/grep "is not available" > /dev/null; then
+if /usr/bin/python3 -m venv 2>&1 | /bin/grep "venv: error" > /dev/null; then
 	/usr/bin/printf "${Y}>>>>${NC} Unresolved dependency: python3-venv. Do you want to install this package as:\n%s\n" \
                     "\"sudo apt install -y python3-venv\"?"
 	select YN in "Yes" "No"; do
 		case ${YN} in
 			"Yes" )
-				/usr/local/bin/apt install -y "python3-venv"
+				$(which apt) install -y "python3-venv"
 				break
 				;;
 			"No" )
@@ -104,7 +104,7 @@ if ! /usr/bin/dpkg-query -W -f='${Status}' p7zip-full 2>&1 | /bin/grep "ok insta
 	select YN in "Yes" "No"; do
 		case ${YN} in
 			"Yes" )
-				/usr/local/bin/apt install -y "p7zip-full"
+				$(which apt) install -y "p7zip-full"
 				break
 				;;
 			"No" )
