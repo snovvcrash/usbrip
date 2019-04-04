@@ -30,8 +30,8 @@ Description
 usbrip is a small piece of software written in pure Python 3 (using some external modules though, see [Dependencies/PIP](#pip-packages)) which parses Linux log files (`/var/log/syslog*` or `/var/log/messages*` depending on the distro) for constructing USB event history tables. Such tables may contain the following columns: "Connected" (date & time), "User", "VID" (vendor ID), "PID" (product ID), "Product", "Manufacturer", "Serial Number", "Port" and "Disconnected" (date & time).
 
 Besides, it also can:
-* export gathered information as a JSON dump (and open such dumps, of course (: );
-* generate a list of authorized (trusted) USB devices as a JSON (call it `auth.json`);
+* export gathered information as a JSON dump (and open such dumps, of course);
+* generate a list of authorized (*trusted*) USB devices as a JSON (call it `auth.json`);
 * search for "violation events" based on the `auth.json`: show (or generate another JSON with) USB devices that do appear in history and do NOT appear in the `auth.json`;
 * *\*when installed with `-s` flag\** create crypted storages (7zip archives) to automatically backup and accumulate USB events with the help of `crontab` utility;
 * search additional details about a specific USB device based on its VID and/or PID.
@@ -51,7 +51,7 @@ For simplicity, lets agree that all the commands where `~/usbrip$` prefix is app
 
 Dependencies
 ==========
-usbrip works with **non**-modified structure of system log files only, so, unfortunately, it won't be able to parse USB history if you change the format of syslogs (with `syslog-ng` or `rsyslog` for example). That's why the timestamps of "Connected" and "Disconnected" fields don't have the year, by the way. Keep that in mind.
+usbrip works with **non**-modified structure of system log files only, so, unfortunately, it won't be able to parse USB history if you change the format of syslogs (with `syslog-ng` or `rsyslog`, for example). That's why the timestamps of "Connected" and "Disconnected" fields don't have the year, by the way. Keep that in mind.
 
 ## DEB Packages
   * python3.6 (or newer) interpreter
