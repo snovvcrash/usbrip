@@ -21,36 +21,20 @@ You should have received a copy of the GNU General Public License
 along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-
-# ----------------------------------------------------------
-# ------------------------ Headers -------------------------
-# ----------------------------------------------------------
-
-
 __author__ = 'Sam Freeside (@snovvcrash)'
 __email__  = 'snovvcrash@protonmail[.]ch'
-
-__site__  = 'https://github.com/snovvcrash/usbrip'
-__brief__ = 'USB Storage handler.'
-
-
-# ----------------------------------------------------------
-# ------------------------- Import -------------------------
-# ----------------------------------------------------------
-
+__site__   = 'https://github.com/snovvcrash/usbrip'
+__brief__  = 'USB Storage handler.'
 
 import re
 import json
 import subprocess
 import os
-
 from base64 import b64encode
 from datetime import datetime
 
 import usbrip.lib.core.config as cfg
-
 from usbrip.lib.core.usbevents import USBEvents
-
 from usbrip.lib.core.usbevents import _filter_events
 from usbrip.lib.core.usbevents import _dump_events
 from usbrip.lib.core.usbevents import _process_auth_list

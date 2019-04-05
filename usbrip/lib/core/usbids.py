@@ -26,23 +26,10 @@ USB Vendor/Device IDs Database - Linux-USB.org
 	http://www.linux-usb.org/usb.ids
 '''
 
-
-# ----------------------------------------------------------
-# ------------------------ Headers -------------------------
-# ----------------------------------------------------------
-
-
 __author__ = 'Sam Freeside (@snovvcrash)'
 __email__  = 'snovvcrash@protonmail[.]ch'
-
-__site__  = 'https://github.com/snovvcrash/usbrip'
-__brief__ = 'USB IDs handler.'
-
-
-# ----------------------------------------------------------
-# ------------------------- Import -------------------------
-# ----------------------------------------------------------
-
+__site__   = 'https://github.com/snovvcrash/usbrip'
+__brief__  = 'USB IDs handler.'
 
 import re
 import socket

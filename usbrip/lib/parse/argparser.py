@@ -21,18 +21,14 @@ You should have received a copy of the GNU General Public License
 along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-
 __author__ = 'Sam Freeside (@snovvcrash)'
 __email__  = 'snovvcrash@protonmail[.]ch'
-
-__site__  = 'https://github.com/snovvcrash/usbrip'
-__brief__ = 'Command line option parser.'
-
+__site__   = 'https://github.com/snovvcrash/usbrip'
+__brief__  = 'Command line option parser.'
 
 from argparse import ArgumentParser
 
 from usbrip.lib.core.usbstorage import USBStorage
-
 from usbrip.lib.core.common import root_dir_join
 
 

@@ -23,24 +23,11 @@ You should have received a copy of the GNU General Public License
 along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-
-# ----------------------------------------------------------
-# ------------------------ Headers -------------------------
-# ----------------------------------------------------------
-
-
 __author__ = 'Sam Freeside (@snovvcrash)'
 __email__  = 'snovvcrash@protonmail[.]ch'
-
-__date__  = '2018-03-21'
-__site__  = 'https://github.com/snovvcrash/usbrip'
-__brief__ = 'usbrip project"s driver program.'
-
-
-# ----------------------------------------------------------
-# ------------------------- Import -------------------------
-# ----------------------------------------------------------
-
+__date__   = '2018-03-21'
+__site__   = 'https://github.com/snovvcrash/usbrip'
+__brief__  = 'usbrip project"s driver program.'
 
 import re
 import os
@@ -48,11 +35,9 @@ import sys
 
 import usbrip.lib.core.config as cfg; cfg.DEBUG = '--debug' in sys.argv
 import usbrip.lib.utils.timing as timing
-
 from usbrip.lib.core.usbevents import USBEvents
 from usbrip.lib.core.usbstorage import USBStorage
 from usbrip.lib.core.usbids import USBIDs
-
 from usbrip.lib.core.common import BANNER
 from usbrip.lib.core.common import COLUMN_NAMES
 from usbrip.lib.core.common import is_correct

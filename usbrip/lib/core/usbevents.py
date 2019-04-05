@@ -30,23 +30,10 @@ monitoring - Monitor history of USB flash drives - Unix & Linux Stack Exchange
 	https://unix.stackexchange.com/questions/152240/monitor-history-of-usb-flash-drives
 '''
 
-
-# ----------------------------------------------------------
-# ------------------------ Headers -------------------------
-# ----------------------------------------------------------
-
-
 __author__ = 'Sam Freeside (@snovvcrash)'
 __email__  = 'snovvcrash@protonmail[.]ch'
-
-__site__  = 'https://github.com/snovvcrash/usbrip'
-__brief__ = 'USB events handler.'
-
-
-# ----------------------------------------------------------
-# -------------------------- Main --------------------------
-# ----------------------------------------------------------
-
+__site__   = 'https://github.com/snovvcrash/usbrip'
+__brief__  = 'USB events handler.'
 
 import re
 import codecs
@@ -55,7 +42,6 @@ import json
 import itertools
 import operator
 import os
-
 from collections import OrderedDict, defaultdict
 from string import printable
 
@@ -63,7 +49,6 @@ from terminaltables import AsciiTable, SingleTable
 from termcolor import colored, cprint
 
 import usbrip.lib.core.config as cfg
-
 from usbrip.lib.core.common import BULLET
 from usbrip.lib.core.common import ABSENCE
 from usbrip.lib.core.common import SEPARATOR

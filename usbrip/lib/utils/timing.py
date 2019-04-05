@@ -21,20 +21,16 @@ You should have received a copy of the GNU General Public License
 along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-
 __author__ = 'Sam Freeside (@snovvcrash)'
 __email__  = 'snovvcrash@protonmail[.]ch'
-
-__site__  = 'https://github.com/snovvcrash/usbrip'
-__brief__ = 'Program runtime meter.'
-
+__site__   = 'https://github.com/snovvcrash/usbrip'
+__brief__  = 'Program runtime meter.'
 
 import atexit
 import time
 import datetime
 
 import usbrip.lib.core.config as cfg
-
 
 START = time.time()
 

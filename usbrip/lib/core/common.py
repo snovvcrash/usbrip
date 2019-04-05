@@ -21,28 +21,14 @@ You should have received a copy of the GNU General Public License
 along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-
-# ----------------------------------------------------------
-# ------------------------ Headers -------------------------
-# ----------------------------------------------------------
-
-
 __author__ = 'Sam Freeside (@snovvcrash)'
 __email__  = 'snovvcrash@protonmail[.]ch'
+__site__   = 'https://github.com/snovvcrash/usbrip'
+__brief__  = 'Common items.'
 
-__site__  = 'https://github.com/snovvcrash/usbrip'
-__brief__ = 'Common items.'
-
-
-# ----------------------------------------------------------
-# ------------------------- Import -------------------------
-# ----------------------------------------------------------
-
-
-import random
 import os
 import sys
-
+import random
 from string import printable
 from calendar import month_name
 from collections import OrderedDict, Callable
@@ -50,7 +36,6 @@ from collections import OrderedDict, Callable
 from termcolor import colored, cprint
 
 import usbrip.lib.core.config as cfg
-
 from usbrip import __version__
 
 
