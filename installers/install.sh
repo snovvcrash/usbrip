@@ -55,7 +55,7 @@ alias createViolationsStorage="${OPT}/venv/bin/usbrip storage create violations 
 # --------------- Check for root privileges ----------------
 
 if [[ $EUID -ne 0 ]]; then
-	/usr/bin/printf "${R}>>${NC} Please run as root:\nsudo -H %s\n" "${0}"
+	/usr/bin/printf "${R}>>>>${NC} Please run as root:\nsudo -H %s\n" "${0}"
 	exit 1
 fi
 
@@ -81,7 +81,7 @@ fi
 # python3-venv
 
 if /usr/bin/python3 -m venv 2>&1 | /bin/grep "venv: error" > /dev/null; then
-	/usr/bin/printf "${Y}>>${NC} Unresolved dependency: python3-venv. Do you want to install this package as:\n%s\n" \
+	/usr/bin/printf "${Y}>>>>${NC} Unresolved dependency: python3-venv. Do you want to install this package as:\n%s\n" \
                     "\"sudo apt install -y python3-venv\"?"
 	select YN in "Yes" "No"; do
 		case ${YN} in
@@ -99,7 +99,7 @@ fi
 # p7zip-full
 
 if ! /usr/bin/dpkg-query -W -f='${Status}' p7zip-full 2>&1 | /bin/grep "ok installed" > /dev/null && ${STORAGES}; then
-	/usr/bin/printf "${Y}>>${NC} Unresolved dependency: p7zip-full. Do you want to install this package as:\n%s\n" \
+	/usr/bin/printf "${Y}>>>>${NC} Unresolved dependency: p7zip-full. Do you want to install this package as:\n%s\n" \
                     "\"sudo apt install -y p7zip-full\"?"
 	select YN in "Yes" "No"; do
 		case ${YN} in
@@ -118,82 +118,82 @@ fi
 
 # OPT
 
-/usr/bin/printf "${W}>>${NC} Creating directory: '${OPT}'\n"
+/usr/bin/printf "${W}>>>>${NC} Creating directory: '${OPT}'\n"
 
 if [[ -d "${OPT}" ]]; then
-	/usr/bin/printf "${R}>>${NC} ${OPT} already exists. First run:\n%s\n" \
+	/usr/bin/printf "${R}>>>>${NC} ${OPT} already exists. First run:\n%s\n" \
                     "sudo uninstall.sh --all"
 	exit 1
 fi
 
 if /bin/mkdir "${OPT}"; then
-	/usr/bin/printf "${G}>>${NC} Successfully created directory: '${OPT}'\n\n"
+	/usr/bin/printf "${G}>>>>${NC} Successfully created directory: '${OPT}'\n\n"
 else
-	/usr/bin/printf "${R}>>${NC} Failed to create directory: '${OPT}'\n"
+	/usr/bin/printf "${R}>>>>${NC} Failed to create directory: '${OPT}'\n"
 	exit 1
 fi
 
 # LOG
 
-/usr/bin/printf "${W}>>${NC} Creating directory: '${LOG}'\n"
+/usr/bin/printf "${W}>>>>${NC} Creating directory: '${LOG}'\n"
 
 if [[ -d "${LOG}" ]]; then
-	/usr/bin/printf "${R}>>${NC} ${LOG} already exists. First run:\n%s\n" \
+	/usr/bin/printf "${R}>>>>${NC} ${LOG} already exists. First run:\n%s\n" \
                     "sudo uninstall.sh --all"
 	exit 1
 fi
 
 if /bin/mkdir -p "${LOG}"; then
-	/usr/bin/printf "${G}>>${NC} Successfully created directory: '${LOG}'\n\n"
+	/usr/bin/printf "${G}>>>>${NC} Successfully created directory: '${LOG}'\n\n"
 else
-	/usr/bin/printf "${R}>>${NC} Failed to create directory: '${LOG}'\n"
+	/usr/bin/printf "${R}>>>>${NC} Failed to create directory: '${LOG}'\n"
 	exit 1
 fi
 
 # STORAGE
 
-/usr/bin/printf "${W}>>${NC} Creating directory: '${STORAGE}'\n"
+/usr/bin/printf "${W}>>>>${NC} Creating directory: '${STORAGE}'\n"
 
 if [[ -d "${STORAGE}" ]]; then
-	/usr/bin/printf "${R}>>${NC} ${STORAGE} already exists. First run:\n%s\n" \
+	/usr/bin/printf "${R}>>>>${NC} ${STORAGE} already exists. First run:\n%s\n" \
                     "sudo uninstall.sh --all"
 	exit 1
 fi
 
 if /bin/mkdir -p "${STORAGE}"; then
-	/usr/bin/printf "${G}>>${NC} Successfully created directory: '${STORAGE}'\n\n"
+	/usr/bin/printf "${G}>>>>${NC} Successfully created directory: '${STORAGE}'\n\n"
 else
-	/usr/bin/printf "${R}>>${NC} Failed to create directory: '${STORAGE}'\n"
+	/usr/bin/printf "${R}>>>>${NC} Failed to create directory: '${STORAGE}'\n"
 	exit 1
 fi
 
 # ------------ Build Python virtual environment ------------
 
-/usr/bin/printf "${W}>>${NC} Building Python virtual environment\n"
+/usr/bin/printf "${W}>>>>${NC} Building Python virtual environment\n"
 
 if /usr/bin/python3 -m venv "${OPT}/venv"; then
-	/usr/bin/printf "${G}>>${NC} Successfully builded Python virtual environment\n\n"
+	/usr/bin/printf "${G}>>>>${NC} Successfully builded Python virtual environment\n\n"
 else
-	/usr/bin/printf "${R}>>${NC} Failed to build Python virtual environment\n"
+	/usr/bin/printf "${R}>>>>${NC} Failed to build Python virtual environment\n"
 	exit 1
 fi
 
 # ------------------------ Install -------------------------
 
-/usr/bin/printf "${W}>>${NC} Installing usbrip\n"
+/usr/bin/printf "${W}>>>>${NC} Installing usbrip\n"
 
 if $LOCAL; then
 	if ${OPT}/venv/bin/python "${PWD}/setup.py" install; then
-		/usr/bin/printf "${G}>>${NC} Successfully installed usbrip using local dependencies\n\n"
+		/usr/bin/printf "${G}>>>>${NC} Successfully installed usbrip using local dependencies\n\n"
 	else
-		/usr/bin/printf "${R}>>${NC} Failed to install usbrip using local dependencies\n"
+		/usr/bin/printf "${R}>>>>${NC} Failed to install usbrip using local dependencies\n"
 		exit 1
 	fi
 else
 	if ${OPT}/venv/bin/pip install "${PWD}"; then
-		/usr/bin/printf "${G}>>${NC} Successfully installed usbrip using PyPI dependencies\n\n"
+		/usr/bin/printf "${G}>>>>${NC} Successfully installed usbrip using PyPI dependencies\n\n"
 	else
-		/usr/bin/printf "${R}>>${NC} Failed to install usbrip using PyPI dependencies\n"
+		/usr/bin/printf "${R}>>>>${NC} Failed to install usbrip using PyPI dependencies\n"
 		exit 1
 	fi
 fi
@@ -208,7 +208,7 @@ if [[ -e "${SYMLINK}" ]]; then
 fi
 
 if /bin/ln -s "${OPT}/venv/bin/usbrip" "${SYMLINK}"; then
-	/usr/bin/printf "${G}>>${NC} Created symlink: '${SYMLINK}'\n"
+	/usr/bin/printf "${G}>>>>${NC} Created symlink: '${SYMLINK}'\n"
 fi
 
 # ----------------- Create usbrip storages -----------------
@@ -216,38 +216,38 @@ fi
 if ${STORAGES}; then
 	# History
 
-	/usr/bin/printf "${W}>>${NC} Creating usbrip history storage\n"
+	/usr/bin/printf "${W}>>>>${NC} Creating usbrip history storage\n"
 
 	if createHistoryStorage; then
-		/usr/bin/printf "${G}>>${NC} Successfully created usbrip history storage\n\n"
+		/usr/bin/printf "${G}>>>>${NC} Successfully created usbrip history storage\n\n"
 	else
-		/usr/bin/printf "${R}>>${NC} Failed to create usbrip history storage\n"
+		/usr/bin/printf "${R}>>>>${NC} Failed to create usbrip history storage\n"
 		exit 1
 	fi
 
 	# Gen Auth
 
-	/usr/bin/printf "${W}>>${NC} Generating authorized device list\n"
+	/usr/bin/printf "${W}>>>>${NC} Generating authorized device list\n"
 
 	if generateAuthorizedDeviceList; then
-		/usr/bin/printf "${G}>>${NC} Successfully generated authorized device list\n\n"
+		/usr/bin/printf "${G}>>>>${NC} Successfully generated authorized device list\n\n"
 	else
-		/usr/bin/printf "${R}>>${NC} Failed to generate authorized device list\n"
+		/usr/bin/printf "${R}>>>>${NC} Failed to generate authorized device list\n"
 		exit 1
 	fi
 
 	# Violations
 
-	/usr/bin/printf "${W}>>${NC} Creating usbrip violations storage\n"
+	/usr/bin/printf "${W}>>>>${NC} Creating usbrip violations storage\n"
 
 	if createViolationsStorage; then
-		/usr/bin/printf "${G}>>${NC} Successfully created usbrip violations storage\n\n"
+		/usr/bin/printf "${G}>>>>${NC} Successfully created usbrip violations storage\n\n"
 	else
-		/usr/bin/printf "${R}>>${NC} Failed to create usbrip violations storage\n"
+		/usr/bin/printf "${R}>>>>${NC} Failed to create usbrip violations storage\n"
 		exit 1
 	fi
 fi
 
 # -------------------------- Done --------------------------
 
-/usr/bin/printf "${G}>>${NC} Done.\n"
+/usr/bin/printf "${G}>>>>${NC} Done.\n"
