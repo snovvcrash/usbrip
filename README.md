@@ -33,7 +33,7 @@ Besides, it also can:
 * export gathered information as a JSON dump (and open such dumps, of course);
 * generate a list of authorized (*trusted*) USB devices as a JSON (call it `auth.json`);
 * search for "violation events" based on the `auth.json`: show (or generate another JSON with) USB devices that do appear in history and do NOT appear in the `auth.json`;
-* *\*when installed with `-s` flag\** create crypted storages (7zip archives) to automatically backup and accumulate USB events with the help of `crontab` utility;
+* *\*when installed with `-s` flag\** create crypted storages (7zip archives) to automatically backup and accumulate USB events with the help of `crontab` scheduler;
 * search additional details about a specific USB device based on its VID and/or PID.
 
 Screenshots
