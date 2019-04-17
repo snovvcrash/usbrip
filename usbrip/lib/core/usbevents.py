@@ -535,18 +535,15 @@ def _represent_events(events_to_show, columns, table_data, title, repres):
 
 		table_data.append(row)
 
-	if cfg.ISATTY:
-		event_table = _build_single_table(USBEvents.TableClass, table_data, colored(title, 'white', attrs=['bold']))
-	else:
-		event_table = _build_single_table(USBEvents.TableClass, table_data, title)
+	event_table = _build_single_table(USBEvents.TableClass, table_data, colored(title, 'white', attrs=['bold']))
 
 	# Display as table
-	if (repres['smart'] and event_table.ok or repres['table']) and cfg.ISATTY:
+	if cfg.ISATTY and (repres['smart'] and event_table.ok or repres['table']):
 		print_info('Representation: Table')
 		print('\n' + event_table.table)
 
 	# Display as list
-	elif (repres['smart'] and not event_table.ok or repres['list']) or not cfg.ISATTY:
+	elif not cfg.ISATTY or (repres['smart'] and not event_table.ok or repres['list']):
 		if not event_table.ok:
 			print_warning('Terminal window is too small to display table properly')
 			print_warning('Representation: List')

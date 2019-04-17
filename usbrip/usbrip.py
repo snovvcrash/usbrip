@@ -62,6 +62,8 @@ def main():
 	if 'quiet' in args and not args.quiet:
 		if cfg.ISATTY:
 			print(BANNER + '\n')
+		else:
+			print(f'# Done as: usbrip {" ".join(sys.argv[1:])}')
 	else:
 		cfg.QUIET = True
 
