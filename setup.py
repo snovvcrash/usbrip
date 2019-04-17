@@ -136,7 +136,7 @@ setup(
 		]),
 		('usbrip/usb_ids', [
 			'usbrip/usb_ids/usb.ids',
-			'usbrip/usbrip.cron'
+			'usbrip/cron/usbrip.cron'
 		])
 	],
 
