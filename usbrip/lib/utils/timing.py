@@ -36,7 +36,6 @@ START = time.time()
 
 
 def tick(msg, fmt='%H:%M:%S', taken=None):
-	#fmt = '%Y-%m-%d %H:%M:%S'
 	now = time.strftime(fmt, time.localtime())
 	print('%s %s' % (msg, now))
 	if taken:
@@ -47,10 +46,10 @@ def tick(msg, fmt='%H:%M:%S', taken=None):
 def final():
 	end = time.time()
 	taken = end - START
-	tick('[*] Shutted down at', taken=taken)
+	tick('[*] Shutted down at', fmt='%Y-%m-%d %H:%M:%S', taken=taken)
 
 
 def begin():
 	if not cfg.QUIET:
 		atexit.register(final)
-		tick('[*] Started at')
+		tick('[*] Started at', fmt='%Y-%m-%d %H:%M:%S')

@@ -28,6 +28,7 @@ __brief__  = 'Common items.'
 
 import os
 import sys
+import time
 import random
 from string import printable
 from calendar import month_name
@@ -80,7 +81,7 @@ E,N,S,I = list(map(lambda x: random.choice(x), (E,N,S,I)))
 if cfg.ISATTY:
 	E,N,S,I = list(map(lambda x: colored(x, 'green', 'on_blue') + '\033[1;33m', (E,N,S,I)))
 else:
-	mid_start = 55 + len(VERSION_FORMATTED)
+	mid_start = 62 + len(VERSION_FORMATTED)
 	mid_end = mid_start + 97
 	VERSION = '{v' + VERSION + '}'
 	BANNER = BANNER[31:55] + VERSION + BANNER[mid_start:mid_end] + SITE
@@ -241,14 +242,18 @@ def is_correct(password):
 # ----------------------------------------------------------
 
 
+def _get_time(fmt='%H:%M:%S'):
+	return time.strftime(fmt, time.localtime())
+
+
 def print_info(message):
 	if cfg.QUIET:
 		return
 
 	if cfg.ISATTY:
-		cprint(f'[INFO] {message}', 'green')
+		cprint(f'[{_get_time()}] [INFO] {message}', 'green')
 	else:
-		print(f'[INFO] {message}')
+		print(f'[{_get_time("%Y-%m-%d %H:%M:%S")}] [INFO] {message}')
 
 
 def print_warning(message, *, errcode=0, initial_error=''):
@@ -262,9 +267,9 @@ def print_warning(message, *, errcode=0, initial_error=''):
 			print(initial_error, file=sys.stderr)
 
 	if cfg.ISATTY:
-		cprint(f'[WARNING] {message}', 'yellow')
+		cprint(f'[{_get_time()}] [WARNING] {message}', 'yellow')
 	else:
-		print(f'[WARNING] {message}')
+		print(f'[{_get_time("%Y-%m-%d %H:%M:%S")}] [WARNING] {message}')
 
 
 def print_critical(message, *, errcode=0, initial_error=''):
@@ -275,19 +280,20 @@ def print_critical(message, *, errcode=0, initial_error=''):
 			print(initial_error, file=sys.stderr)
 
 	if cfg.ISATTY:
-		cprint(f'[CRITICAL] {message}', 'white', 'on_red', attrs=['bold'])
+		cprint(f'[{_get_time()}] [CRITICAL] {message}', 'white', 'on_red', attrs=['bold'])
 	else:
-		print(f'[CRITICAL] {message}')
+		print(f'[{_get_time("%Y-%m-%d %H:%M:%S")}] [CRITICAL] {message}')
 
 
 def print_secret(message, *, secret=''):
 	if cfg.ISATTY:
 		cprint(
-			'[SECRET] {} {}'.format(
+			'[{}] [SECRET] {} {}'.format(
+				_get_time(),
 				colored(message, 'white', attrs=['bold']),
 				colored(secret, 'white', 'on_grey', attrs=['bold'])
 			),
 			'white', attrs=['bold']
 		)
 	else:
-		print(f'[SECRET] {message} {secret}')
+		print(f'[{_get_time("%Y-%m-%d %H:%M:%S")}] [SECRET] {message} {secret}')

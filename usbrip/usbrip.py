@@ -60,7 +60,8 @@ def main():
 	args = parser.parse_args()
 
 	if 'quiet' in args and not args.quiet:
-		print(BANNER + '\n')
+		if cfg.ISATTY:
+			print(BANNER + '\n')
 	else:
 		cfg.QUIET = True
 
