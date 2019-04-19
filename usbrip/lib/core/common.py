@@ -77,14 +77,7 @@ S = ('S', 's', '5')
 I = ('I', 'i', '1', '!')
 
 E,N,S,I = list(map(lambda x: random.choice(x), (E,N,S,I)))
-
-if cfg.ISATTY:
-	E,N,S,I = list(map(lambda x: colored(x, 'green', 'on_blue') + '\033[1;33m', (E,N,S,I)))
-else:
-	mid_start = 62 + len(VERSION_FORMATTED)
-	mid_end = mid_start + 97
-	VERSION = '{v' + VERSION + '}'
-	BANNER = BANNER[31:55] + VERSION + BANNER[mid_start:mid_end] + SITE
+E,N,S,I = list(map(lambda x: colored(x, 'green', 'on_blue') + '\033[1;33m', (E,N,S,I)))
 
 BANNER = BANNER.replace('+', E, 1)
 BANNER = BANNER.replace('*', N, 1)
