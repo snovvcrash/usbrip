@@ -5,7 +5,7 @@ usbrip
 [![license](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://raw.githubusercontent.com/snovvcrash/usbrip/master/LICENSE)
 [![built-with-love](https://img.shields.io/badge/built%20with-%F0%9F%92%97%F0%9F%92%97%F0%9F%92%97-lightgrey.svg)](https://emojipedia.org/growing-heart/)
 
-[![logo.png](https://user-images.githubusercontent.com/23141800/56419950-c9b8c980-62a4-11e9-80e3-eb0c819a8799.png)](#usbrip)
+[![logo.png](https://user-images.githubusercontent.com/23141800/56420194-b9551e80-62a5-11e9-8508-fc0f4a398042.png)](#usbrip)
 
 **usbrip** (derived from "USB Ripper", not "USB R.I.P." :astonished:) is an open source forensics tool with CLI interface that lets you keep track of USB device artifacts (aka *USB event history, "Connected" and "Disconnected" events*) on Linux machines.
 
