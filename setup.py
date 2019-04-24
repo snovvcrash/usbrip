@@ -127,9 +127,9 @@ setup(
 	description=__brief__,
 	long_description=long_description,
 	keywords=keywords,
-	zip_safe=False,
 	packages=find_packages(),
-	
+	zip_safe=False,
+
 	python_requires='>=3.6',
 	install_requires=parse_requirements('requirements.txt'),
 
@@ -143,7 +143,7 @@ setup(
 			'usbrip/cron/usbrip.cron'
 		])
 	],
-	
+
 	cmdclass={
 		'install': LocalInstallCommand,
 		'clean': CleanCommand
