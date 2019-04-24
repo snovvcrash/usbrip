@@ -127,7 +127,11 @@ setup(
 	description=__brief__,
 	long_description=long_description,
 	keywords=keywords,
+	zip_safe=False,
 	packages=find_packages(),
+	
+	python_requires='>=3.6',
+	install_requires=parse_requirements('requirements.txt'),
 
 	data_files=[
 		('', [
@@ -139,20 +143,15 @@ setup(
 			'usbrip/cron/usbrip.cron'
 		])
 	],
-
-	python_requires='>=3.6',
-	install_requires=parse_requirements('requirements.txt'),
-
-	entry_points={
-		'console_scripts': [
-			'usbrip=usbrip.usbrip:main'
-		],
-	},
-
+	
 	cmdclass={
 		'install': LocalInstallCommand,
 		'clean': CleanCommand
 	},
 
-	zip_safe=False
+	entry_points={
+		'console_scripts': [
+			'usbrip=usbrip.usbrip:main'
+		]
+	}
 )
