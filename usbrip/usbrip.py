@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# Usage: python3 usbrip.py [-h]
+# Usage: usbrip [-h]
 
 """LICENSE
 
@@ -276,10 +276,10 @@ def validate_ui_args(args):
 
 def usbrip_arg_error(message=None, *, subparser=' '):
 	if message:
-		print(f'Usage: python3 {sys.argv[0]}{subparser}[-h]\n')
+		print(f'Usage: {sys.argv[0]}{subparser}[-h]\n')
 		print(sys.argv[0].rsplit('/', 1)[-1] + ': argument error: ' + message, file=sys.stderr)
 	else:
-		print(f'Usage: python3 {sys.argv[0]} [-h]')
+		print(f'Usage: {sys.argv[0]} [-h]')
 
 	sys.exit(1)
 
