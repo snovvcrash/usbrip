@@ -289,13 +289,13 @@ def _read_log_file(filename):
 	filtered = DefaultOrderedDict(default_factory=list)
 
 	if filename.endswith('.gz'):
-		print_info(f'Unpacking "{filename}"')
+		print_info(f'Unpacking "{os.path.abspath(filename)}"')
 
 		try:
 			log = gzip.open(filename, 'rb')
 		except PermissionError as e:
 			print_warning(
-				f'Permission denied: "{filename}". Retry with sudo',
+				f'Permission denied: "{os.path.abspath(filename)}". Retry with sudo',
 				initial_error=str(e)
 			)
 			return filtered
@@ -307,7 +307,7 @@ def _read_log_file(filename):
 		log = codecs.open(filename, 'r', encoding='utf-8', errors='ignore')
 		end_of_file = ''
 
-	print_info(f'Reading "{filename}"')
+	print_info(f'Reading "{os.path.abspath(filename)}"')
 	regex = re.compile(r'usb')
 	for line in iter(log.readline, end_of_file):
 		if isinstance(line, bytes):
@@ -619,7 +619,7 @@ def _dump_events(events_to_show, list_name, filename, indent):
 			json.dump(out, out_json, indent=indent)
 	except PermissionError as e:
 		raise USBRipError(
-			f'Permission denied: "{filename}". Retry with sudo',
+			f'Permission denied: "{os.path.abspath(filename)}". Retry with sudo',
 			errors={'initial_error': str(e)}
 		)
 

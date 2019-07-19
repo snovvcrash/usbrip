@@ -160,7 +160,7 @@ def build_ueg_parser(subparsers):
                  '"pid", '
                  '"prod", '
                  '"manufact", '
-                 '"serial".)'
+                 '"serial")'
     )
 
 
@@ -195,7 +195,7 @@ def build_uev_parser(subparsers):
                  '"pid", '
                  '"prod", '
                  '"manufact", '
-                 '"serial".)'
+                 '"serial")'
     )
 
 
@@ -274,7 +274,7 @@ def build_usu_parser(subparsers):
                  '"pid", '
                  '"prod", '
                  '"manufact", '
-                 '"serial".)'
+                 '"serial")'
     )
 
     usu_parser.add_argument(
@@ -309,7 +309,7 @@ def build_usc_parser(subparsers):
                  '"pid", '
                  '"prod", '
                  '"manufact", '
-                 '"serial".)'
+                 '"serial")'
     )
 
     usc_parser.add_argument(
@@ -440,7 +440,7 @@ def _parse_column_args(parser):
              '"manufact", '
              '"serial", '
              '"port", '
-             '"disconn".)'
+             '"disconn")'
     )
 
 
