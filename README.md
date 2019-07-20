@@ -1,7 +1,7 @@
 usbrip
 ==========
 
-![usbrip-version](https://img.shields.io/badge/ver-2.1-red.svg)
+![usbrip-version](https://img.shields.io/badge/ver-2.1.2-red.svg)
 [![python-version](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/)
 [![license](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://raw.githubusercontent.com/snovvcrash/usbrip/master/LICENSE)
 [![built-with-love](https://img.shields.io/badge/built%20with-%F0%9F%92%97%F0%9F%92%97%F0%9F%92%97-lightgrey.svg)](https://emojipedia.org/growing-heart/)
@@ -13,8 +13,9 @@ usbrip
 Table of Contents:
 
 * [**Description**](#description)
+* [**Quick Start**](#quick-start)
 * [**Screenshots**](#screenshots)
-* [**Git clone**](#git-clone)
+* [**Git Clone**](#git-clone)
 * [**Dependencies**](#dependencies)
   - [DEB Packages](#deb-packages)
   - [PIP Packages](#pip-packages)
@@ -39,13 +40,22 @@ Besides, it also can:
 * *\*when installed with `-s` flag\** create crypted storages (7zip archives) to automatically backup and accumulate USB events with the help of `crontab` scheduler;
 * search additional details about a specific USB device based on its VID and/or PID.
 
+Quick Start
+==========
+
+Now you can download and install usbrip from [PyPI](https://pypi.org/project/usbrip/ "usbrip · PyPI"):
+
+```
+$ pip3 install usbrip
+```
+
 Screenshots
 ==========
 
 ![screenshot-1.png](https://user-images.githubusercontent.com/23141800/40887882-e00d4d3a-6757-11e8-962c-c77331782b19.png "Get USB event history")
 ![screenshot-2.png](https://user-images.githubusercontent.com/23141800/40886876-46c349d6-6748-11e8-92cf-0b0790ea9505.png "Search for extra details about a specific USB device")
 
-Git clone
+Git Clone
 ==========
 
 For simplicity, lets agree that all the commands where `~/usbrip$` prefix is appeared are executed in the `~/usbrip` directory which is created as a result of git clone:
@@ -77,7 +87,7 @@ usbrip makes use of the following external modules:
 * [terminaltables](https://github.com/Robpol86/terminaltables "Robpol86/terminaltables: Generate simple tables in terminals from a nested list of strings.")
 * [termcolor](https://pypi.org/project/termcolor "termcolor · PyPI")
 
-To resolve Python dependencies manually (it's not necessary actually because `pip` or `setup.py` can automate the process, see [Installation](#installation)) create a *virtual environment* and run `pip` from within:
+To resolve Python dependencies manually (it's not necessary actually because `pip` or `setup.py` can automate the process, see [Installation](#installation)) create a *virtual environment* (optional) and run `pip` from within:
 
 ```
 ~/usbrip$ python3 -m venv venv && source venv/bin/activate
@@ -88,6 +98,14 @@ Or let the `pipenv` one-liner do all the dirty work for you:
 
 ```
 ~/usbrip$ pipenv install && pipenv shell
+```
+
+After that you can run usbrip portably:
+
+```
+(venv) ~/usbrip$ python -m usbrip [-h]
+Or
+(venv) ~/usbrip$ python __main__.py [-h]
 ```
 
 Installation

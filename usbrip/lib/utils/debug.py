@@ -24,7 +24,7 @@ along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 __author__ = 'Sam Freeside (@snovvcrash)'
 __email__  = 'snovvcrash@protonmail[.]ch'
 __site__   = 'https://github.com/snovvcrash/usbrip'
-__brief__  = 'Debug utils.'
+__brief__  = 'Debug utils'
 
 import functools
 import time

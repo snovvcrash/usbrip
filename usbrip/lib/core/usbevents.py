@@ -33,7 +33,7 @@ monitoring - Monitor history of USB flash drives - Unix & Linux Stack Exchange
 __author__ = 'Sam Freeside (@snovvcrash)'
 __email__  = 'snovvcrash@protonmail[.]ch'
 __site__   = 'https://github.com/snovvcrash/usbrip'
-__brief__  = 'USB events handler.'
+__brief__  = 'USB events handler'
 
 import re
 import codecs

@@ -8,6 +8,7 @@ __pycache__/
 
 # Distribution / packaging
 build/
+dist/
 *.egg-info/
 
 # SageMath parsed files

@@ -24,7 +24,7 @@ along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 __author__ = 'Sam Freeside (@snovvcrash)'
 __email__  = 'snovvcrash@protonmail[.]ch'
 __site__   = 'https://github.com/snovvcrash/usbrip'
-__brief__  = 'Program runtime meter.'
+__brief__  = 'Program runtime meter'
 
 import atexit
 import time

@@ -29,7 +29,7 @@ USB Vendor/Device IDs Database - Linux-USB.org
 __author__ = 'Sam Freeside (@snovvcrash)'
 __email__  = 'snovvcrash@protonmail[.]ch'
 __site__   = 'https://github.com/snovvcrash/usbrip'
-__brief__  = 'USB IDs handler.'
+__brief__  = 'USB IDs handler'
 
 import re
 import socket

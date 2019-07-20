@@ -22,10 +22,10 @@ along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 __author__  = 'Sam Freeside (@snovvcrash)'
-__email__   = 'snovvcrash@protonmail[.]ch'
+__email__   = 'snovvcrash@protonmail.ch'
 __license__ = 'GPL-3.0'
 __site__    = 'https://github.com/snovvcrash/usbrip'
-__brief__   = 'USB device artifacts tracker.'
+__brief__   = 'USB device artifacts tracker'
 
 import glob
 import shutil
@@ -151,7 +151,7 @@ setup(
 
 	entry_points={
 		'console_scripts': [
-			'usbrip=usbrip.usbrip:main'
+			'usbrip=usbrip.__main__:main'
 		]
 	}
 )
