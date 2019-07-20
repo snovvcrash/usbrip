@@ -43,7 +43,7 @@ Besides, it also can:
 Quick Start
 ==========
 
-Now you can download and install usbrip from [PyPI](https://pypi.org/project/usbrip/ "usbrip · PyPI"):
+usbrip is available for download and installation at [PyPI](https://pypi.org/project/usbrip/ "usbrip · PyPI"):
 
 ```
 $ pip3 install usbrip
