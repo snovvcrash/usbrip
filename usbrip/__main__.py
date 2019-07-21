@@ -416,5 +416,10 @@ def _validate_vid_pid_args(args):
 		usbrip_arg_error('At least one of --vid/--pid or --download option should be specified')
 
 
+# ----------------------------------------------------------
+# -------------------------- RUN ---------------------------
+# ----------------------------------------------------------
+
+
 if __name__ == '__main__':
     main()
