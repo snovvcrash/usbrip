@@ -33,8 +33,8 @@ from usbrip.lib.core.common import root_dir_join
 
 
 def arg_parse():
-    parser = ArgumentParser()
-    subparsers = parser.add_subparsers(dest='subparser')
+    arg_parser = ArgumentParser()
+    subparsers = arg_parser.add_subparsers(dest='subparser')
 
     # ----------------------------------------------------------
     # ------------------------- Banner -------------------------
@@ -60,7 +60,7 @@ def arg_parse():
 
     build_ui_parser(subparsers)
 
-    return parser
+    return arg_parser
 
 
 # ----------------------------------------------------------

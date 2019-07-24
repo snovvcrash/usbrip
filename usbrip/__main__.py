@@ -56,8 +56,8 @@ def main():
 		print(BANNER + '\n')
 		usbrip_arg_error()
 
-	parser = arg_parse()
-	args = parser.parse_args()
+	arg_parser = arg_parse()
+	args = arg_parser.parse_args()
 
 	if 'quiet' in args and not args.quiet:
 		if cfg.ISATTY:
