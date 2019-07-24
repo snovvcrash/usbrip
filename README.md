@@ -23,6 +23,9 @@ Table of Contents:
 * [**Installation**](#installation)
   - [`pip` or `setup.py`](#pip-or-setuppy)
   - [`install.sh`](#installsh)
+    * [Paths](#paths)
+    * [cron](#cron)
+  - [`uninstall.sh`](#uninstallsh)
 * [**Usage**](#usage)
   - [Synopsis](#synopsis)
   - [Help](#help)
@@ -166,7 +169,7 @@ To install usbrip use:
 
 After the installation completes, feel free to remove the usbrip folder.
 
-#### Paths
+### Paths
 
 When installed, the usbrip uses the following paths:
 
