@@ -3,7 +3,7 @@
 
 """LICENSE
 
-Copyright (C) 2018 Sam Freeside
+Copyright (C) 2019 Sam Freeside
 
 This file is part of usbrip.
 
