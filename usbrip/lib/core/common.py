@@ -30,7 +30,6 @@ import os
 import sys
 import time
 import random
-from string import printable
 from calendar import month_name
 from collections import OrderedDict, Callable
 
@@ -38,6 +37,14 @@ from termcolor import colored, cprint
 
 import usbrip.lib.core.config as cfg
 from usbrip import __version__
+
+
+# ----------------------------------------------------------
+# ---------------- Configuration file path -----------------
+# ----------------------------------------------------------
+
+
+CONFIG_FILE = '/var/opt/usbrip/usbrip.ini'
 
 
 # ----------------------------------------------------------
@@ -217,17 +224,6 @@ def list_files(source_dir):
 	return [os.path.join(source_dir, filename)
             for filename in os.listdir(source_dir)
             if os.path.isfile(os.path.join(source_dir, filename))]
-
-
-def is_correct(password):
-	if (len(password) < 8 or
-		not any(c.islower() for c in password) or
-		not any(c.isupper() for c in password) or
-		not any(c.isdigit() for c in password) or
-		any(c not in printable for c in password)):
-		return False
-
-	return True
 
 
 # ----------------------------------------------------------

@@ -30,8 +30,9 @@ import re
 import json
 import subprocess
 import os
-from base64 import b64encode
 from datetime import datetime
+from getpass import getpass
+from configparser import ConfigParser
 
 import usbrip.lib.core.config as cfg
 from usbrip.lib.core.usbevents import USBEvents
@@ -39,12 +40,11 @@ from usbrip.lib.core.usbevents import _filter_events
 from usbrip.lib.core.usbevents import _dump_events
 from usbrip.lib.core.usbevents import _process_auth_list
 from usbrip.lib.core.common import MONTH_ENUM
-from usbrip.lib.core.common import is_correct
 from usbrip.lib.core.common import print_info
-from usbrip.lib.core.common import print_warning
 from usbrip.lib.core.common import print_critical
 from usbrip.lib.core.common import print_secret
 from usbrip.lib.core.common import USBRipError
+from usbrip.lib.core.common import CONFIG_FILE
 from usbrip.lib.utils.debug import time_it
 from usbrip.lib.utils.debug import time_it_if_debug
 
@@ -100,7 +100,7 @@ class USBStorage:
 			return
 
 		if 'Everything is Ok' in out:
-			base_filename = re.search(r'Extracting\s*(.*?$)', out, re.MULTILINE).group(1)
+			base_filename = re.search(r'([^\n ]*\.json)', _7zip_list(storage_full_path, password), re.MULTILINE).group(1)
 			json_file = f'{USBStorage._STORAGE_BASE}/{base_filename}'
 			USBEvents.open_dump(json_file, columns, sieve=sieve, repres=repres)
 			os.remove(json_file)
@@ -113,7 +113,7 @@ class USBStorage:
 	@time_it_if_debug(cfg.DEBUG, time_it)
 	def update_storage(
 		storage_type,
-		password=None,
+		password,
 		*,
 		input_auth=None,
 		attributes=None,
@@ -153,9 +153,9 @@ class USBStorage:
 			return 1
 
 		if 'Everything is Ok' in out:
-			os.remove(storage_full_path)
-			base_filename = re.search(r'Extracting\s*(.*?$)', out, re.MULTILINE).group(1)
+			base_filename = re.search(r'([^\n ]*\.json)', _7zip_list(storage_full_path, password), re.MULTILINE).group(1)
 			json_file = f'{USBStorage._STORAGE_BASE}/{base_filename}'
+			os.remove(storage_full_path)
 
 			with open(json_file, 'r', encoding='utf-8') as dump:
 				events_dumped = json.load(dump)
@@ -192,8 +192,8 @@ class USBStorage:
 	@time_it_if_debug(cfg.DEBUG, time_it)
 	def create_storage(
 		storage_type,
+		password,
 		*,
-		password=None,
 		input_auth=None,
 		attributes=None,
 		compression_level='5',
@@ -224,10 +224,6 @@ class USBStorage:
 			print_critical(str(e), initial_error=e.errors['initial_error'])
 			return 1
 
-		if password is None:
-			print_warning('No password provided, generating random one')
-			password = _gen_random_password(12)
-
 		storage_full_path = f'{USBStorage._STORAGE_BASE}/{storage_type}.7z'
 		if os.path.exists(storage_full_path):
 			os.remove(storage_full_path)
@@ -241,7 +237,7 @@ class USBStorage:
 
 		if 'Everything is Ok' in out:
 			print_info(f'New {storage_type} storage: "{storage_full_path}"')
-			print_secret('Your password is', secret=password)
+			print_secret('Default password is', secret=password)
 			os.remove(json_file)
 		else:
 			print_critical('Undefined behaviour while creating storage', initial_error=out)
@@ -250,23 +246,41 @@ class USBStorage:
 
 	@staticmethod
 	@time_it_if_debug(cfg.DEBUG, time_it)
-	def change_password(storage_type, old_password, new_password, *, compression_level='5'):
+	def change_password(storage_type, *, compression_level='5'):
 		storage_full_path = f'{USBStorage._STORAGE_BASE}/{storage_type}.7z'
 		if not os.path.isfile(storage_full_path):
 			print_critical(f'Storage not found: "{storage_full_path}"')
 			return
 
+		old_password = getpass('Old password: ')
+		new_password = getpass('New password: ')
+		confirm_new_password = getpass('Confirm new password: ')
+
+		if new_password != confirm_new_password:
+			print_critical('Passwords does not match, try again')
+			return
+
 		try:
 			out = _7zip_unpack(storage_full_path, old_password)
 			if 'Everything is Ok' in out:
+				base_filename = re.search(r'([^\n ]*\.json)', _7zip_list(storage_full_path, old_password), re.MULTILINE).group(1)
+				json_file = f'{USBStorage._STORAGE_BASE}/{base_filename}'
 				os.remove(storage_full_path)
 
-				base_filename = re.search(r'Extracting\s*(.*?$)', out, re.MULTILINE).group(1)
-				json_file = f'{USBStorage._STORAGE_BASE}/{base_filename}'
-
 				out = _7zip_pack(storage_full_path, json_file, new_password, compression_level)
+
 				if 'Everything is Ok' in out:
 					print_info('Password was successfully changed')
+
+					conf_parser = ConfigParser(allow_no_value=True)
+					conf_parser.optionxform = str
+					conf_parser.read(CONFIG_FILE, encoding='utf-8')
+					conf_parser.set(storage_type, 'password', new_password)
+					with open(CONFIG_FILE, 'w', encoding='utf-8') as f:
+						conf_parser.write(f)
+
+					print_info('Configuration file updated')
+
 				else:
 					print_critical('Undefined behaviour while creating storage', initial_error=out)
 
@@ -283,14 +297,6 @@ class USBStorage:
 # ----------------------------------------------------------
 # ----------------------- Utilities ------------------------
 # ----------------------------------------------------------
-
-
-def _gen_random_password(length):
-	while True:
-		b64 = b64encode(os.urandom(length)).decode('utf-8')
-		password = re.sub(r'[+=/]', '', b64)[:length]
-		if is_correct(password):
-			return password
 
 
 def _get_history_events(sieve):

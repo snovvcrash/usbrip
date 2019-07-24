@@ -32,7 +32,7 @@ from usbrip.lib.core.usbstorage import USBStorage
 from usbrip.lib.core.common import root_dir_join
 
 
-def cmd_line_options():
+def arg_parse():
     parser = ArgumentParser()
     subparsers = parser.add_subparsers(dest='subparser')
 
@@ -231,7 +231,6 @@ def build_usl_parser(subparsers):
     _parse_debug_args(usl_parser)
     _parse_quiet_args(usl_parser)
     _parse_storage_type_args(usl_parser)
-    _parse_password_args(usl_parser, required=True)
 
 
 # -------------------- USB Storage Open --------------------
@@ -246,7 +245,6 @@ def build_uso_parser(subparsers):
     _parse_debug_args(uso_parser)
     _parse_quiet_args(uso_parser)
     _parse_storage_type_args(uso_parser)
-    _parse_password_args(uso_parser, required=True)
     _parse_column_args(uso_parser)
     _parse_sieve_args(uso_parser)
     _parse_repres_args(uso_parser)
@@ -264,7 +262,6 @@ def build_usu_parser(subparsers):
     _parse_debug_args(usu_parser)
     _parse_quiet_args(usu_parser)
     _parse_storage_type_args(usu_parser)
-    _parse_password_args(usu_parser, required=True)
     _parse_comperssion_level_args(usu_parser)
     _parse_sieve_args(usu_parser)
     _parse_attribute_args(
@@ -299,7 +296,6 @@ def build_usc_parser(subparsers):
     _parse_debug_args(usc_parser)
     _parse_quiet_args(usc_parser)
     _parse_storage_type_args(usc_parser)
-    _parse_password_args(usc_parser, required=False)
     _parse_comperssion_level_args(usc_parser)
     _parse_sieve_args(usc_parser)
     _parse_attribute_args(
@@ -333,7 +329,6 @@ def build_usp_parser(subparsers):
     _parse_debug_args(usp_parser)
     _parse_quiet_args(usp_parser)
     _parse_storage_type_args(usp_parser)
-    _parse_old_new_passwords_args(usp_parser)
     _parse_comperssion_level_args(usp_parser)
 
 
@@ -560,34 +555,6 @@ def _parse_storage_type_args(parser):
         'storage_type',
         type=str,
         help='storage type (options: "history", "violations")'
-    )
-
-
-def _parse_password_args(parser, *, required):
-    parser.add_argument(
-        '-p',
-        '--password',
-        type=str,
-        required=required,
-        help='storage password'
-    )
-
-
-def _parse_old_new_passwords_args(parser):
-    parser.add_argument(
-        '-o',
-        '--old',
-        type=str,
-        required=True,
-        help='old storage password'
-    )
-
-    parser.add_argument(
-        '-n',
-        '--new',
-        type=str,
-        required=True,
-        help='new storage password'
     )
 
 

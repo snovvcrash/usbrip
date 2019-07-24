@@ -1,7 +1,7 @@
 usbrip
 ==========
 
-![usbrip-version](https://img.shields.io/badge/ver-2.1.2-red.svg)
+![usbrip-version](https://img.shields.io/badge/ver-2.1.3-red.svg)
 [![python-version](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/)
 [![license](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://raw.githubusercontent.com/snovvcrash/usbrip/master/LICENSE)
 [![built-with-love](https://img.shields.io/badge/built%20with-%F0%9F%92%97%F0%9F%92%97%F0%9F%92%97-lightgrey.svg)](https://emojipedia.org/growing-heart/)
@@ -142,9 +142,9 @@ Secondly, usbrip can also be installed into the system with the `installers/inst
 When using the `installers/install.sh` some extra features become available:
 
 * the virtual environment is created automatically;
-* you can set a crontab job to backup USB events on a schedule (the example of crontab jobs can be found in `usbrip/cron/usbrip.cron`).
+* the `storage` module becomes available: you can set a crontab job to backup USB events on a schedule (the example of crontab jobs can be found in `usbrip/cron/usbrip.cron`).
 
-:warning: **Warning**: if you are using the crontab scheduling, you want to configure the cron job with `sudo crontab -e` in order to force the `storage update` submodule run as root as well as protect the passwords of the USB event storages. It's obviously **not a truly secure way** to input passwords (no secrets should be ever stored as plain text / passed as arguments on the command line due to a variety of ways of exposing such secrets, e. g. scanning `/proc` directory for new PIDs to catch short-lived processes with all the corresponding CLI args), but this is just an educational project in the end (interactive mode for secure password prompting is in the TODO list :neutral_face:).
+:warning: **Warning**: if you are using the crontab scheduling, you want to configure the cron job with `sudo crontab -e` in order to force the `storage update` submodule run as root as well as protect the passwords of the USB event storages. The storage passwords are kept in `/var/opt/usbrip/usbrip.ini`.
 
 The `installers/uninstall.sh` script removes all the installation artifacts from your system.
 
@@ -187,6 +187,7 @@ And don't forget to remove the cron job.
 When installed, the usbrip uses the following paths:
 
 * `/opt/usbrip/` — project's main directory;
+* `/var/opt/usbrip/usbrip.ini` — usbrip configuration file: keeps passwords for 7zip storages
 * `/var/opt/usbrip/storage/` — USB event storages: `history.7z` and `violations.7z` (created during the installation process);
 * `/var/opt/usbrip/log/` — usbrip logs (recommended to log usbrip activity when using crontab, see `usbrip/cron/usbrip.cron`);
 * `/var/opt/usbrip/trusted/` — list of trusted USB devices (created during the installation process);
@@ -219,19 +220,19 @@ Get USB violation events based on the list of trusted devices.
 
 # ---------- STORAGE ----------
 
-$ usbrip storage list <STORAGE_TYPE> -p <PASSWORD> [-q] [--debug]
+$ usbrip storage list <STORAGE_TYPE> [-q] [--debug]
 List contents of the selected storage (7zip archive). STORAGE_TYPE is "history" or "violations".
 
-$ usbrip storage open <STORAGE_TYPE> -p <PASSWORD> [-t | -l] [-e] [-n <NUMBER_OF_EVENTS>] [-d <DATE> [<DATE> ...]] [--user <USER> [<USER> ...]] [--vid <VID> [<VID> ...]] [--pid <PID> [<PID> ...]] [--prod <PROD> [<PROD> ...]] [--manufact <MANUFACT> [<MANUFACT> ...]] [--serial <SERIAL> [<SERIAL> ...]] [--port <PORT> [<PORT> ...]] [-c <COLUMN> [<COLUMN> ...]] [-q] [--debug]
+$ usbrip storage open <STORAGE_TYPE> [-t | -l] [-e] [-n <NUMBER_OF_EVENTS>] [-d <DATE> [<DATE> ...]] [--user <USER> [<USER> ...]] [--vid <VID> [<VID> ...]] [--pid <PID> [<PID> ...]] [--prod <PROD> [<PROD> ...]] [--manufact <MANUFACT> [<MANUFACT> ...]] [--serial <SERIAL> [<SERIAL> ...]] [--port <PORT> [<PORT> ...]] [-c <COLUMN> [<COLUMN> ...]] [-q] [--debug]
 Open selected storage (7zip archive). Behaves similary to the EVENTS OPEN submodule.
 
-$ usbrip storage update <STORAGE_TYPE> -p <PASSWORD> [-a <ATTRIBUTE> [<ATTRIBUTE> ...]] [-e] [-n <NUMBER_OF_EVENTS>] [-d <DATE> [<DATE> ...]] [--user <USER> [<USER> ...]] [--vid <VID> [<VID> ...]] [--pid <PID> [<PID> ...]] [--prod <PROD> [<PROD> ...]] [--manufact <MANUFACT> [<MANUFACT> ...]] [--serial <SERIAL> [<SERIAL> ...]] [--port <PORT> [<PORT> ...]] [--lvl <COMPRESSION_LEVEL>] [-q] [--debug]
+$ usbrip storage update <STORAGE_TYPE> [-a <ATTRIBUTE> [<ATTRIBUTE> ...]] [-e] [-n <NUMBER_OF_EVENTS>] [-d <DATE> [<DATE> ...]] [--user <USER> [<USER> ...]] [--vid <VID> [<VID> ...]] [--pid <PID> [<PID> ...]] [--prod <PROD> [<PROD> ...]] [--manufact <MANUFACT> [<MANUFACT> ...]] [--serial <SERIAL> [<SERIAL> ...]] [--port <PORT> [<PORT> ...]] [--lvl <COMPRESSION_LEVEL>] [-q] [--debug]
 Update storage — add USB events to the existing storage (7zip archive). COMPRESSION_LEVEL is a number in [0..9].
 
-$ usbrip storage create <STORAGE_TYPE> [-p <PASSWORD>] [-a <ATTRIBUTE> [<ATTRIBUTE> ...]] [-e] [-n <NUMBER_OF_EVENTS>] [-d <DATE> [<DATE> ...]] [--user <USER> [<USER> ...]] [--vid <VID> [<VID> ...]] [--pid <PID> [<PID> ...]] [--prod <PROD> [<PROD> ...]] [--manufact <MANUFACT> [<MANUFACT> ...]] [--serial <SERIAL> [<SERIAL> ...]] [--port <PORT> [<PORT> ...]] [--lvl <COMPRESSION_LEVEL>] [-q] [--debug]
+$ usbrip storage create <STORAGE_TYPE> [-a <ATTRIBUTE> [<ATTRIBUTE> ...]] [-e] [-n <NUMBER_OF_EVENTS>] [-d <DATE> [<DATE> ...]] [--user <USER> [<USER> ...]] [--vid <VID> [<VID> ...]] [--pid <PID> [<PID> ...]] [--prod <PROD> [<PROD> ...]] [--manufact <MANUFACT> [<MANUFACT> ...]] [--serial <SERIAL> [<SERIAL> ...]] [--port <PORT> [<PORT> ...]] [--lvl <COMPRESSION_LEVEL>] [-q] [--debug]
 Create storage — create 7zip archive and add USB events to it according to the selected options.
 
-$ usbrip storage passwd <STORAGE_TYPE> -o <OLD_PASSWORD> -n <NEW_PASSWORD> [--lvl <COMPRESSION_LEVEL>] [-q] [--debug]
+$ usbrip storage passwd <STORAGE_TYPE> [--lvl <COMPRESSION_LEVEL>] [-q] [--debug]
 Change password of the existing storage.
 
 # ---------- IDs ----------

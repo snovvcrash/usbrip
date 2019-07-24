@@ -40,10 +40,10 @@ from usbrip.lib.core.usbstorage import USBStorage
 from usbrip.lib.core.usbids import USBIDs
 from usbrip.lib.core.common import BANNER
 from usbrip.lib.core.common import COLUMN_NAMES
-from usbrip.lib.core.common import is_correct
 from usbrip.lib.core.common import print_critical
 from usbrip.lib.core.common import USBRipError
-from usbrip.lib.parse.argparser import cmd_line_options
+from usbrip.lib.parse.argparser import arg_parse
+from usbrip.lib.parse.configparser import config_parse
 
 
 # ----------------------------------------------------------
@@ -56,7 +56,7 @@ def main():
 		print(BANNER + '\n')
 		usbrip_arg_error()
 
-	parser = cmd_line_options()
+	parser = arg_parse()
 	args = parser.parse_args()
 
 	if 'quiet' in args and not args.quiet:
@@ -141,8 +141,12 @@ def main():
 		if os.geteuid() != 0:
 			sys.exit('Permission denied. Retry with sudo')
 
+		if not os.path.exists('/opt/usbrip/') or not os.path.exists('/var/opt/usbrip/storage/'):
+			sys.exit('The "storage" module can only be used when usbrip is installed via "installer.sh" - https://git.io/fjDPT')
+
 		sieve, repres = validate_us_args(args)
 		timing.begin()
+		conf_parser = config_parse()
 		us = USBStorage()
 
 		# -------------------- USB Storage List --------------------
@@ -150,7 +154,7 @@ def main():
 		if args.us_subparser == 'list':
 			us.list_storage(
 				args.storage_type,
-				args.password
+				conf_parser[args.storage_type]['password']
 			)
 
 		# -------------------- USB Storage Open --------------------
@@ -158,7 +162,7 @@ def main():
 		elif args.us_subparser == 'open':
 			us.open_storage(
 				args.storage_type,
-				args.password,
+				conf_parser[args.storage_type]['password'],
 				args.column,
 				sieve=sieve,
 				repres=repres
@@ -169,7 +173,7 @@ def main():
 		elif args.us_subparser == 'update':
 			if us.update_storage(
 				args.storage_type,
-				args.password,
+				conf_parser[args.storage_type]['password'],
 				input_auth=args.input,
 				attributes=args.attribute,
 				compression_level=args.lvl,
@@ -182,7 +186,7 @@ def main():
 		elif args.us_subparser == 'create':
 			if us.create_storage(
 				args.storage_type,
-				password=args.password,
+				conf_parser[args.storage_type]['password'],
 				input_auth=args.input,
 				attributes=args.attribute,
 				compression_level=args.lvl,
@@ -195,8 +199,6 @@ def main():
 		elif args.us_subparser == 'passwd':
 			us.change_password(
 				args.storage_type,
-				args.old,
-				args.new,
 				compression_level=args.lvl
 			)
 
@@ -254,7 +256,6 @@ def validate_ue_args(args):
 
 def validate_us_args(args):
 	_validate_storage_type_args(args)
-	_validate_password_args(args)
 	_validate_compression_level_args(args)
 	_validate_io_args(args)
 	_validate_attribute_args(args)
@@ -380,21 +381,6 @@ def _validate_storage_type_args(args):
 	elif args.storage_type == 'violations':
 		if 'input' in args and args.input is None:
 			usbrip_arg_error('Please specify input path for the list of authorized devices (-i)')
-
-
-def _validate_password_args(args):
-	errmsg = ': Password must be at least 8 chars long and contain at least ' \
-             '1 lowercase letter, at least 1 uppercase letter and at least '  \
-             '1 digit'
-
-	if 'password' in args and args.password and not is_correct(args.password):
-		usbrip_arg_error(args.password + errmsg)
-
-	if 'new' in args and args.new and not is_correct(args.new):
-		usbrip_arg_error(args.new + errmsg)
-
-	if 'old' in args and args.old and not is_correct(args.old):
-		usbrip_arg_error(args.old + errmsg)
 
 
 def _validate_compression_level_args(args):

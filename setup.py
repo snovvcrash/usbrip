@@ -139,7 +139,9 @@ setup(
 			'requirements.txt'
 		]),
 		('usbrip/usb_ids', [
-			'usbrip/usb_ids/usb.ids',
+			'usbrip/usb_ids/usb.ids'
+		]),
+		('usbrip/cron', [
 			'usbrip/cron/usbrip.cron'
 		])
 	],

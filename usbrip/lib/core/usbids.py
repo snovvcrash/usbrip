@@ -245,7 +245,7 @@ def _get_latest_version():
 def _check_connection(hostname):
 	try:
 		host = socket.gethostbyname(hostname)
-		s = socket.create_connection((host, 80), 2)
+		socket.create_connection((host, 80), 2)
 		return (True, 0, '')
 	except Exception as e:
 		return (False, USBIDs._INTERNET_CONNECTION_ERROR, str(e))
