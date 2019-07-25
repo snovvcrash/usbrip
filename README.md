@@ -30,7 +30,7 @@ Table of Contents:
   - [Synopsis](#synopsis)
   - [Help](#help)
 * [**Examples**](#examples)
-* [**Credits & References**](#credits-references)
+* [**Credits & References**](#credits--references)
 * [**Post Scriptum**](#post-scriptum)
 
 Description
