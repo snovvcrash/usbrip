@@ -1,7 +1,7 @@
 usbrip
 ==========
 
-![usbrip-version](https://img.shields.io/badge/ver-2.1.3-red.svg)
+![usbrip-version](https://img.shields.io/badge/ver-2.1.4-red.svg)
 [![pypi-version](https://img.shields.io/badge/PyPI-Download-blue.svg)](https://pypi.org/project/usbrip/#files)
 [![python-version](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/)
 [![license](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://raw.githubusercontent.com/snovvcrash/usbrip/master/LICENSE)
@@ -30,6 +30,7 @@ Table of Contents:
   - [Synopsis](#synopsis)
   - [Help](#help)
 * [**Examples**](#examples)
+* [**Credits & References**](#credits-references)
 * [**Post Scriptum**](#post-scriptum)
 
 Description
@@ -325,6 +326,13 @@ Examples
   ```
   $ usbrip ids download
   ```
+
+Credits & References
+==========
+
+* [Linux-форензика в лице трекинга истории подключений USB-устройств / Хабр](https://habr.com/ru/post/352254/)
+* [usbrip: USB-форензика для Линуксов, или Как Алиса стала Евой](https://codeby.net/threads/usbrip-usb-forenzika-dlja-linuksov-ili-kak-alisa-stala-evoj.63644/)
+* [usbrip – A tiny command line forensics tool for tracking USB device artifacts on linux. – Security List Network™](http://seclist.us/usbrip-a-tiny-command-line-forensics-tool-for-tracking-usb-device-artifacts-on-linux.html)
 
 Post Scriptum
 ==========
