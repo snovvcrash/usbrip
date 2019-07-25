@@ -39,6 +39,7 @@ Description
 **usbrip** is a small piece of software written in pure Python 3 (using some external modules though, see [Dependencies/PIP](#pip-packages)) which parses Linux log files (`/var/log/syslog*` or `/var/log/messages*` depending on the distro) for constructing USB event history tables. Such tables may contain the following columns: "Connected" (date & time), "User", "VID" (vendor ID), "PID" (product ID), "Product", "Manufacturer", "Serial Number", "Port" and "Disconnected" (date & time).
 
 Besides, it also can:
+
 * export gathered information as a JSON dump (and open such dumps, of course);
 * generate a list of authorized (*trusted*) USB devices as a JSON (call it `auth.json`);
 * search for "violation events" based on the `auth.json`: show (or generate another JSON with) USB devices that do appear in history and do NOT appear in the `auth.json`;
