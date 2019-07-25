@@ -21,4 +21,4 @@ You should have received a copy of the GNU General Public License
 along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-__version__ = '2.1.3'
+__version__ = '2.1.3-2'

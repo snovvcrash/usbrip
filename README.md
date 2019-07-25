@@ -1,7 +1,7 @@
 usbrip
 ==========
 
-![usbrip-version](https://img.shields.io/badge/ver-2.1.4-red.svg)
+![usbrip-version](https://img.shields.io/badge/ver-2.1.3-red.svg)
 [![pypi-version](https://img.shields.io/badge/PyPI-Download-blue.svg)](https://pypi.org/project/usbrip/#files)
 [![python-version](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/)
 [![license](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://raw.githubusercontent.com/snovvcrash/usbrip/master/LICENSE)
