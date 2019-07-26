@@ -121,7 +121,7 @@ There are two ways to install usbrip into the system: `pip` or `setup.py`.
 
 ## `pip` or `setup.py`
 
-First of all, usbrip is pip installable. This means that after git clonning the repo you can simply fire up the pip installation process and after that run usbrip from anywhere in your terminal like so:
+First of all, usbrip is pip installable. This means that after git cloning the repo you can simply fire up the pip installation process and after that run usbrip from anywhere in your terminal like so:
 
 ```
 ~/usbrip$ python3 -m venv venv && source venv/bin/activate
@@ -280,7 +280,7 @@ $ usbrip <module> <submodule> -h
 Examples
 ==========
 
-* Show the event history of all USB devices, supressing banner output, info messages and user iteraction (`-q`, `--quiet`), represented as a list (`-l`, `--list`) with latest 100 entries (`-n NUMBER`, `--number NUMBER`):
+* Show the event history of all USB devices, supressing banner output, info messages and user interaction (`-q`, `--quiet`), represented as a list (`-l`, `--list`) with latest 100 entries (`-n NUMBER`, `--number NUMBER`):
 
   ```
   $ usbrip events history -ql -n 100
