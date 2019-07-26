@@ -42,8 +42,8 @@ from usbrip.lib.core.common import BANNER
 from usbrip.lib.core.common import COLUMN_NAMES
 from usbrip.lib.core.common import print_critical
 from usbrip.lib.core.common import USBRipError
-from usbrip.lib.parse.argparser import arg_parse
-from usbrip.lib.parse.configparser import config_parse
+from usbrip.lib.parse.argparser import get_arg_parser
+from usbrip.lib.parse.configparser import get_config_parser
 
 
 # ----------------------------------------------------------
@@ -56,7 +56,7 @@ def main():
 		print(BANNER + '\n')
 		usbrip_arg_error()
 
-	arg_parser = arg_parse()
+	arg_parser = get_arg_parser()
 	args = arg_parser.parse_args()
 
 	if 'quiet' in args and not args.quiet:
@@ -146,7 +146,7 @@ def main():
 
 		sieve, repres = validate_us_args(args)
 		timing.begin()
-		conf_parser = config_parse()
+		config_parser = get_config_parser()
 		us = USBStorage()
 
 		# -------------------- USB Storage List --------------------
@@ -154,7 +154,7 @@ def main():
 		if args.us_subparser == 'list':
 			us.list_storage(
 				args.storage_type,
-				conf_parser[args.storage_type]['password']
+				config_parser[args.storage_type]['password']
 			)
 
 		# -------------------- USB Storage Open --------------------
@@ -162,7 +162,7 @@ def main():
 		elif args.us_subparser == 'open':
 			us.open_storage(
 				args.storage_type,
-				conf_parser[args.storage_type]['password'],
+				config_parser[args.storage_type]['password'],
 				args.column,
 				sieve=sieve,
 				repres=repres
@@ -173,7 +173,7 @@ def main():
 		elif args.us_subparser == 'update':
 			if us.update_storage(
 				args.storage_type,
-				conf_parser[args.storage_type]['password'],
+				config_parser[args.storage_type]['password'],
 				input_auth=args.input,
 				attributes=args.attribute,
 				compression_level=args.lvl,
@@ -186,7 +186,7 @@ def main():
 		elif args.us_subparser == 'create':
 			if us.create_storage(
 				args.storage_type,
-				conf_parser[args.storage_type]['password'],
+				config_parser[args.storage_type]['password'],
 				input_auth=args.input,
 				attributes=args.attribute,
 				compression_level=args.lvl,

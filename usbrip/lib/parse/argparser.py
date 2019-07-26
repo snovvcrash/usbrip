@@ -32,7 +32,7 @@ from usbrip.lib.core.usbstorage import USBStorage
 from usbrip.lib.core.common import root_dir_join
 
 
-def arg_parse():
+def get_arg_parser():
     arg_parser = ArgumentParser()
     subparsers = arg_parser.add_subparsers(dest='subparser')
 

@@ -34,28 +34,28 @@ from usbrip.lib.core.common import print_info
 from usbrip.lib.core.common import print_warning
 
 
-def config_parse():
-	conf_parser = ConfigParser(allow_no_value=True)
-	conf_parser.optionxform = str
+def get_config_parser():
+	config_parser = ConfigParser(allow_no_value=True)
+	config_parser.optionxform = str
 
 	os.makedirs(CONFIG_FILE.rsplit('/', 1)[0], exist_ok=True)
 
 	if os.path.isfile(CONFIG_FILE):
-		conf_parser.read(CONFIG_FILE, encoding='utf-8')
+		config_parser.read(CONFIG_FILE, encoding='utf-8')
 		print_info(f'Configuration loaded: "{CONFIG_FILE}"')
 
 	else:
 		print_warning('No configuration file found, creating new one...')
 
-		conf_parser.add_section('history')
-		conf_parser.set('history', 'password', 'r1pp3r')
+		config_parser.add_section('history')
+		config_parser.set('history', 'password', 'r1pp3r')
 
-		conf_parser.add_section('violations')
-		conf_parser.set('violations', 'password', 'r1pp3r')
+		config_parser.add_section('violations')
+		config_parser.set('violations', 'password', 'r1pp3r')
 
 		print_info(f'New configuration file: "{CONFIG_FILE}"')
 
 		with open(CONFIG_FILE, 'w', encoding='utf-8') as f:
-			conf_parser.write(f)
+			config_parser.write(f)
 
-	return conf_parser
+	return config_parser
