@@ -1,13 +1,16 @@
-usbrip
-==========
+<p align="center">
+	<img src="https://user-images.githubusercontent.com/23141800/56420194-b9551e80-62a5-11e9-8508-fc0f4a398042.png" alt="logo.png" />
+</p>
 
-![usbrip-version](https://img.shields.io/badge/ver-2.1.3-red.svg)
-[![pypi-version](https://img.shields.io/badge/PyPI-Download-blue.svg)](https://pypi.org/project/usbrip/#files)
-[![python-version](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/)
-[![license](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://raw.githubusercontent.com/snovvcrash/usbrip/master/LICENSE)
-[![built-with-love](https://img.shields.io/badge/built%20with-%F0%9F%92%97%F0%9F%92%97%F0%9F%92%97-lightgrey.svg)](https://emojipedia.org/growing-heart/)
+----------
 
-[![logo.png](https://user-images.githubusercontent.com/23141800/56420194-b9551e80-62a5-11e9-8508-fc0f4a398042.png)](#usbrip)
+<p align="center">
+	<a href="https://pypi.org/project/usbrip/#history"><img src="https://img.shields.io/badge/ver-2.1.3-red.svg" alt="usbrip-version.svg" /></a>
+	<a href="https://pypi.org/project/usbrip/#files"><img src="https://img.shields.io/badge/PyPI-Download-blue.svg" alt="pypi-download.svg" /></a>
+	<a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.6-blue.svg" alt="python-version.svg" /></a>
+	<a href="https://raw.githubusercontent.com/snovvcrash/usbrip/master/LICENSE"><img src="https://img.shields.io/badge/license-GPLv3-blue.svg" alt="license.svg" /></a>
+	<a href="https://emojipedia.org/growing-heart/"><img src="https://img.shields.io/badge/built%20with-%F0%9F%92%97%F0%9F%92%97%F0%9F%92%97-lightgrey.svg" alt="built-with-love.svg" /></a>
+</p>
 
 **usbrip** (derived from "USB Ripper", not "USB R.I.P." :astonished:) is an open source forensics tool with CLI interface that lets you keep track of USB device artifacts (aka *USB event history, "Connected" and "Disconnected" events*) on Linux machines.
 
@@ -342,4 +345,4 @@ Yep, the banner and info messages style is inspired by the *sqlmap* project (⌒
 
 If this tool has been useful for you, feel free to buy me a coffee :coffee:
 
-[![Coffee](https://user-images.githubusercontent.com/23141800/44239262-2cf7d680-a1c1-11e8-96b4-c4949f84e94e.png)](https://buymeacoff.ee/snovvcrash)
+[![coffee.png](https://user-images.githubusercontent.com/23141800/44239262-2cf7d680-a1c1-11e8-96b4-c4949f84e94e.png)](https://buymeacoff.ee/snovvcrash)
