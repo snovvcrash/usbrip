@@ -106,7 +106,7 @@ To resolve Python dependencies manually (it's not necessary actually because `pi
 (venv) ~/usbrip$ pip install -r requirements.txt
 ```
 
-Or let the `pipenv` one-liner do all the dirty work for you:
+Or let the [`pipenv`](https://github.com/pypa/pipenv "pypa/pipenv: Python Development Workflow for Humans.") one-liner do all the dirty work for you:
 
 ```
 ~/usbrip$ pipenv install && pipenv shell
