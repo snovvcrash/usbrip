@@ -23,12 +23,13 @@ Table of Contents:
 * [**Dependencies**](#dependencies)
   - [DEB Packages](#deb-packages)
   - [PIP Packages](#pip-packages)
+  - [Portable](#portable)
 * [**Installation**](#installation)
   - [`pip` or `setup.py`](#pip-or-setuppy)
   - [`install.sh`](#installsh)
     * [Paths](#paths)
     * [cron](#cron)
-  - [`uninstall.sh`](#uninstallsh)
+    * [`uninstall.sh`](#uninstallsh)
 * [**Usage**](#usage)
   - [Synopsis](#synopsis)
   - [Help](#help)
@@ -95,6 +96,8 @@ usbrip makes use of the following external modules:
 
 * [terminaltables](https://github.com/Robpol86/terminaltables "Robpol86/terminaltables: Generate simple tables in terminals from a nested list of strings.")
 * [termcolor](https://pypi.org/project/termcolor "termcolor · PyPI")
+
+## Portable
 
 To resolve Python dependencies manually (it's not necessary actually because `pip` or `setup.py` can automate the process, see [Installation](#installation)) create a *virtual environment* (optional) and run `pip` from within:
 
