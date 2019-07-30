@@ -348,9 +348,19 @@ def _parse_history(divided_history):
 			for line in logs:
 				if 'New USB device found' in line:
 					user = line[16:].split(' ', 1)[0]  # line[:16] == 'Mon dd hh:mm:ss '
-					vid = re_vid.search(line).group(1)
-					pid = re_pid.search(line).group(1)
-					port = re_port.search(line).group(1)
+
+					try:
+						vid = re_vid.search(line).group(1)
+					except AttributeError:
+						vid = None
+					try:
+						pid = re_pid.search(line).group(1)
+					except AttributeError:
+						pid = None
+					try:
+						port = re_port.search(line).group(1)
+					except AttributeError:
+						port = None
 
 					event = {
 						'conn':     date,
@@ -406,11 +416,15 @@ def _parse_history(divided_history):
 		elif action == 'd':
 			for line in logs:
 				if 'disconnect' in line:
-					port = re_port.search(line).group(1)
-					for i in range(len(all_events)-1, -1, -1):
-						if all_events[i]['port'] == port:
-							all_events[i]['disconn'] = date
-							break
+					try:
+						port = re_port.search(line).group(1)
+					except AttributeError:
+						pass
+					else:
+						for i in range(len(all_events)-1, -1, -1):
+							if all_events[i]['port'] == port:
+								all_events[i]['disconn'] = date
+								break
 
 	return all_events
 
