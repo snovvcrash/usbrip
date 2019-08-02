@@ -339,7 +339,6 @@ Credits & References
 
 * [Linux-форензика в лице трекинга истории подключений USB-устройств / Хабр](https://habr.com/ru/post/352254/)
 * [usbrip: USB-форензика для Линуксов, или Как Алиса стала Евой](https://codeby.net/threads/usbrip-usb-forenzika-dlja-linuksov-ili-kak-alisa-stala-evoj.63644/)
-* [usbrip – A tiny command line forensics tool for tracking USB device artifacts on linux. – Security List Network™](http://seclist.us/usbrip-a-tiny-command-line-forensics-tool-for-tracking-usb-device-artifacts-on-linux.html)
 
 Post Scriptum
 ==========
