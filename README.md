@@ -87,7 +87,7 @@ usbrip works with **non**-modified structure of system log files only, so, unfor
 * p7zip-full *(used by `storages` module)*
 
 ```
-~$ sudo apt install -y python3-venv p7zip-full
+~$ sudo apt install python3-venv p7zip-full -y
 ```
 
 ## PIP Packages

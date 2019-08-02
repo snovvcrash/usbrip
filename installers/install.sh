@@ -82,11 +82,11 @@ fi
 
 if ! /usr/bin/dpkg-query -W -f='${Status}' python3-venv 2>&1 | /bin/grep "ok installed" > /dev/null; then
 	/usr/bin/printf "${Y}>>>>${NC} Unresolved dependency: python3-venv. Do you want to install this package as:\n%s\n" \
-                    "\"sudo apt install -y python3-venv\"?"
+                    "\"sudo apt install python3-venv -y\"?"
 	select YN in "Yes" "No"; do
 		case ${YN} in
 			"Yes" )
-				$(which apt) install -y "python3-venv"
+				$(which apt) install "python3-venv" -y
 				break
 				;;
 			"No" )
@@ -100,11 +100,11 @@ fi
 
 if ! /usr/bin/dpkg-query -W -f='${Status}' p7zip-full 2>&1 | /bin/grep "ok installed" > /dev/null && ${STORAGES}; then
 	/usr/bin/printf "${Y}>>>>${NC} Unresolved dependency: p7zip-full. Do you want to install this package as:\n%s\n" \
-                    "\"sudo apt install -y p7zip-full\"?"
+                    "\"sudo apt install p7zip-full -y\"?"
 	select YN in "Yes" "No"; do
 		case ${YN} in
 			"Yes" )
-				$(which apt) install -y "p7zip-full"
+				$(which apt) install "p7zip-full" -y
 				break
 				;;
 			"No" )
