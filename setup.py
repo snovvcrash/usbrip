@@ -108,7 +108,7 @@ def parse_requirements(file):
 
 
 long_description = '''\
-	Simple command line forensics tool for tracking \
+	Simple CLI forensics tool for tracking \
 	USB device artifacts (history of USB events) \
 	on GNU/Linux.\
 '''.replace('\t', '')
