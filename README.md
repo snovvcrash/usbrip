@@ -85,12 +85,12 @@ usbrip (>= [2.1.4.post1](https://pypi.org/project/usbrip/#history)) works with *
 
 It can be done by setting the `RSYSLOG_FileFormat` format if you are using rsyslog, for example.
 
-  1. Add `;RSYSLOG_FileFormat` options to lines ending with `-/var/log/syslog` and `-/var/log/messages` in *rsyslog.conf*.
-  2. Restart the service:
+1. Add `;RSYSLOG_FileFormat` options to lines ending with `-/var/log/syslog` and `-/var/log/messages` in *rsyslog.conf*.
+2. Restart the service:
 
-    ```
-    $ sudo systemctl restart rsyslog
-    ```
+  ```
+  $ sudo systemctl restart rsyslog
+  ```
 
 ## DEB Packages
 
