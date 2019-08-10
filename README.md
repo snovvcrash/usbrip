@@ -57,7 +57,7 @@ Quick Start
 usbrip is available for download and installation at [PyPI](https://pypi.org/project/usbrip/ "usbrip · PyPI"):
 
 ```
-$ pip3 install usbrip
+~$ pip3 install usbrip
 ```
 
 Screenshots
@@ -88,9 +88,9 @@ It can be done by setting the `RSYSLOG_FileFormat` format if you are using rsysl
 1. Add `;RSYSLOG_FileFormat` options to lines ending with `-/var/log/syslog` and `-/var/log/messages` in *rsyslog.conf*.
 2. Restart the service:
 
-  ```
-  $ sudo systemctl restart rsyslog
-  ```
+```
+~$ sudo systemctl restart rsyslog
+```
 
 ## DEB Packages
 
