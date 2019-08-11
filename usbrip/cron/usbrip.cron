@@ -1,5 +1,5 @@
 # Update USB event history every 4 hours
-0 */4    * * *    usbrip storage update history -e 2>&1 | tee "/var/opt/usbrip/log/$(date +'%FT%H%M%S')".log > /dev/null 2>&1
+0 */4    * * *    usbrip storage update history -e 2>&1 | tee /var/opt/usbrip/log/$(date "+\%FT\%H\%M\%S").log > /dev/null 2>&1
 
 # Update USB violation events every 4 hours
-0 */4    * * *    usbrip storage update violations -i /var/opt/usbrip/trusted/auth.json -a vid pid -e 2>&1 | tee "/var/opt/usbrip/log/$(date +'%FT%H%M%S')".log > /dev/null 2>&1
+0 */4    * * *    usbrip storage update violations -i /var/opt/usbrip/trusted/auth.json -a vid pid -e 2>&1 | tee /var/opt/usbrip/log/$(date "+\%FT\%H\%M\%S").log > /dev/null 2>&1
