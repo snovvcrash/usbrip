@@ -106,10 +106,10 @@ class USBEvents:
 			return
 
 		if not cfg.QUIET and cfg.ISATTY:
-			choice, abspath = _output_choice('event history', 'history.json', 'history/')
+			choice, abs_filename = _output_choice('event history', 'history.json', 'history/')
 			if choice == '2':
 				try:
-					_dump_events(self._events_to_show, 'event history', abspath, indent)
+					_dump_events(self._events_to_show, 'event history', abs_filename, indent)
 				except USBRipError as e:
 					print_critical(str(e), initial_error=e.errors['initial_error'])
 				return
@@ -129,10 +129,12 @@ class USBEvents:
 	@staticmethod
 	@time_it_if_debug(cfg.DEBUG, time_it)
 	def open_dump(input_dump, columns, *, sieve=None, repres=None):
-		print_info(f'Opening USB event dump: "{os.path.abspath(input_dump)}"')
+		abs_input_dump = os.path.abspath(input_dump)
+
+		print_info(f'Opening USB event dump: "{abs_input_dump}"')
 
 		try:
-			with open(input_dump, 'r', encoding='utf-8') as dump:
+			with open(abs_input_dump, 'r', encoding='utf-8') as dump:
 				events_dumped = json.load(dump)
 		except json.decoder.JSONDecodeError as e:
 			print_critical('Failed to decode event dump (JSON)', initial_error=str(e))
@@ -206,10 +208,12 @@ class USBEvents:
 
 	@time_it_if_debug(cfg.DEBUG, time_it)
 	def search_violations(self, input_auth, attributes, columns, *, indent=4, sieve=None, repres=None):
-		print_info(f'Opening authorized device list: "{os.path.abspath(input_auth)}"')
+		abs_input_auth = os.path.abspath(input_auth)
+
+		print_info(f'Opening authorized device list: "{abs_input_auth}"')
 
 		try:
-			auth = _process_auth_list(input_auth, indent)
+			auth = _process_auth_list(abs_input_auth, indent)
 		except json.decoder.JSONDecodeError as e:
 			print_critical('Failed to decode authorized device list (JSON)', initial_error=str(e))
 			return
@@ -235,10 +239,10 @@ class USBEvents:
 			return
 
 		if not cfg.QUIET and cfg.ISATTY:
-			choice, abspath = _output_choice('violation', 'viol.json', 'violations/')
+			choice, abs_filename = _output_choice('violation', 'viol.json', 'violations/')
 			if choice == '2':
 				try:
-					_dump_events(self._events_to_show, 'violations', abspath, indent)
+					_dump_events(self._events_to_show, 'violations', abs_filename, indent)
 				except USBRipError as e:
 					print_critical(str(e), initial_error=e.errors['initial_error'])
 				return
@@ -288,39 +292,45 @@ def _get_filtered_history():
 def _read_log_file(filename):
 	filtered = []
 
-	if filename.endswith('.gz'):
-		print_info(f'Unpacking "{os.path.abspath(filename)}"')
+	abs_filename = os.path.abspath(filename)
+
+	if abs_filename.endswith('.gz'):
+		print_info(f'Unpacking "{abs_filename}"')
 
 		try:
-			log = gzip.open(filename, 'rb')
+			log = gzip.open(abs_filename, 'rb')
 		except PermissionError as e:
 			print_warning(
-				f'Permission denied: "{os.path.abspath(filename)}". Retry with sudo',
+				f'Permission denied: "{abs_filename}". Retry with sudo',
 				initial_error=str(e)
 			)
 			return filtered
 		else:
 			end_of_file = b''
-			filename = filename[:-3]
+			abs_filename = os.path.splitext(abs_filename)
 
 	else:
-		log = codecs.open(filename, 'r', encoding='utf-8', errors='ignore')
+		log = codecs.open(abs_filename, 'r', encoding='utf-8', errors='ignore')
 		end_of_file = ''
 
-	print_info(f'Reading "{os.path.abspath(filename)}"')
+	print_info(f'Reading "{abs_filename}"')
 
 	regex = re.compile(r'] usb (.*?): ')
 	for line in iter(log.readline, end_of_file):
 		if isinstance(line, bytes):
 			line = line.decode(encoding='utf-8', errors='ignore')
 		if regex.search(line):
-			date = datetime.strptime(line[:32], '%Y-%m-%dT%H:%M:%S.%f%z')  # ex. 2019-08-09T06:15:49.655261-04:00
-			date = date.strftime('%Y-%m-%d %H:%M:%S')
-			logline = line[32:].strip()
-			if any(pat in line for pat in ('New USB device found, ', 'Product: ', 'Manufacturer: ', 'SerialNumber: ')):
-				filtered.append((date, 'c', logline))
-			elif 'disconnect' in line:
-				filtered.append((date, 'd', logline))
+			try:
+				date = datetime.strptime(line[:32], '%Y-%m-%dT%H:%M:%S.%f%z')  # ex. 2019-08-09T06:15:49.655261-04:00
+			except ValueError as e:
+				raise USBRipError(f'Wrong timestamp format found in "{abs_filename}"', errors={'initial_error': str(e)})
+			else:
+				date = date.strftime('%Y-%m-%d %H:%M:%S')
+				logline = line[32:].strip()
+				if any(pat in line for pat in ('New USB device found, ', 'Product: ', 'Manufacturer: ', 'SerialNumber: ')):
+					filtered.append((date, 'c', logline))
+				elif 'disconnect' in line:
+					filtered.append((date, 'd', logline))
 
 	log.close()
 	return filtered
@@ -628,7 +638,7 @@ def _build_single_table(TableClass, table_data, title, align='right', inner_row_
 	return single_table
 
 
-def _dump_events(events_to_show, list_name, abspath, indent):
+def _dump_events(events_to_show, list_name, abs_filename, indent):
 	print_info(f'Generating {list_name} list (JSON)')
 
 	out = []
@@ -641,16 +651,16 @@ def _dump_events(events_to_show, list_name, abspath, indent):
 		out.append(tmp_event_dict)
 
 	try:
-		with open(abspath, 'w', encoding='utf-8') as out_json:
+		with open(abs_filename, 'w', encoding='utf-8') as out_json:
 			json.dump(out, out_json, indent=indent)
 
 	except PermissionError as e:
 		raise USBRipError(
-			f'Permission denied: "{abspath}". Retry with sudo',
+			f'Permission denied: "{abs_filename}". Retry with sudo',
 			errors={'initial_error': str(e)}
 		)
 
-	print_info(f'New {list_name} list: "{abspath}"')
+	print_info(f'New {list_name} list: "{abs_filename}"')
 
 
 def _output_choice(list_name, default_filename, dirname):
@@ -678,10 +688,10 @@ def _output_choice(list_name, default_filename, dirname):
 					elif os.path.splitext(filename) != '.json':
 						filename = filename + '.json'
 
-					abspath = os.path.join(os.path.abspath(os.getcwd()), filename)
+					abs_filename = os.path.join(os.path.abspath(os.getcwd()), filename)
 
 					overwrite = True
-					if os.path.isfile(abspath):
+					if os.path.isfile(abs_filename):
 						while True:
 							overwrite = input('[?] File exists. Would you like to overwrite it? [Y/n]: ')
 							if len(overwrite) == 1 and overwrite in 'Yy' or overwrite == '':
@@ -692,4 +702,4 @@ def _output_choice(list_name, default_filename, dirname):
 								break
 
 					if overwrite:
-						return (choice, abspath)
+						return (choice, abs_filename)

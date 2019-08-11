@@ -63,8 +63,8 @@ usbrip is available for download and installation at [PyPI](https://pypi.org/pro
 Screenshots
 ==========
 
-![screenshot-1.png](https://user-images.githubusercontent.com/23141800/62821768-cbbfd480-bb82-11e9-8780-cfd538422e96.png "Get USB event history")
-![screenshot-2.png](https://user-images.githubusercontent.com/23141800/62821769-cbbfd480-bb82-11e9-94c0-19edc3a493a4.png "Search for extra details about a specific USB device")
+![screenshot-1.png](https://user-images.githubusercontent.com/23141800/62840858-3703c680-bca9-11e9-8b70-cbc8d84e787d.png "Get USB event history")
+![screenshot-2.png](https://user-images.githubusercontent.com/23141800/62840859-3703c680-bca9-11e9-924d-1be1f085c024.png "Search for extra details about a specific USB device")
 
 Git Clone
 ==========
