@@ -28,10 +28,10 @@ __brief__  = 'Common items'
 
 import os
 import sys
+import json
 import time
 import random
-from calendar import month_name
-from collections import OrderedDict, Callable
+from collections import OrderedDict
 
 from termcolor import colored, cprint
 
@@ -137,56 +137,26 @@ else:
 
 
 # ----------------------------------------------------------
-# --------------------- Dates sorting ----------------------
+# ----------------------- Event Sets -----------------------
 # ----------------------------------------------------------
 
 
-MONTH_ENUM = {m[:3]: hex(i+1)[2:].upper() for i, m in enumerate(month_name[1:])}
+def intersect_event_sets(event_set_one, event_set_two):
+	event_dumped_set = {json.dumps(event) for event in event_set_one}
+	event_intersection_set = event_dumped_set.intersection([json.dumps(event) for event in event_set_two])
+	event_intersection = [json.loads(event) for event in event_intersection_set]
+	event_intersection_sorted = sorted(event_intersection, key=lambda i: i['conn'])
+
+	return event_intersection_sorted
 
 
-# ----------------------------------------------------------
-# -------------------- Data Structures ---------------------
-# ----------------------------------------------------------
+def union_event_sets(event_set_one, event_set_two):
+	event_dumped_set = {json.dumps(event) for event in event_set_one}
+	event_union_set = event_dumped_set.union([json.dumps(event) for event in event_set_two])
+	event_union = [json.loads(event) for event in event_union_set]
+	event_union_sorted = sorted(event_union, key=lambda i: i['conn'])
 
-
-class DefaultOrderedDict(OrderedDict):
-	def __init__(self, *args, default_factory=None, **kwargs):
-		if default_factory is not None and not isinstance(default_factory, Callable):
-			raise TypeError('first argument must be callable')
-		OrderedDict.__init__(self, *args, **kwargs)
-		self._default_factory = default_factory
-
-	def __getitem__(self, key):
-		try:
-			return OrderedDict.__getitem__(self, key)
-		except KeyError:
-			return self.__missing__(key)
-
-	def __missing__(self, key):
-		if self._default_factory is None:
-			raise KeyError(key)
-		self[key] = value = self._default_factory()
-		return value
-
-	def __reduce__(self):
-		if self._default_factory is None:
-			args = tuple()
-		else:
-			args = self._default_factory,
-		return type(self), args, None, None, self.items()
-
-	def copy(self):
-		return self.__copy__()
-
-	def __copy__(self):
-		return type(self)(self._default_factory, self)
-
-	def __deepcopy__(self, memo):
-		import copy
-		return type(self)(self._default_factory, copy.deepcopy(self.items()))
-
-	def __repr__(self):
-		return f'OrderedDefaultDict({self._default_factory!s}, {OrderedDict.__repr__(self)!s})'
+	return event_union_sorted
 
 
 # ----------------------------------------------------------

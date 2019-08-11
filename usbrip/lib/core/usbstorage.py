@@ -39,12 +39,12 @@ from usbrip.lib.core.usbevents import USBEvents
 from usbrip.lib.core.usbevents import _filter_events
 from usbrip.lib.core.usbevents import _dump_events
 from usbrip.lib.core.usbevents import _process_auth_list
-from usbrip.lib.core.common import MONTH_ENUM
+from usbrip.lib.core.common import CONFIG_FILE
+from usbrip.lib.core.common import USBRipError
+from usbrip.lib.core.common import union_event_sets
 from usbrip.lib.core.common import print_info
 from usbrip.lib.core.common import print_critical
 from usbrip.lib.core.common import print_secret
-from usbrip.lib.core.common import USBRipError
-from usbrip.lib.core.common import CONFIG_FILE
 from usbrip.lib.utils.debug import time_it
 from usbrip.lib.utils.debug import time_it_if_debug
 
@@ -161,10 +161,10 @@ class USBStorage:
 				events_dumped = json.load(dump)
 			os.remove(json_file)
 
-			merged_events = _merge_json_events(events_dumped, events_to_show)
+			merged_events = union_event_sets(events_dumped, events_to_show)
 
-			if len(base_filename) > 9:  # len('mmdd.json') == 9
-				min_date = base_filename[:4]
+			if len(base_filename) > 20:  # len('%Y%m%dT%H%M%S') -> 20
+				min_date = base_filename[:15]
 
 			new_json_file = f'{USBStorage._STORAGE_BASE}/{min_date}-{max_date}.json'
 			_dump_events(merged_events, storage_type, new_json_file, indent)
@@ -216,7 +216,7 @@ class USBStorage:
 			min_date, max_date = _get_dates(events_to_show)
 			json_file = f'{USBStorage._STORAGE_BASE}/{min_date}-{max_date}.json'
 		else:
-			json_file = f'{USBStorage._STORAGE_BASE}/{datetime.now().strftime("%m%d")}.json'
+			json_file = f'{USBStorage._STORAGE_BASE}/{datetime.now().strftime("%Y%m%dT%H%M%S")}.json'
 
 		try:
 			_dump_events(events_to_show, storage_type, json_file, indent)
@@ -237,7 +237,7 @@ class USBStorage:
 
 		if 'Everything is Ok' in out:
 			print_info(f'New {storage_type} storage: "{storage_full_path}"')
-			print_secret('Default password is', secret=password)
+			print_secret('Your password is', secret=password)
 			os.remove(json_file)
 		else:
 			print_critical('Undefined behaviour while creating storage', initial_error=out)
@@ -339,13 +339,8 @@ def _get_violation_events(sieve, input_auth, attributes, indent):
 
 
 def _get_dates(events_to_show):
-	dates = {event['conn'][:6] for event in events_to_show}
-	min_date = min(dates, key=lambda i: MONTH_ENUM[i[:3]] + i[3:]).split()
-	min_date = MONTH_ENUM[min_date[0]].zfill(2) + min_date[-1].zfill(2)
-	max_date = max(dates, key=lambda i: MONTH_ENUM[i[:3]] + i[3:]).split()
-	max_date = MONTH_ENUM[max_date[0]].zfill(2) + max_date[-1].zfill(2)
-
-	return (min_date, max_date)
+	dates = {event['conn'].replace(' ', 'T').replace('-', '').replace(':', '') for event in events_to_show}
+	return (min(dates), max(dates))
 
 
 '''
@@ -355,15 +350,6 @@ def _create_shadow(password, rounds):
 	with open('/var/opt/usbrip/shadow', 'wb') as f:
 		f.write(hashed)
 '''
-
-
-def _merge_json_events(events_dumped, events_to_show):
-	events_dumped_set = {json.dumps(event) for event in events_dumped}
-	events_union_set = events_dumped_set.union([json.dumps(event) for event in events_to_show])
-	events_union = [json.loads(event) for event in events_union_set]
-	events_union_sorted = sorted(events_union, key=lambda i: MONTH_ENUM[i['conn'][:3]] + i['conn'][3:])
-
-	return events_union_sorted
 
 
 def _7zip_list(archive, password):

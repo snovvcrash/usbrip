@@ -42,6 +42,7 @@ import json
 import itertools
 import operator
 import os
+from datetime import datetime
 from collections import OrderedDict, defaultdict
 from string import printable
 
@@ -53,9 +54,7 @@ from usbrip.lib.core.common import BULLET
 from usbrip.lib.core.common import ABSENCE
 from usbrip.lib.core.common import SEPARATOR
 from usbrip.lib.core.common import COLUMN_NAMES
-from usbrip.lib.core.common import MONTH_ENUM
-from usbrip.lib.core.common import DefaultOrderedDict
-from usbrip.lib.core.common import root_dir_join
+from usbrip.lib.core.common import intersect_event_sets
 from usbrip.lib.core.common import os_makedirs
 from usbrip.lib.core.common import list_files
 from usbrip.lib.core.common import print_info
@@ -79,18 +78,17 @@ class USBEvents:
 	@time_it_if_debug(cfg.DEBUG, time_it)
 	def __new__(cls, files=None):
 		if files:
-			raw_history = DefaultOrderedDict(default_factory=list)
+			filtered_history = []
 			for file in files:
-				raw_history.update(_read_log_file(file))
+				filtered_history.extend(_read_log_file(file))
 		else:
 			try:
-				raw_history = _get_raw_history()
+				filtered_history = _get_filtered_history()
 			except USBRipError as e:
 				print_critical(str(e))
 				return None
 
-		divided_history = _divide_history(raw_history)
-		all_events = _parse_history(divided_history)
+		all_events = _parse_history(filtered_history)
 
 		instance = super().__new__(cls)
 		instance._all_events = all_events  # self._all_events
@@ -108,15 +106,15 @@ class USBEvents:
 			return
 
 		if not cfg.QUIET and cfg.ISATTY:
-			number, filename = _output_choice('event history', 'history.json', 'history/')
-			if number is None:
-				return
-			elif number == 1:
+			choice, abspath = _output_choice('event history', 'history.json', 'history/')
+			if choice == '2':
 				try:
-					_dump_events(self._events_to_show, 'event history', filename, indent)
+					_dump_events(self._events_to_show, 'event history', abspath, indent)
 				except USBRipError as e:
 					print_critical(str(e), initial_error=e.errors['initial_error'])
 				return
+
+		# elif choice == '1' or choice == '':
 
 		if columns:
 			table_data = [[COLUMN_NAMES[name] for name in columns]]
@@ -166,8 +164,10 @@ class USBEvents:
 			print_info('No USB devices found!')
 			return 1
 
+		abs_output_auth = os.path.abspath(output_auth)
+
 		try:
-			dirname = os.path.dirname(output_auth)
+			dirname = os.path.dirname(abs_output_auth)
 			os_makedirs(dirname)
 		except USBRipError as e:
 			print_critical(str(e), initial_error=e.errors['initial_error'])
@@ -176,9 +176,9 @@ class USBEvents:
 			print_info(f'Created "{dirname}"')
 
 		try:
-			auth_json = open(output_auth, 'w', encoding='utf-8')
+			auth_json = open(abs_output_auth, 'w', encoding='utf-8')
 		except PermissionError as e:
-			print_critical(f'Permission denied: "{output_auth}". Retry with sudo', initial_error=str(e))
+			print_critical(f'Permission denied: "{abs_output_auth}". Retry with sudo', initial_error=str(e))
 			return 1
 
 		print_info('Generating authorized device list (JSON)')
@@ -200,7 +200,7 @@ class USBEvents:
 		json.dump(auth, auth_json, sort_keys=True, indent=indent)
 		auth_json.close()
 
-		print_info(f'New authorized device list: "{os.path.abspath(output_auth)}"')
+		print_info(f'New authorized device list: "{abs_output_auth}"')
 
 	# ----------------- USB Events Violations ------------------
 
@@ -235,15 +235,15 @@ class USBEvents:
 			return
 
 		if not cfg.QUIET and cfg.ISATTY:
-			number, filename = _output_choice('violation', 'viol.json', 'violations/')
-			if number is None:
-				return
-			elif number == 1:
+			choice, abspath = _output_choice('violation', 'viol.json', 'violations/')
+			if choice == '2':
 				try:
-					_dump_events(self._events_to_show, 'violations', filename, indent)
+					_dump_events(self._events_to_show, 'violations', abspath, indent)
 				except USBRipError as e:
 					print_critical(str(e), initial_error=e.errors['initial_error'])
 				return
+
+		# elif choice == '1' or choice == '':
 
 		if columns:
 			table_data = [[COLUMN_NAMES[name] for name in columns]]
@@ -259,8 +259,8 @@ class USBEvents:
 # ----------------------------------------------------------
 
 
-def _get_raw_history():
-	raw_history = DefaultOrderedDict(default_factory=list)
+def _get_filtered_history():
+	filtered_history = []
 
 	print_info('Searching for log files: "/var/log/syslog*" or "/var/log/messages*"')
 
@@ -270,7 +270,7 @@ def _get_raw_history():
 
 	if syslog_files:
 		for syslog in syslog_files:
-			raw_history.update(_read_log_file(syslog))
+			filtered_history.extend(_read_log_file(syslog))
 	else:
 		messages_files = sorted([filename
                                  for filename in list_files('/var/log/')
@@ -278,15 +278,15 @@ def _get_raw_history():
 
 		if messages_files:
 			for messages in messages_files:
-				raw_history.update(_read_log_file(messages))
+				filtered_history.extend(_read_log_file(messages))
 		else:
 			raise USBRipError('None of log file types was found!')
 
-	return raw_history
+	return filtered_history
 
 
 def _read_log_file(filename):
-	filtered = DefaultOrderedDict(default_factory=list)
+	filtered = []
 
 	if filename.endswith('.gz'):
 		print_info(f'Unpacking "{os.path.abspath(filename)}"')
@@ -308,30 +308,25 @@ def _read_log_file(filename):
 		end_of_file = ''
 
 	print_info(f'Reading "{os.path.abspath(filename)}"')
-	regex = re.compile(r'usb')
+
+	regex = re.compile(r'] usb (.*?): ')
 	for line in iter(log.readline, end_of_file):
 		if isinstance(line, bytes):
 			line = line.decode(encoding='utf-8', errors='ignore')
 		if regex.search(line):
-			filtered[line[:15]].append(line)  # line[:15] == 'Mon dd hh:mm:ss'
+			date = datetime.strptime(line[:32], '%Y-%m-%dT%H:%M:%S.%f%z')  # ex. 2019-08-09T06:15:49.655261-04:00
+			date = date.strftime('%Y-%m-%d %H:%M:%S')
+			logline = line[32:].strip()
+			if any(pat in line for pat in ('New USB device found, ', 'Product: ', 'Manufacturer: ', 'SerialNumber: ')):
+				filtered.append((date, 'c', logline))
+			elif 'disconnect' in line:
+				filtered.append((date, 'd', logline))
 
 	log.close()
 	return filtered
 
 
-def _divide_history(raw_history):
-	divided_history = OrderedDict()
-	for date, logs in raw_history.items():
-		merged_logs = ''.join([line for line in logs])
-		if 'New USB device found' in merged_logs:
-			divided_history[(date, 'c')] = logs
-		elif 'disconnect' in merged_logs:
-			divided_history[(date, 'd')] = logs
-
-	return divided_history
-
-
-def _parse_history(divided_history):
+def _parse_history(filtered_history):
 	re_vid      = re.compile(r'idVendor=(\w+)')
 	re_pid      = re.compile(r'idProduct=(\w+)')
 	re_prod     = re.compile(r'Product: (.*?$)')
@@ -339,99 +334,92 @@ def _parse_history(divided_history):
 	re_serial   = re.compile(r'SerialNumber: (.*?$)')
 	re_port     = re.compile(r'usb (.*[0-9]):')
 
-	all_events = []
-	for (date, action), logs in _sort_by_date(divided_history.items()):
+	all_events, curr, link, interrupted = [], -1, 1, False
+	for date, action, logline in filtered_history:
 		if action == 'c':
-			record_collection = []
-			curr, link, interrupted = -1, -1, False
+			if 'New USB device found, ' in logline:
+				user = logline.split(' ', 1)[0]  # logline -> '<USER> <REST>'
 
-			for line in logs:
-				if 'New USB device found' in line:
-					user = line[16:].split(' ', 1)[0]  # line[:16] == 'Mon dd hh:mm:ss '
+				try:
+					vid = re_vid.search(logline).group(1)
+				except AttributeError:
+					vid = None
+				try:
+					pid = re_pid.search(logline).group(1)
+				except AttributeError:
+					pid = None
+				try:
+					port = re_port.search(logline).group(1)
+				except AttributeError:
+					port = None
 
-					try:
-						vid = re_vid.search(line).group(1)
+				event = {
+					'conn':     date,
+					'user':     user,
+					'vid':       vid,
+					'pid':       pid,
+					'prod':     None,
+					'manufact': None,
+					'serial':   None,
+					'port':     port,
+					'disconn':  None
+				}
+
+				all_events.append(event)
+				curr += 1
+				link = 2
+				interrupted = False
+
+			elif not interrupted:
+				if link == 2:
+					try:  # if 'Product: ' in logline
+						prod = re_prod.search(logline).group(1)
 					except AttributeError:
-						vid = None
-					try:
-						pid = re_pid.search(line).group(1)
-					except AttributeError:
-						pid = None
-					try:
-						port = re_port.search(line).group(1)
-					except AttributeError:
-						port = None
-
-					event = {
-						'conn':     date,
-						'user':     user,
-						'vid':      vid,
-						'pid':      pid,
-						'prod':     None,
-						'manufact': None,
-						'serial':   None,
-						'port':     port,
-						'disconn':  None
-					}
-
-					record_collection.append(event)
-					curr += 1
-					link = 1
-					interrupted = False
-
-				else:
-					if not interrupted:
-						if link == 1:
-							link = 2
-						elif link == 2:
-							try:  # if 'Product:' in line
-								prod = re_prod.search(line).group(1)
-							except AttributeError:
-								interrupted = True
-							else:
-								record_collection[curr]['prod'] = prod
-								link = 3
-						elif link == 3:
-							try:  # if 'Manufacturer:' in line
-								manufact = re_manufact.search(line).group(1)
-							except AttributeError:
-								interrupted = True
-							else:
-								record_collection[curr]['manufact'] = manufact
-								link = 4
-						elif link == 4:
-							try:  # if 'SerialNumber:' in line
-								serial = re_serial.search(line).group(1)
-							except AttributeError:
-								pass
-							else:
-								record_collection[curr]['serial'] = serial
-							finally:
-								interrupted = True
+						interrupted = True
 					else:
-						continue
-
-			all_events.extend(record_collection)
-
-		elif action == 'd':
-			for line in logs:
-				if 'disconnect' in line:
-					try:
-						port = re_port.search(line).group(1)
+						all_events[curr]['prod'] = prod
+						link = 3
+				elif link == 3:
+					try:  # if 'Manufacturer: ' in logline
+						manufact = re_manufact.search(logline).group(1)
+					except AttributeError:
+						interrupted = True
+					else:
+						all_events[curr]['manufact'] = manufact
+						link = 4
+				elif link == 4:
+					try:  # if 'SerialNumber: ' in logline
+						serial = re_serial.search(logline).group(1)
 					except AttributeError:
 						pass
 					else:
-						for i in range(len(all_events)-1, -1, -1):
-							if all_events[i]['port'] == port:
-								all_events[i]['disconn'] = date
-								break
+						all_events[curr]['serial'] = serial
+					finally:
+						interrupted = True
+
+			else:
+				continue
+
+		elif action == 'd':
+			try:
+				port = re_port.search(logline).group(1)
+			except AttributeError:
+				pass
+			else:
+				for i in range(len(all_events)-1, -1, -1):
+					if all_events[i]['port'] == port:
+						all_events[i]['disconn'] = date
+						break
 
 	return all_events
 
 
+'''
 def _sort_by_date(unsorted_log):
+	"""For old syslog format."""
 	# "usorted_log" is a list of ( ('Mon dd hh:mm:ss', 'EVENT'), ['LOG_DATA'] )
 	return sorted(unsorted_log, key=lambda i: MONTH_ENUM[i[0][0][:3]] + i[0][0][3:])
+'''
 
 
 def _process_auth_list(input_auth, indent):
@@ -463,44 +451,71 @@ def _is_sorted(iterable, reverse=False):
 
 
 def _filter_events(all_events, sieve):
-	if sieve is None:
-		sieve = {
-			'external': False,
-			'number':      -1,
-			'dates':       [],
-			'fields':      {}
-		}
+	# sieve = {
+	#    'external': False,
+	#    'dates':       [],
+	#    'fields':      {},
+	#    'number':      -1
+	# }
 
-	if sieve != {'external': False, 'number': -1, 'dates': [], 'fields': {}}:
+	if sieve is None:
+		return all_events
+
+	else:
 		print_info('Filtering events')
 
-	events_to_show = all_events
+		events_by_external = []
+		if sieve['external']:
+			for event in all_events:
+				if event['disconn'] is not None:
+					events_by_external.append(event)
+					continue
+		else:
+			events_by_external = all_events
 
-	if sieve['fields']:
+		events_by_date = []
+		if sieve['dates']:
+			for event in all_events:
+				for date in sieve['dates']:
+					if event['conn'].startswith(date):
+						events_by_date.append(event)
+						break
+				continue
+		else:
+			events_by_date = all_events
+
+		event_intersection = intersect_event_sets(events_by_external, events_by_date)
+
 		events_to_show = []
-		for key, vals in sieve['fields'].items():
-			events_to_show += [event for event in all_events for val in vals if event[key] == val]
+		if sieve['fields']:
+			for event in event_intersection:
+				for key, vals in sieve['fields'].items():
+					if any(event[key] == val for val in vals):
+						events_to_show.append(event)
+						break
+		else:
+			events_to_show = event_intersection
 
-	if sieve['external']:
-		events_to_show = [event for event in all_events if event['disconn'] is not None]
+		if not events_to_show:
+			return []
 
-	if sieve['dates']:
-		events_to_show = [event for date in sieve['dates'] for event in events_to_show if event['conn'][:6] == date]
+		SIZE = len(events_to_show)
+		if sieve['number'] <= -1 or sieve['number'] > SIZE:
+			if sieve['number'] < -1:
+				print_warning(
+					f'usbrip can\'t handle dark matter \"--number={sieve["number"]}\", so it will show '
+					f'all {SIZE} USB history entries available'
+				)
 
-	if not events_to_show:
-		return []
+			elif sieve['number'] > SIZE:
+				print_warning(
+					f'USB history has only {SIZE} entries instead of requested {sieve["number"]}, '
+					f'displaying all of them...'
+				)
 
-	SIZE = len(events_to_show)
-	if sieve['number'] == -1 or sieve['number'] >= SIZE:
-		if sieve['number'] > SIZE:
-			print_warning(
-				f'USB action history has only {SIZE} entries instead of requested {sieve["number"]}, '
-				f'displaying all of them...'
-			)
+			sieve['number'] = SIZE
 
-		sieve['number'] = SIZE
-
-	return [events_to_show[SIZE-i] for i in range(sieve['number'], 0, -1)]
+		return [events_to_show[SIZE-i] for i in range(sieve['number'], 0, -1)]
 
 
 def _represent_events(events_to_show, columns, table_data, title, repres):
@@ -514,7 +529,7 @@ def _represent_events(events_to_show, columns, table_data, title, repres):
 		}
 
 	max_len = {
-		'conn':     15,
+		'conn':     19,
 		'user':     max(max(len(event['user']) for event in events_to_show), len('User')),
 		'vid':       4,
 		'pid':       4,
@@ -522,15 +537,15 @@ def _represent_events(events_to_show, columns, table_data, title, repres):
 		'manufact': max(max(len(str(event['manufact'])) for event in events_to_show), len('Manufacturer')),
 		'serial':   max(max(len(str(event['serial'])) for event in events_to_show), len('Serial Number')),
 		'port':     max(max(len(event['port']) for event in events_to_show), len('Port')),
-		'disconn':  15
+		'disconn':  19
 	}
 
 	prev_cday = ''
 	for event in events_to_show:
 		if 'conn' in columns:
-			curr_cday = event['conn'][:6]
+			curr_cday = event['conn'][:10]
 			if prev_cday != curr_cday:
-				cday = [f'{curr_cday} {BULLET*8}']  # 8 == len(event['conn'] - event['conn'][:6] - 1)
+				cday = [f'{curr_cday} {BULLET * (len(event["conn"])-len(curr_cday)-1)}']
 				table_data.append(cday + [SEPARATOR*max_len[name] for name in columns if name != 'conn'])
 			prev_cday = curr_cday
 
@@ -564,27 +579,18 @@ def _represent_events(events_to_show, columns, table_data, title, repres):
 		else:
 			print_info('Representation: List')
 
-		max_len = max(len(str(val)) for event in events_to_show for val in event.values()) + \
-                      len('Serial Number:  ')  # max length string
-		if not max_len // 2: max_len += 1
-		date_sep_len = (max_len - 8) // 2
+		max_len = max(len(str(val)) for event in events_to_show for val in event.values()) + len('Serial Number:  ')  # max length string
+		if not max_len // 2:
+			max_len += 1
 
 		if cfg.ISATTY:
 			cprint('\n' + title, 'white', attrs=['bold'])
 		else:
 			print('\n' + title)
 
-		prev_cday = ''
-		for event in events_to_show:
-			curr_cday = event['conn'][:6]
-			if prev_cday != curr_cday:
-				print(SEPARATOR * max_len)
-				print(f'{BULLET*date_sep_len} {curr_cday} {BULLET*date_sep_len}')
-				print(SEPARATOR * max_len)
-			else:
-				print(SEPARATOR * max_len)
-			prev_cday = curr_cday
+		print(SEPARATOR * max_len)
 
+		for event in events_to_show:
 			if cfg.ISATTY:
 				print(colored('Connected:      ', 'magenta', attrs=['bold']) + colored(event['conn'], 'green'))
 				print(colored('User:           ', 'magenta', attrs=['bold']) + event['user'])
@@ -605,51 +611,61 @@ def _represent_events(events_to_show, columns, table_data, title, repres):
 				print('Serial Number:  ' + str(event['serial']))
 				print('Bus-Port:       ' + event['port'])
 				print('Disconnected:   ' + event['disconn'])
-		print(SEPARATOR * max_len)
+
+			print(SEPARATOR * max_len)
 
 
 def _build_single_table(TableClass, table_data, title, align='right', inner_row_border=False):
 	single_table = TableClass(table_data)
 	single_table.title = title
+
 	for i in range(len(table_data[0])):
 		single_table.justify_columns[i] = align
+
 	if inner_row_border:
 		single_table.inner_row_border = True
+
 	return single_table
 
 
-def _dump_events(events_to_show, list_name, filename, indent):
+def _dump_events(events_to_show, list_name, abspath, indent):
 	print_info(f'Generating {list_name} list (JSON)')
 
 	out = []
 	for event in events_to_show:
 		tmp_event_dict = OrderedDict()
+
 		for key in ('conn', 'user', 'vid', 'pid', 'prod', 'manufact', 'serial', 'port', 'disconn'):
 			tmp_event_dict[key] = event[key]
+
 		out.append(tmp_event_dict)
 
 	try:
-		with open(filename, 'w', encoding='utf-8') as out_json:
+		with open(abspath, 'w', encoding='utf-8') as out_json:
 			json.dump(out, out_json, indent=indent)
+
 	except PermissionError as e:
 		raise USBRipError(
-			f'Permission denied: "{os.path.abspath(filename)}". Retry with sudo',
+			f'Permission denied: "{abspath}". Retry with sudo',
 			errors={'initial_error': str(e)}
 		)
 
-	print_info(f'New {list_name} list: "{os.path.abspath(filename)}"')
+	print_info(f'New {list_name} list: "{abspath}"')
 
 
 def _output_choice(list_name, default_filename, dirname):
 	while True:
 		print(f'[?] How would you like your {list_name} list to be generated?\n')
 
-		print('    1. JSON-file')
-		print('    2. Terminal stdout')
+		print('    1. Terminal stdout')
+		print('    2. JSON-file')
 
-		number = input('\n[>] Please enter the number of your choice: ')
+		choice = input('\n[>] Please enter the number of your choice (default is 1): ')
 
-		if number == '1':
+		if choice == '1' or choice == '':
+			return (choice, '')
+
+		elif choice == '2':
 			while True:
 				filename = input(
 					f'[>] Please enter the base name for the output file '
@@ -659,25 +675,16 @@ def _output_choice(list_name, default_filename, dirname):
 				if all(c in printable for c in filename) and len(filename) < 256:
 					if not filename:
 						filename = default_filename
-					elif filename[-5:] != '.json':
+					elif os.path.splitext(filename) != '.json':
 						filename = filename + '.json'
 
-					filename = root_dir_join(dirname + filename)
-
-					try:
-						dirname = os.path.dirname(filename)
-						os_makedirs(dirname)
-					except USBRipError as e:
-						print_critical(str(e), initial_error=e.errors['initial_error'])
-						return (None, '')
-					else:
-						print_info(f'Created "{dirname}"')
+					abspath = os.path.join(os.path.abspath(os.getcwd()), filename)
 
 					overwrite = True
-					if os.path.isfile(filename):
+					if os.path.isfile(abspath):
 						while True:
 							overwrite = input('[?] File exists. Would you like to overwrite it? [Y/n]: ')
-							if len(overwrite) == 1 and overwrite in 'Yy':
+							if len(overwrite) == 1 and overwrite in 'Yy' or overwrite == '':
 								overwrite = True
 								break
 							elif len(overwrite) == 1 and overwrite in 'Nn':
@@ -685,7 +692,4 @@ def _output_choice(list_name, default_filename, dirname):
 								break
 
 					if overwrite:
-						return (int(number), filename)
-
-		elif number == '2':
-			return (int(number), '')
+						return (choice, abspath)

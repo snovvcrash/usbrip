@@ -29,7 +29,6 @@ __date__   = '2018-03-21'
 __site__   = 'https://github.com/snovvcrash/usbrip'
 __brief__  = 'usbrip project\'s driver program'
 
-import re
 import os
 import sys
 
@@ -306,14 +305,6 @@ def _validate_sieve_args(args):
 	if 'external' in args:
 		sieve = dict(zip(('external', 'number', 'dates', 'fields'),
                          (args.external, args.number, args.date, {})))
-
-		if args.date:
-			re_date = re.compile(r'^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+[1-3]?[0-9]$')
-			for i in range(len(args.date)):
-				if not re_date.search(args.date[i]):
-					usbrip_arg_error(args.date[i] + ': Wrong date format')
-				date_parts = args.date[i].split()
-				args.date[i] = ' '.join(date_parts) if len(date_parts[-1]) == 2 else '  '.join(date_parts)
 
 		if args.user:
 			sieve['fields']['user'] = args.user

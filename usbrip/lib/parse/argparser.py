@@ -153,6 +153,7 @@ def build_ueg_parser(subparsers):
     _parse_quiet_args(ueg_parser)
     _parse_sieve_args(ueg_parser)
     _parse_file_args(ueg_parser)
+
     _parse_attribute_args(
         ueg_parser,
         help_msg='attributes to include in authorized device list '
@@ -188,6 +189,7 @@ def build_uev_parser(subparsers):
     _parse_sieve_args(uev_parser)
     _parse_repres_args(uev_parser)
     _parse_file_args(uev_parser)
+
     _parse_attribute_args(
         uev_parser,
         help_msg='attributes to look through when searching for USB violation events '
@@ -264,6 +266,7 @@ def build_usu_parser(subparsers):
     _parse_storage_type_args(usu_parser)
     _parse_comperssion_level_args(usu_parser)
     _parse_sieve_args(usu_parser)
+
     _parse_attribute_args(
         usu_parser,
         help_msg='attributes to look through when searching for USB violation events '
@@ -298,6 +301,7 @@ def build_usc_parser(subparsers):
     _parse_storage_type_args(usc_parser)
     _parse_comperssion_level_args(usc_parser)
     _parse_sieve_args(usc_parser)
+
     _parse_attribute_args(
         usc_parser,
         help_msg='attributes to look through when searching for USB violation events '

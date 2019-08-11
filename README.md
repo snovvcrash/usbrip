@@ -5,7 +5,7 @@
 ----------
 
 <p align="center">
-	<a href="https://pypi.org/project/usbrip/#history"><img src="https://img.shields.io/badge/ver-2.1.3-red.svg" alt="usbrip-version.svg" /></a>
+	<a href="https://pypi.org/project/usbrip/#history"><img src="https://img.shields.io/badge/ver-2.1.4-red.svg" alt="usbrip-version.svg" /></a>
 	<a href="https://pypi.org/project/usbrip/#files"><img src="https://img.shields.io/badge/PyPI-Download-blue.svg" alt="pypi-download.svg" /></a>
 	<a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.6-blue.svg" alt="python-version.svg" /></a>
 	<a href="https://raw.githubusercontent.com/snovvcrash/usbrip/master/LICENSE"><img src="https://img.shields.io/badge/license-GPLv3-blue.svg" alt="license.svg" /></a>
@@ -21,6 +21,7 @@ Table of Contents:
 * [**Screenshots**](#screenshots)
 * [**Git Clone**](#git-clone)
 * [**Dependencies**](#dependencies)
+  - [System Log Structure](#system-log-structure)
   - [DEB Packages](#deb-packages)
   - [PIP Packages](#pip-packages)
   - [Portable](#portable)
@@ -62,8 +63,8 @@ $ pip3 install usbrip
 Screenshots
 ==========
 
-![screenshot-1.png](https://user-images.githubusercontent.com/23141800/40887882-e00d4d3a-6757-11e8-962c-c77331782b19.png "Get USB event history")
-![screenshot-2.png](https://user-images.githubusercontent.com/23141800/40886876-46c349d6-6748-11e8-92cf-0b0790ea9505.png "Search for extra details about a specific USB device")
+![screenshot-1.png](https://user-images.githubusercontent.com/23141800/62821768-cbbfd480-bb82-11e9-8780-cfd538422e96.png "Get USB event history")
+![screenshot-2.png](https://user-images.githubusercontent.com/23141800/62821769-cbbfd480-bb82-11e9-94c0-19edc3a493a4.png "Search for extra details about a specific USB device")
 
 Git Clone
 ==========
@@ -78,7 +79,17 @@ For simplicity, lets agree that all the commands where `~/usbrip$` prefix is app
 Dependencies
 ==========
 
-usbrip works with **non**-modified structure of system log files only, so, unfortunately, it won't be able to parse USB history if you change the format of syslogs (with `syslog-ng` or `rsyslog`, for example). That's why the timestamps of "Connected" and "Disconnected" fields don't have the year, by the way. Keep that in mind.
+## System Log Structure
+
+usbrip (>= [2.1.4.post1](https://pypi.org/project/usbrip/#history)) works with **modified** structure of system log files to provide rich timestamps, so make sure to enable [`"%Y-%m-%dT%H:%M:%S.%f%z"`](http://strftime.org/) (ex. `"2019-08-09T06:15:49.655261-04:00"`) time format for both `/var/log/syslog*` and `/var/log/messages*` before running the software.
+
+It can be done by setting the `RSYSLOG_FileFormat` format if you are using rsyslog, for example.
+
+  1. Add `;RSYSLOG_FileFormat` options to lines ending with `-/var/log/syslog` and `-/var/log/messages` in *rsyslog.conf*.
+  2. Restart the service:
+    ```
+    $ sudo systemctl restart rsyslog
+    ```
 
 ## DEB Packages
 
@@ -292,11 +303,13 @@ Examples
   $ usbrip events history -ql -n 100
   ```
 
-* Show the event history of the external USB devices (`-e`, `--external`, which were *actually* disconnected) represented as a table (`-t`, `--table`) containing "Connected", "VID", "PID", "Disconnected" and "Serial Number" columns (`-c COLUMN [COLUMN]`, `--column COLUMN [COLUMN]`) filtered by date (`-d DATE [DATE ...]`, `--date DATE [DATE ...]`) with logs taken from the outer files (`-f FILE [FILE ...]`, `--file FILE [FILE ...]`):
+* Show the event history of the external USB devices (`-e`, `--external`, which were *actually* disconnected) represented as a table (`-t`, `--table`) containing "Connected", "VID", "PID", "Disconnected" and "Serial Number" columns (`-c COLUMN [COLUMN ...]`, `--column COLUMN [COLUMN ...]`) filtered by date (`-d DATE [DATE ...]`, `--date DATE [DATE ...]`) and PID (`--pid <PID> [<PID> ...]`) with logs taken from the outer files (`-f FILE [FILE ...]`, `--file FILE [FILE ...]`):
 
   ```
-  $ usbrip events history -et -c conn vid pid disconn serial -d "Dec  9" "Dec 10" -f /var/log/syslog.1 /var/log/syslog.2.gz
+  $ usbrip events history -et -c conn vid pid disconn serial -d '1995-09-15' '2018-07-01' --pid 1337 -f /var/log/syslog.1 /var/log/syslog.2.gz
   ```
+
+  :alien: **Note:** there is a thing to note when working with filters. There are 4 types of filtering available: only *external* USB events (devices that can be pulled out easily, `-e`), *by date* (`-d`), *by fields* (`--user`, `--vid`, `--pid`, `--product`, `--manufact`, `--serial`, `--port`) and *by number of entries* you get as the output (`-n`). When applying different filters simultaneously, you will get the following behaviour: firstly, *external* and *by date* filters are applied, then usbrip will search for specified field values in the intersection of the last two filters, and in the end it will cut the output to the number you defined with the `-n` option. So think of it as an **intersection** for *external* and *by date* filtering and **union** for *by fields* filtering. Hope it makes sense.
 
 * Build the event history of all USB devices and redirect the output to a file for further analysis. When the output stream is NOT terminal stdout (`|` or `>` for example) there would be no ANSI escape characters (color) in the output so feel free to use it that way. Also notice that usbrip uses some UNICODE symbols so it would be nice to convert the resulting file to UTF-8 encoding (with `encov` for example) as well as change newline characters to Windows style for portability (with `awk` for example):
 
@@ -310,10 +323,10 @@ Examples
   awk '{ sub("$", "\r"); gsub("\\x1B\\[[0-?]*[ -/]*[@-~]", ""); print }' usbrip.out && enconv -x UTF8 usbrip.out
   ```
 
-* Generate a list of trusted USB devices as a JSON-file (`trusted/auth.json`) with "VID" and "PID" attributes containing the first *three* devices connected on September 26:
+* Generate a list of trusted USB devices as a JSON-file (`trusted/auth.json`) with "VID" and "PID" attributes containing the first *three* devices connected on November 30, 1984:
 
   ```
-  $ usbrip events gen_auth trusted/auth.json -a vid pid -n 3 -d "Sep 26"
+  $ usbrip events gen_auth trusted/auth.json -a vid pid -n 3 -d '1984-11-30'
   ```
 
   :warning: **Warning:** there are cases when different USB flash drives might have identical serial numbers. This could happen as a result of a [manufacturing error](https://forums.anandtech.com/threads/changing-creating-a-custom-serial-id-on-a-flash-drive-low-level-blocks.2099116/) or just some black hats were able to rewrite the drive's memory chip which turned out to be non-one-time programmable and so on... Anyways, *«No system is safe»*. usbrip **does not** handle such cases in a smart way so far, namely it will treat a pair of devices with identical SNs (if there exists one) as the same device regarding to the trusted device list and `gen_auth` module.
@@ -330,7 +343,7 @@ Examples
   $ usbrip ids search --vid 0781 --pid 5580
   ```
 
-* Download the latest version of `usb_ids/usb.ids` database (the source is [here](http://www.linux-usb.org/usb.ids "List of USB ID's")):
+* Download the latest version of `usb_ids/usb.ids` [database](http://www.linux-usb.org/usb.ids "List of USB ID's"):
 
   ```
   $ usbrip ids download
@@ -341,6 +354,7 @@ Credits & References
 
 * [Linux-форензика в лице трекинга истории подключений USB-устройств / Хабр](https://habr.com/ru/post/352254/)
 * [usbrip: USB-форензика для Линуксов, или Как Алиса стала Евой](https://codeby.net/threads/usbrip-usb-forenzika-dlja-linuksov-ili-kak-alisa-stala-evoj.63644/)
+* [Hack The Box :: Forensics Challenges](https://www.hackthebox.eu/home/challenges/Forensics)
 
 Post Scriptum
 ==========
