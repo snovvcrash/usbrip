@@ -81,14 +81,21 @@ Dependencies
 
 ## System Log Structure
 
-usbrip (>= [2.1.4.post1](https://pypi.org/project/usbrip/#history)) works with **modified** structure of system log files to provide rich timestamps, so make sure to enable [`"%Y-%m-%dT%H:%M:%S.%f%z"`](http://strftime.org/) (ex. `"2019-08-09T06:15:49.655261-04:00"`) time format for both `/var/log/syslog*` and `/var/log/messages*` before running the software.
+usbrip (>= [2.1.4.post1](https://pypi.org/project/usbrip/#history)) works with **modified** structure of system log files to provide high precision timestamps, so make sure to enable [`"%Y-%m-%dT%H:%M:%S.%f%z"`](http://strftime.org/) (ex. `"2019-08-09T06:15:49.655261-04:00"`) time format for both `/var/log/syslog*` and `/var/log/messages*` before running the software.
 
 It can be done by setting the `RSYSLOG_FileFormat` format if you are using rsyslog, for example.
 
-1. Add `;RSYSLOG_FileFormat` options to lines ending with `-/var/log/syslog` and `-/var/log/messages` in *rsyslog.conf*.
-2. Restart the service:
+1. Comment out the following line in `/etc/rsyslog.conf`: `$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat`.
+2. Add custom *.conf* file for usbrip:
 
 ```
+~$ echo '$ActionFileDefaultTemplate RSYSLOG_FileFormat' | sudo tee /etc/rsyslog.d/usbrip.conf
+```
+
+3. Delete existing log files and restart the service:
+
+```
+~$ sudo rm -f /var/log/syslog* /var/log/messages*
 ~$ sudo systemctl restart rsyslog
 ```
 
@@ -310,7 +317,7 @@ Examples
   $ usbrip events history -et -c conn vid pid disconn serial -d '1995-09-15' '2018-07-01' --pid 1337 -f /var/log/syslog.1 /var/log/syslog.2.gz
   ```
 
-  :alien: **Note:** there is a thing to note when working with filters. There are 4 types of filtering available: only *external* USB events (devices that can be pulled out easily, `-e`), *by date* (`-d`), *by fields* (`--user`, `--vid`, `--pid`, `--product`, `--manufact`, `--serial`, `--port`) and *by number of entries* you get as the output (`-n`). When applying different filters simultaneously, you will get the following behaviour: firstly, *external* and *by date* filters are applied, then usbrip will search for specified field values in the intersection of the last two filters, and in the end it will cut the output to the number you defined with the `-n` option. So think of it as an **intersection** for *external* and *by date* filtering and **union** for *by fields* filtering. Hope it makes sense.
+  :alien: **Note:** there is a thing to note when working with filters. There are 4 types of filtering available: only *external* USB events (devices that can be pulled out easily, `-e`); *by date* (`-d`); *by fields* (`--user`, `--vid`, `--pid`, `--product`, `--manufact`, `--serial`, `--port`) and *by number of entries* you get as the output (`-n`). When applying different filters simultaneously, you will get the following behaviour: firstly, *external* and *by date* filters are applied, then usbrip will search for specified *field* values in the intersection of the last two filters, and in the end it will cut the output to the *number* you defined with the `-n` option. So think of it as an **intersection** for *external* and *by date* filtering and **union** for *by fields* filtering. Hope it makes sense.
 
 * Build the event history of all USB devices and redirect the output to a file for further analysis. When the output stream is NOT terminal stdout (`|` or `>` for example) there would be no ANSI escape characters (color) in the output so feel free to use it that way. Also notice that usbrip uses some UNICODE symbols so it would be nice to convert the resulting file to UTF-8 encoding (with `encov` for example) as well as change newline characters to Windows style for portability (with `awk` for example):
 
