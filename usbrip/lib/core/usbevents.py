@@ -319,9 +319,14 @@ def _read_log_file(filename):
 	for line in iter(log.readline, end_of_file):
 		if isinstance(line, bytes):
 			line = line.decode(encoding='utf-8', errors='ignore')
+
 		if regex.search(line):
+			date = line[:32]
+			if date.count(':') > 2:
+				date = ''.join(line[:32].rsplit(':', 1))  # rreplace(':', 1) to remove the last ':' from "2019-08-09T06:15:49.655261-04:00" timestamp if there is one
+
 			try:
-				date = datetime.strptime(line[:32], '%Y-%m-%dT%H:%M:%S.%f%z')  # ex. 2019-08-09T06:15:49.655261-04:00
+				date = datetime.strptime(date, '%Y-%m-%dT%H:%M:%S.%f%z')  # ex. 2019-08-09T06:15:49.655261-0400
 			except ValueError as e:
 				raise USBRipError(f'Wrong timestamp format found in "{abs_filename}"', errors={'initial_error': str(e)})
 			else:
