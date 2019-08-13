@@ -6,8 +6,8 @@
 
 <p align="center">
 	<a href="https://pypi.org/project/usbrip/#history"><img src="https://img.shields.io/badge/ver-2.1.4-red.svg" alt="usbrip-version.svg" /></a>
-	<a href="https://pypi.org/project/usbrip/#files"><img src="https://img.shields.io/badge/PyPI-Download-blue.svg" alt="pypi-download.svg" /></a>
-	<a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.6-blue.svg" alt="python-version.svg" /></a>
+	<a href="https://pypi.org/project/usbrip/#files"><img src="https://img.shields.io/badge/PyPI-Download-3775a9.svg?logo=pypi" alt="pypi-download.svg" /></a>
+	<a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.6-3776ab.svg?logo=python" alt="python-version.svg" /></a>
 	<a href="https://raw.githubusercontent.com/snovvcrash/usbrip/master/LICENSE"><img src="https://img.shields.io/badge/license-GPLv3-blue.svg" alt="license.svg" /></a>
 	<a href="https://emojipedia.org/growing-heart/"><img src="https://img.shields.io/badge/built%20with-%F0%9F%92%97%F0%9F%92%97%F0%9F%92%97-lightgrey.svg" alt="built-with-love.svg" /></a>
 </p>
@@ -54,7 +54,7 @@ Besides, it also can:
 Quick Start
 ==========
 
-usbrip is available for download and installation at [PyPI](https://pypi.org/project/usbrip/ "usbrip · PyPI"):
+usbrip is available for download and installation at [PyPI](https://pypi.org/project/usbrip/ "usbrip · PyPI") (the latest version is always on GitHub, though):
 
 ```
 ~$ pip3 install usbrip
@@ -85,7 +85,12 @@ usbrip (>= [2.1.4.post1](https://pypi.org/project/usbrip/#history)) works with *
 
 It can be done by setting the `RSYSLOG_FileFormat` format if you are using rsyslog, for example.
 
-1. Comment out the following line in `/etc/rsyslog.conf`: `$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat`.
+1. Comment out the following line in `/etc/rsyslog.conf`:
+
+```
+$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
+```
+
 2. Add custom *.conf* file for usbrip:
 
 ```
