@@ -48,6 +48,7 @@ from string import printable
 
 from terminaltables import AsciiTable, SingleTable
 from termcolor import colored, cprint
+from tqdm import tqdm
 
 import usbrip.lib.core.config as cfg
 from usbrip.lib.core.common import BULLET
@@ -189,7 +190,7 @@ class USBEvents:
 			attributes = ('vid', 'pid', 'prod', 'manufact', 'serial')
 
 		auth = defaultdict(list)
-		for event in self._events_to_show:
+		for event in tqdm(self._events_to_show):
 			for key, val in event.items():
 				if (key in attributes and
 					val is not None and
@@ -223,7 +224,7 @@ class USBEvents:
 		if not attributes:
 			attributes = auth.keys()
 
-		for event in self._all_events:
+		for event in tqdm(self._all_events):
 			try:
 				if any(event[key] not in vals and
                        event[key] is not None

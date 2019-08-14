@@ -9,6 +9,7 @@ name = "pypi"
 pip = "==18.0"
 termcolor = "*"
 terminaltables = "*"
+tqdm = "*"
 
 [requires]
 python_version = "3.6"
