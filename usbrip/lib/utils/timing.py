@@ -46,7 +46,7 @@ def tick(msg, fmt='%H:%M:%S', taken=None):
 def final():
 	end = time.time()
 	taken = end - START
-	tick('[*] Shutted down at', fmt='%Y-%m-%d %H:%M:%S', taken=taken)
+	tick('[*] Shut down at', fmt='%Y-%m-%d %H:%M:%S', taken=taken)
 
 
 def begin():
