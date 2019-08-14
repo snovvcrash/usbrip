@@ -303,8 +303,10 @@ def _validate_column_args(args):
 
 def _validate_sieve_args(args):
 	if 'external' in args:
-		sieve = dict(zip(('external', 'number', 'dates', 'fields'),
-                         (args.external, args.number, args.date, {})))
+		sieve = dict(
+			zip(('external', 'number', 'dates', 'fields'),
+			(args.external, args.number, args.date, {}))
+		)
 
 		if args.user:
 			sieve['fields']['user'] = args.user

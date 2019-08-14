@@ -225,9 +225,11 @@ class USBEvents:
 
 		for event in self._all_events:
 			try:
-				if any(event[key] not in vals and
-                       event[key] is not None
-                       for key, vals in zip(attributes, auth.values())):
+				if any(
+					event[key] not in vals and
+					event[key] is not None
+					for key, vals in zip(attributes, auth.values())
+				):
 					self._violations.append(event)
 			except KeyError as e:
 				print_critical('No such attribute in authorized device list', initial_error=str(e))
@@ -268,17 +270,21 @@ def _get_filtered_history():
 
 	print_info('Searching for log files: "/var/log/syslog*" or "/var/log/messages*"')
 
-	syslog_files = sorted([filename
-                           for filename in list_files('/var/log/')
-                           if filename.rsplit('/', 1)[1].startswith('syslog')])
+	syslog_files = sorted([
+		filename
+		for filename in list_files('/var/log/')
+		if filename.rsplit('/', 1)[1].startswith('syslog')
+	])
 
 	if syslog_files:
 		for syslog in syslog_files:
 			filtered_history.extend(_read_log_file(syslog))
 	else:
-		messages_files = sorted([filename
-                                 for filename in list_files('/var/log/')
-                                 if filename.rsplit('/', 1)[1].startswith('messages')])
+		messages_files = sorted([
+			filename
+			for filename in list_files('/var/log/')
+			if filename.rsplit('/', 1)[1].startswith('messages')
+		])
 
 		if messages_files:
 			for messages in messages_files:
@@ -460,9 +466,11 @@ def _is_sorted(iterable, reverse=False):
 
 	compare = operator.ge if reverse else operator.le
 
-	return all(compare(current_element, next_element)
-               for current_element, next_element
-               in pairwise(iterable))
+	return all(
+		compare(current_element, next_element)
+		for current_element, next_element
+		in pairwise(iterable)
+	)
 
 
 def _filter_events(all_events, sieve):

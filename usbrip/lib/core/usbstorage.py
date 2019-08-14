@@ -325,9 +325,11 @@ def _get_violation_events(sieve, input_auth, attributes, indent):
 
 	for event in ue._all_events:
 		try:
-			if any(event[key] not in vals and
-                   event[key] is not None
-                   for key, vals in zip(attributes, auth.values())):
+			if any(
+				event[key] not in vals and
+				event[key] is not None
+				for key, vals in zip(attributes, auth.values())
+			):
 				ue._violations.append(event)
 		except KeyError as e:
 			raise USBRipError(
