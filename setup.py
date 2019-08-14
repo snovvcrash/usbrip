@@ -126,6 +126,7 @@ setup(
 	license=__license__,
 	description=__brief__,
 	long_description=long_description,
+	long_description_content_type='text/markdown',
 	keywords=keywords,
 	packages=find_packages(),
 	zip_safe=False,
