@@ -190,7 +190,7 @@ class USBEvents:
 			attributes = ('vid', 'pid', 'prod', 'manufact', 'serial')
 
 		auth = defaultdict(list)
-		for event in tqdm(self._events_to_show):
+		for event in tqdm(self._events_to_show, ncols=80, unit='dev'):
 			for key, val in event.items():
 				if (key in attributes and
 					val is not None and
@@ -224,7 +224,7 @@ class USBEvents:
 		if not attributes:
 			attributes = auth.keys()
 
-		for event in tqdm(self._all_events):
+		for event in tqdm(self._all_events, ncols=80, unit='dev'):
 			try:
 				if any(
 					event[key] not in vals and

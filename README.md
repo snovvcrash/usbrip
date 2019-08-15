@@ -367,7 +367,7 @@ Credits & References
 ==========
 
 * [Linux-форензика в лице трекинга истории подключений USB-устройств / Хабр](https://habr.com/ru/post/352254/)
-* [usbrip: USB-форензика для Линуксов, или Как Алиса стала Евой](https://codeby.net/threads/usbrip-usb-forenzika-dlja-linuksov-ili-kak-alisa-stala-evoj.63644/)
+* [usbrip: USB-форензика для Линуксов, или Как Алиса стала Евой / Codeby](https://codeby.net/threads/usbrip-usb-forenzika-dlja-linuksov-ili-kak-alisa-stala-evoj.63644/)
 * [Hack The Box :: Forensics Challenges](https://www.hackthebox.eu/home/challenges/Forensics)
 
 Post Scriptum
