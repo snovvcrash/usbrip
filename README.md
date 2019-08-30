@@ -9,6 +9,7 @@
 	<a href="https://pypi.org/project/usbrip/#files"><img src="https://img.shields.io/badge/PyPI-Download-3775a9.svg?logo=pypi" alt="pypi-download.svg" /></a>
 	<a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.6-3776ab.svg?logo=python" alt="python-version.svg" /></a>
 	<a href="https://raw.githubusercontent.com/snovvcrash/usbrip/master/LICENSE"><img src="https://img.shields.io/badge/license-GPLv3-blue.svg" alt="license.svg" /></a>
+	<a href="https://blackarch.org/forensic.html"><img src="https://img.shields.io/badge/BlackArch-Linux-b40000.svg?logo=arch-linux" alt="arch-linux.svg" /></a>
 	<a href="https://emojipedia.org/growing-heart/"><img src="https://img.shields.io/badge/built%20with-%F0%9F%92%97%F0%9F%92%97%F0%9F%92%97-lightgrey.svg" alt="built-with-love.svg" /></a>
 </p>
 
@@ -366,11 +367,11 @@ Examples
 Credits & References
 ==========
 
+* [usbrip - Инструменты Kali Linux](https://kali.tools/?p=4873)
+* [Как узнать, какие USB устройства подключались к Linux - HackWare.ru](https://hackware.ru/?p=9703)
 * [Linux-форензика в лице трекинга истории подключений USB-устройств / Хабр](https://habr.com/ru/post/352254/)
 * [usbrip: USB-форензика для Линуксов, или Как Алиса стала Евой / Codeby](https://codeby.net/threads/usbrip-usb-forenzika-dlja-linuksov-ili-kak-alisa-stala-evoj.63644/)
 * [Hack The Box :: Forensics Challenges](https://www.hackthebox.eu/home/challenges/Forensics)
-* [usbrip - Инструменты Kali Linux](https://kali.tools/?p=4873)
-* [Как узнать, какие USB устройства подключались к Linux - HackWare.ru](https://hackware.ru/?p=9703)
 
 Post Scriptum
 ==========
