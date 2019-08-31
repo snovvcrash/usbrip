@@ -23,6 +23,7 @@ Table of Contents:
 * [**Git Clone**](#git-clone)
 * [**Dependencies**](#dependencies)
   - [System Log Structure](#system-log-structure)
+    * [journalctl](#journalctl)
   - [DEB Packages](#deb-packages)
   - [PIP Packages](#pip-packages)
   - [Portable](#portable)
@@ -42,7 +43,7 @@ Table of Contents:
 Description
 ==========
 
-**usbrip** is a small piece of software written in pure Python 3 (using some external modules though, see [Dependencies/PIP](#pip-packages)) which parses Linux log files (`/var/log/syslog*` or `/var/log/messages*` depending on the distro) for constructing USB event history tables. Such tables may contain the following columns: "Connected" (date & time), "User", "VID" (vendor ID), "PID" (product ID), "Product", "Manufacturer", "Serial Number", "Port" and "Disconnected" (date & time).
+**usbrip** is a small piece of software written in pure Python 3 (using some external modules, though, see [Dependencies/PIP](#pip-packages)) which parses Linux log files (`/var/log/syslog*` or `/var/log/messages*` depending on the distro) for constructing USB event history tables. Such tables may contain the following columns: "Connected" (date & time), "User", "VID" (vendor ID), "PID" (product ID), "Product", "Manufacturer", "Serial Number", "Port" and "Disconnected" (date & time).
 
 Besides, it also can:
 
@@ -82,9 +83,12 @@ Dependencies
 
 ## System Log Structure
 
-usbrip (>= [2.1.4.post1](https://pypi.org/project/usbrip/#history)) works with **modified** structure of system log files to provide high precision timestamps, so make sure to enable [`"%Y-%m-%dT%H:%M:%S.%f%z"`](http://strftime.org/) (ex. `"2019-08-09T06:15:49.655261-04:00"`) time format for both `/var/log/syslog*` and `/var/log/messages*` before running the software.
+usbrip supports two types of format:
 
-It can be done by setting the `RSYSLOG_FileFormat` format if you are using rsyslog, for example.
+1. **Non-modified** — standard `syslog` structure for GNU/Linux (ex. "Mar 18 13:56:07"). This type of timestamp does not provide the information about years.
+2. **Modified** (recommended) — upgraded structure of system log files which provides high precision timestamps ([`"%Y-%m-%dT%H:%M:%S.%f%z"`](http://strftime.org/), ex. `"2019-08-09T06:15:49.655261-04:00"`).
+
+The modified structure could be configured via `RSYSLOG_FileFormat` format if you are using rsyslog, for example.
 
 1. Comment out the following line in `/etc/rsyslog.conf`:
 
@@ -98,12 +102,35 @@ $ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
 ~$ echo '$ActionFileDefaultTemplate RSYSLOG_FileFormat' | sudo tee /etc/rsyslog.d/usbrip.conf
 ```
 
-3. Delete existing log files and restart the service:
+3. (optional) Delete existing log files:
 
 ```
 ~$ sudo rm -f /var/log/syslog* /var/log/messages*
+```
+
+4. Restart the service:
+
+```
 ~$ sudo systemctl restart rsyslog
 ```
+
+### journalctl
+
+Unfortunately, I have no opportunity to provide full compatibility with the `journald` demon out-of-the-box so far.
+
+So for now I suggest Arch Linux users (as well as anyone else who runs `journalctl`) such a crutch to work with USB event history:
+
+```
+~$ export LANG=en_US.utf-8 && USBDUMP=/tmp/usb-dump-`date '+%FT%H%M%S'` && journalctl > $USBDUMP && usbrip events history -f $USBDUMP
+```
+
+Or even shorter if you are using zsh:
+
+```
+~$ export LANG=en_US.utf-8 && usbrip events history -f =(journalctl)
+```
+
+Some nice hints for converting timestamps in order not to break usbrip when working on different distros are described [here](https://hackware.ru/?p=9703) (in Russian).
 
 ## DEB Packages
 
@@ -367,8 +394,8 @@ Examples
 Credits & References
 ==========
 
-* [usbrip - Инструменты Kali Linux](https://kali.tools/?p=4873)
-* [Как узнать, какие USB устройства подключались к Linux - HackWare.ru](https://hackware.ru/?p=9703)
+* [usbrip / Инструменты Kali Linux](https://kali.tools/?p=4873)
+* [Как узнать, какие USB устройства подключались к Linux / HackWare.ru](https://hackware.ru/?p=9703)
 * [Linux-форензика в лице трекинга истории подключений USB-устройств / Хабр](https://habr.com/ru/post/352254/)
 * [usbrip: USB-форензика для Линуксов, или Как Алиса стала Евой / Codeby](https://codeby.net/threads/usbrip-usb-forenzika-dlja-linuksov-ili-kak-alisa-stala-evoj.63644/)
 * [Hack The Box :: Forensics Challenges](https://www.hackthebox.eu/home/challenges/Forensics)

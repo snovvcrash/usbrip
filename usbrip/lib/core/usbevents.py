@@ -78,16 +78,17 @@ class USBEvents:
 
 	@time_it_if_debug(cfg.DEBUG, time_it)
 	def __new__(cls, files=None):
-		if files:
-			filtered_history = []
-			for file in files:
-				filtered_history.extend(_read_log_file(file))
-		else:
-			try:
+		try:
+			if files:
+				filtered_history = []
+				for file in files:
+					filtered_history.extend(_read_log_file(file))
+			else:
 				filtered_history = _get_filtered_history()
-			except USBRipError as e:
-				print_critical(str(e))
-				return None
+
+		except USBRipError as e:
+			print_critical(str(e), initial_error=e.errors['initial_error'])
+			return None
 
 		all_events = _parse_history(filtered_history)
 
@@ -322,27 +323,44 @@ def _read_log_file(filename):
 
 	print_info(f'Reading "{abs_filename}"')
 
-	regex = re.compile(r'] usb (.*?): ')
-	for line in iter(log.readline, end_of_file):
+	regex = re.compile(r'(?:]|:) usb (.*?): ')
+	for line in tqdm(iter(log.readline, end_of_file), unit='dev'):
 		if isinstance(line, bytes):
 			line = line.decode(encoding='utf-8', errors='ignore')
 
 		if regex.search(line):
+			# Case 1 -- Modified Timestamp ("%Y-%m-%dT%H:%M:%S.%f%z")
+
 			date = line[:32]
 			if date.count(':') > 2:
-				date = ''.join(line[:32].rsplit(':', 1))  # rreplace(':', 1) to remove the last ':' from "2019-08-09T06:15:49.655261-04:00" timestamp if there is one
+				date = ''.join(line[:32].rsplit(':', 1))  # rreplace(':', '', 1) to remove the last ':' from "2019-08-09T06:15:49.655261-04:00" timestamp if there is one
 
 			try:
-				date = datetime.strptime(date, '%Y-%m-%dT%H:%M:%S.%f%z')  # ex. 2019-08-09T06:15:49.655261-0400
-			except ValueError as e:
-				raise USBRipError(f'Wrong timestamp format found in "{abs_filename}"', errors={'initial_error': str(e)})
+				date = datetime.strptime(date, '%Y-%m-%dT%H:%M:%S.%f%z')  # ex. "2019-08-09T06:15:49.655261-0400"
+
+			except ValueError:
+				# Case 2 -- Non-Modified Timestamp ("%b %d %H:%M:%S")
+
+				date = line[:15]
+				if '  ' in date:
+					date = date.replace('  ', ' 0', 1)  # pad day of the week with zero
+
+				try:
+					date = datetime.strptime(date, '%b %d %H:%M:%S')  # ex. "Mar 18 13:56:07"
+				except ValueError as e:
+					raise USBRipError(f'Wrong timestamp format found in "{abs_filename}"', errors={'initial_error': str(e)})
+				else:
+					date = date.strftime('????-%m-%d %H:%M:%S')
+					logline = line[15:].strip()
+
 			else:
 				date = date.strftime('%Y-%m-%d %H:%M:%S')
 				logline = line[32:].strip()
-				if any(pat in line for pat in ('New USB device found, ', 'Product: ', 'Manufacturer: ', 'SerialNumber: ')):
-					filtered.append((date, 'c', logline))
-				elif 'disconnect' in line:
-					filtered.append((date, 'd', logline))
+
+			if any(pat in line for pat in ('New USB device found, ', 'Product: ', 'Manufacturer: ', 'SerialNumber: ')):
+				filtered.append((date, 'c', logline))
+			elif 'disconnect' in line:
+				filtered.append((date, 'd', logline))
 
 	log.close()
 	return filtered
