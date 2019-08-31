@@ -43,7 +43,7 @@ Table of Contents:
 Description
 ==========
 
-**usbrip** is a small piece of software written in pure Python 3 (using some external modules, though, see [Dependencies/PIP](#pip-packages)) which parses Linux log files (`/var/log/syslog*` or `/var/log/messages*` depending on the distro) for constructing USB event history tables. Such tables may contain the following columns: "Connected" (date & time), "User", "VID" (vendor ID), "PID" (product ID), "Product", "Manufacturer", "Serial Number", "Port" and "Disconnected" (date & time).
+**usbrip** is a small piece of software written in pure Python 3 (using some external modules, though, see [Dependencies/PIP](#pip-packages)) which parses Linux log files (`/var/log/syslog*`, `/var/log/messages*` or `journalctl` output, depending on the distro) for constructing USB event history tables. Such tables may contain the following columns: "Connected" (date & time), "User", "VID" (vendor ID), "PID" (product ID), "Product", "Manufacturer", "Serial Number", "Port" and "Disconnected" (date & time).
 
 Besides, it also can:
 
@@ -116,21 +116,7 @@ $ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
 
 ### `journalctl`
 
-Unfortunately, I have no opportunity to provide full compatibility with the `journald` demon out-of-the-box so far.
-
-So for now I suggest Arch Linux users (as well as anyone else who runs `journalctl`) such a crutch to work with USB event history:
-
-```
-~$ export LANG=en_US.utf-8 && USBDUMP=/tmp/usb-dump-`date '+%FT%H%M%S'` && journalctl > $USBDUMP && usbrip events history -f $USBDUMP
-```
-
-Or even shorter if you are using zsh:
-
-```
-~$ export LANG=en_US.utf-8 && usbrip events history -f =(journalctl)
-```
-
-Some nice hints for converting timestamps in order not to break usbrip when working on different distros are described [here](https://hackware.ru/?p=9703) (in Russian).
+So far, I have provided slight compatibility with the `journald` demon out-of-the-box. You may want to take a look at this [blogpost](https://hackware.ru/?p=9703) (in Russian) where the author suggests some cool hints for converting various timestamps in order not to break usbrip when working on different distros.
 
 ## DEB Packages
 

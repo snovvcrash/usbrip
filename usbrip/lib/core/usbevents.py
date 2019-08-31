@@ -45,6 +45,8 @@ import os
 from datetime import datetime
 from collections import OrderedDict, defaultdict
 from string import printable
+from subprocess import check_output
+from io import StringIO
 
 from terminaltables import AsciiTable, SingleTable
 from termcolor import colored, cprint
@@ -79,10 +81,18 @@ class USBEvents:
 	@time_it_if_debug(cfg.DEBUG, time_it)
 	def __new__(cls, files=None):
 		try:
-			if files:
+			child_env = os.environ.copy()
+			child_env['LANG'] = 'en_US.utf-8'
+			journalctl_out = check_output(['journalctl'], env=child_env).decode('utf-8')
+
+			if '-- Logs begin at' in journalctl_out:
+				filtered_history = _read_log_file(None, log=StringIO(journalctl_out))
+
+			elif files:
 				filtered_history = []
 				for file in files:
 					filtered_history.extend(_read_log_file(file))
+
 			else:
 				filtered_history = _get_filtered_history()
 
@@ -297,36 +307,42 @@ def _get_filtered_history():
 	return filtered_history
 
 
-def _read_log_file(filename):
+def _read_log_file(filename, log=None):
 	filtered = []
 
-	abs_filename = os.path.abspath(filename)
+	if log is None:
+		abs_filename = os.path.abspath(filename)
 
-	if abs_filename.endswith('.gz'):
-		print_info(f'Unpacking "{abs_filename}"')
+		if abs_filename.endswith('.gz'):
+			print_info(f'Unpacking "{abs_filename}"')
 
-		try:
-			log = gzip.open(abs_filename, 'rb')
-		except PermissionError as e:
-			print_warning(
-				f'Permission denied: "{abs_filename}". Retry with sudo',
-				initial_error=str(e)
-			)
-			return filtered
+			try:
+				log = gzip.open(abs_filename, 'rb')
+			except PermissionError as e:
+				print_warning(
+					f'Permission denied: "{abs_filename}". Retry with sudo',
+					initial_error=str(e)
+				)
+				return filtered
+			else:
+				end_of_file = b''
+				abs_filename = os.path.splitext(abs_filename)
+
 		else:
-			end_of_file = b''
-			abs_filename = os.path.splitext(abs_filename)
+			log = codecs.open(abs_filename, 'r', encoding='utf-8', errors='ignore')
+			end_of_file = ''
+
+		print_info(f'Reading "{abs_filename}"')
 
 	else:
-		log = codecs.open(abs_filename, 'r', encoding='utf-8', errors='ignore')
+		abs_filename = 'journalctl output'
 		end_of_file = ''
-
-	print_info(f'Reading "{abs_filename}"')
+		print_info(f'Reading journalctl output')
 
 	regex = re.compile(r'(?:]|:) usb (.*?): ')
 	for line in tqdm(iter(log.readline, end_of_file), unit='dev'):
 		if isinstance(line, bytes):
-			line = line.decode(encoding='utf-8', errors='ignore')
+			line = line.decode('utf-8', errors='ignore')
 
 		if regex.search(line):
 			# Case 1 -- Modified Timestamp ("%Y-%m-%dT%H:%M:%S.%f%z")
