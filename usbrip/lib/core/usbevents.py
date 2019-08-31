@@ -81,9 +81,10 @@ class USBEvents:
 	@time_it_if_debug(cfg.DEBUG, time_it)
 	def __new__(cls, files=None):
 		try:
-			child_env = os.environ.copy()
-			child_env['LANG'] = 'en_US.utf-8'
-			journalctl_out = check_output(['journalctl'], env=child_env).decode('utf-8')
+			# child_env = os.environ.copy()
+			# child_env['LANG'] = 'en_US.utf-8'
+			# journalctl_out = check_output(['journalctl'], env=child_env).decode('utf-8')
+			journalctl_out = check_output(['journalctl', '-o', 'short-iso-precise']).decode('utf-8')
 
 			if '-- Logs begin at' in journalctl_out:
 				filtered_history = _read_log_file(None, log=StringIO(journalctl_out))
@@ -340,15 +341,15 @@ def _read_log_file(filename, log=None):
 		print_info(f'Reading journalctl output')
 
 	regex = re.compile(r'(?:]|:) usb (.*?): ')
-	for line in tqdm(iter(log.readline, end_of_file), unit='dev'):
+	for line in tqdm(iter(log.readline, end_of_file), unit='line'):
 		if isinstance(line, bytes):
 			line = line.decode('utf-8', errors='ignore')
 
 		if regex.search(line):
 			# Case 1 -- Modified Timestamp ("%Y-%m-%dT%H:%M:%S.%f%z")
 
-			date = line[:32]
-			if date.count(':') > 2:
+			date = line[:32].strip()
+			if date.count(':') == 3:
 				date = ''.join(line[:32].rsplit(':', 1))  # rreplace(':', '', 1) to remove the last ':' from "2019-08-09T06:15:49.655261-04:00" timestamp if there is one
 
 			try:
@@ -357,7 +358,7 @@ def _read_log_file(filename, log=None):
 			except ValueError:
 				# Case 2 -- Non-Modified Timestamp ("%b %d %H:%M:%S")
 
-				date = line[:15]
+				date = line[:15].strip()
 				if '  ' in date:
 					date = date.replace('  ', ' 0', 1)  # pad day of the week with zero
 
