@@ -102,7 +102,7 @@ $ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
 ~$ echo '$ActionFileDefaultTemplate RSYSLOG_FileFormat' | sudo tee /etc/rsyslog.d/usbrip.conf
 ```
 
-3. (optional) Delete existing log files:
+3. *(optional)* Delete existing log files:
 
 ```
 ~$ sudo rm -f /var/log/syslog* /var/log/messages*
