@@ -221,9 +221,9 @@ def print_warning(message, *, errcode=0, initial_error=''):
 
 	if cfg.DEBUG:
 		if errcode:
-			print(f'ERRCODE: {errcode}')
+			print(f'[DEBUG] ERRCODE: {errcode}', file=sys.stderr)
 		if initial_error:
-			print(initial_error, file=sys.stderr)
+			print(f'[DEBUG] {initial_error}', file=sys.stderr)
 
 	if cfg.ISATTY:
 		cprint(f'[{_get_time()}] [WARNING] {message}', 'yellow')
@@ -234,9 +234,9 @@ def print_warning(message, *, errcode=0, initial_error=''):
 def print_critical(message, *, errcode=0, initial_error=''):
 	if cfg.DEBUG:
 		if errcode:
-			print(f'ERRCODE: {errcode}')
+			print(f'[DEBUG] ERRCODE: {errcode}', file=sys.stderr)
 		if initial_error:
-			print(initial_error, file=sys.stderr)
+			print(f'[DEBUG] {initial_error}', file=sys.stderr)
 
 	if cfg.ISATTY:
 		cprint(f'[{_get_time()}] [CRITICAL] {message}', 'white', 'on_red', attrs=['bold'])
