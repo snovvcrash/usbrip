@@ -13,7 +13,7 @@
 	<a href="https://emojipedia.org/growing-heart/"><img src="https://img.shields.io/badge/built%20with-%F0%9F%92%97%F0%9F%92%97%F0%9F%92%97-lightgrey.svg" alt="built-with-love.svg" /></a>
 </p>
 
-**usbrip** (derived from "USB Ripper", not "USB R.I.P." :astonished:) is an open source forensics tool with CLI interface that lets you keep track of USB device artifacts (aka *USB event history, "Connected" and "Disconnected" events*) on Linux machines.
+**usbrip** (inherited from "USB Ripper", not "USB R.I.P.") is an open source forensics tool with CLI interface that lets you keep track of USB device artifacts (aka *USB event history, "Connected" and "Disconnected" events*) on Linux machines.
 
 Table of Contents:
 
@@ -23,7 +23,7 @@ Table of Contents:
 * [**Git Clone**](#git-clone)
 * [**Dependencies**](#dependencies)
   - [System Log Structure](#system-log-structure)
-    * [journalctl](#journalctl)
+    * [`journalctl`](#journalctl)
   - [DEB Packages](#deb-packages)
   - [PIP Packages](#pip-packages)
   - [Portable](#portable)
@@ -114,7 +114,7 @@ $ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
 ~$ sudo systemctl restart rsyslog
 ```
 
-### journalctl
+### `journalctl`
 
 Unfortunately, I have no opportunity to provide full compatibility with the `journald` demon out-of-the-box so far.
 
