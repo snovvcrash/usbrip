@@ -122,7 +122,7 @@ So far, I have provided slight compatibility with the `journald` demon out-of-th
 
 * python3.6 (or newer) interpreter
 * python3-venv
-* p7zip-full *(used by `storages` module)*
+* p7zip-full (used by `storages` module)
 
 ```
 ~$ sudo apt install python3-venv p7zip-full -y
