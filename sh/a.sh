@@ -1,0 +1,2 @@
+#!/bin/bash
+o=`journalctl -o short-iso-precise|grep -iw 'usb'|grep -iwe 'Product:\|Manufacturer:\|SerialNumber:\|USB disconnect'|awk '{$3=" ";print $0}'|sed s/"   "/" "/`;p=`echo "$o"|cut -d'.' -f1`;echo "$o"|while read -r line;do c=`echo "$line"|awk '{print $1}'|cut -d'.' -f1`;if [[ "$c" != "$p" ]];then p="$c";echo;fi;echo "${c} `echo $line|cut -d' ' -f2-100`";done
