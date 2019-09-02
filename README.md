@@ -85,7 +85,7 @@ Dependencies
 
 usbrip supports two types of format:
 
-1. **Non-modified** — standard `syslog` structure for GNU/Linux (ex. "Mar 18 13:56:07"). This type of timestamp does not provide the information about years.
+1. **Non-modified** — standard `syslog` structure for GNU/Linux ([`"%b %d %H:%M:%S"`](http://strftime.org/), ex. "Mar 18 13:56:07"). This type of timestamp does not provide the information about years.
 2. **Modified** (recommended) — upgraded structure of system log files which provides high precision timestamps ([`"%Y-%m-%dT%H:%M:%S.%f%z"`](http://strftime.org/), ex. `"2019-08-09T06:15:49.655261-04:00"`).
 
 The modified structure could be configured via `RSYSLOG_FileFormat` format if you are using rsyslog, for example.
