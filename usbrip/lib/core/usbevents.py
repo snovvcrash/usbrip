@@ -81,21 +81,31 @@ class USBEvents:
 	@time_it_if_debug(cfg.DEBUG, time_it)
 	def __new__(cls, files=None):
 		try:
-			# child_env = os.environ.copy()
-			# child_env['LANG'] = 'en_US.utf-8'
-			# journalctl_out = check_output(['journalctl'], env=child_env).decode('utf-8')
-			journalctl_out = check_output(['journalctl', '-o', 'short-iso-precise']).decode('utf-8')
-
-			if '-- Logs begin at' in journalctl_out:
-				filtered_history = _read_log_file(None, log=StringIO(journalctl_out))
-
-			elif files:
+			if files:
 				filtered_history = []
 				for file in files:
 					filtered_history.extend(_read_log_file(file))
 
 			else:
-				filtered_history = _get_filtered_history()
+				# child_env = os.environ.copy()
+				# child_env['LANG'] = 'en_US.utf-8'
+				# journalctl_out = check_output(['journalctl'], env=child_env).decode('utf-8')
+
+				journalctl_out = check_output([
+					'journalctl',
+					'-o',
+					'short-iso-precise'
+				]).decode('utf-8')
+
+				if '-- Logs begin at' in journalctl_out:
+					filtered_history = _read_log_file(
+						None,
+						log=StringIO(journalctl_out),
+						total=journalctl_out.count('\n')+1
+					)
+
+				else:
+					filtered_history = _get_filtered_history()
 
 		except USBRipError as e:
 			print_critical(str(e), initial_error=e.errors['initial_error'])
@@ -308,7 +318,7 @@ def _get_filtered_history():
 	return filtered_history
 
 
-def _read_log_file(filename, log=None):
+def _read_log_file(filename, log=None, total=None):
 	filtered = []
 
 	if log is None:
@@ -333,6 +343,9 @@ def _read_log_file(filename, log=None):
 			log = codecs.open(abs_filename, 'r', encoding='utf-8', errors='ignore')
 			end_of_file = ''
 
+		total = sum(1 for line in log)
+		log.seek(0)
+
 		print_info(f'Reading "{abs_filename}"')
 
 	else:
@@ -341,7 +354,7 @@ def _read_log_file(filename, log=None):
 		print_info(f'Reading journalctl output')
 
 	regex = re.compile(r'(?:]|:) usb (.*?): ')
-	for line in tqdm(iter(log.readline, end_of_file), unit='line'):
+	for line in tqdm(iter(log.readline, end_of_file), ncols=80, unit='line', total=total):
 		if isinstance(line, bytes):
 			line = line.decode('utf-8', errors='ignore')
 
