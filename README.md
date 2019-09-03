@@ -87,7 +87,9 @@ usbrip supports two types of format:
 1. **Non-modified** — standard `syslog` structure for GNU/Linux ([`"%b %d %H:%M:%S"`](http://strftime.org/), ex. "Mar 18 13:56:07"). This type of timestamp does not provide the information about years.
 2. **Modified** (recommended) — upgraded structure of system log files which provides high precision timestamps ([`"%Y-%m-%dT%H:%M:%S.%f%z"`](http://strftime.org/), ex. `"2019-08-09T06:15:49.655261-04:00"`).
 
-If you use `journalctl` to manage your logs, then there's nothing to worry about (as it can convert timestamps on the fly). Otherwise, the modified structure could be configured via `RSYSLOG_FileFormat` format if you are using rsyslog, for example.
+If you use `journalctl` to manage your logs, then there's nothing to worry about (as it can convert timestamps on the fly).
+
+Otherwise, the desired structure could be achieved by setting `RSYSLOG_FileFormat` format if you are using rsyslog, for example.
 
 1. Comment out the following line in `/etc/rsyslog.conf`:
 
