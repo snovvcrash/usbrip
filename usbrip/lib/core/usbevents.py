@@ -87,6 +87,8 @@ class USBEvents:
 					filtered_history.extend(_read_log_file(file))
 
 			else:
+				print_info('Trying to run journalctl...')
+
 				# child_env = os.environ.copy()
 				# child_env['LANG'] = 'en_US.utf-8'
 				# journalctl_out = check_output(['journalctl'], env=child_env).decode('utf-8')
@@ -98,6 +100,8 @@ class USBEvents:
 				]).decode('utf-8')
 
 				if '-- Logs begin at' in journalctl_out:
+					print_info('Successfully runned journalctl')
+
 					filtered_history = _read_log_file(
 						None,
 						log=StringIO(journalctl_out),
@@ -105,6 +109,7 @@ class USBEvents:
 					)
 
 				else:
+					print_warning('Failed to run journalctl')
 					filtered_history = _get_filtered_history()
 
 		except USBRipError as e:
@@ -523,14 +528,14 @@ def _is_sorted(iterable, reverse=False):
 
 
 def _filter_events(all_events, sieve):
-	# sieve = {
+	# default_sieve = {
 	#    'external': False,
 	#    'dates':       [],
 	#    'fields':      {},
 	#    'number':      -1
 	# }
 
-	if sieve is None:
+	if sieve is None or sieve == {'external': False, 'dates': [], 'fields': {}, 'number': -1}:
 		return all_events
 
 	else:
