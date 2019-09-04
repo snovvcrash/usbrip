@@ -1,1 +1,2 @@
-twine
+twine  # PyPI
+grip   # Markdown to PDF
