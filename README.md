@@ -42,7 +42,7 @@ Table of Contents:
 Description
 ==========
 
-**usbrip** is a small piece of software written in pure Python 3 (using some external modules, though, see [Dependencies/PIP](#pip-packages)) which parses Linux log files (`/var/log/syslog*`, `/var/log/messages*` or `journalctl` output, depending on the distro) for constructing USB event history tables. Such tables may contain the following columns: "Connected" (date & time), "User", "VID" (vendor ID), "PID" (product ID), "Product", "Manufacturer", "Serial Number", "Port" and "Disconnected" (date & time).
+**usbrip** is a small piece of software written in pure Python 3 (using some external modules, see [Dependencies/PIP](#pip-packages)) which analyzes Linux log data (`journalctl` output or `/var/log/syslog*` and `/var/log/messages*` files, depending on the distro) for constructing USB event history tables. Such tables may contain the following columns: "Connected" (date & time), "User", "VID" (vendor ID), "PID" (product ID), "Product", "Manufacturer", "Serial Number", "Port" and "Disconnected" (date & time).
 
 Besides, it also can:
 
@@ -114,6 +114,8 @@ $ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
 ```
 ~$ sudo systemctl restart rsyslog
 ```
+
+Firstly, usbrip will check if there is a chance to dump system events with `journalctl` as the most portable option (which may take some time). If not — it will search for and parse `/var/log/syslog*` and `/var/log/messages*` system log files.
 
 ## DEB Packages
 
