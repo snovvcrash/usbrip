@@ -58,7 +58,7 @@ Quick Start
 usbrip is available for download and installation at [PyPI](https://pypi.org/project/usbrip/ "usbrip · PyPI") (the latest version is always on GitHub, though):
 
 ```
-~$ pip3 install usbrip
+~$ pip3 install --upgrade usbrip
 ```
 
 Screenshots
