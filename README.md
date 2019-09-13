@@ -5,7 +5,7 @@
 ----------
 
 <p align="center">
-	<a href="https://github.com/snovvcrash/usbrip/blob/master/usbrip/__init__.py#L24"><img src="https://img.shields.io/badge/GitHub%20ver-2.1.4%E2%80%907-green.svg?logo=github" alt="github-version.svg" /></a>
+	<a href="https://github.com/snovvcrash/usbrip/blob/master/usbrip/__init__.py#L24"><img src="https://img.shields.io/badge/GitHub%20ver-2.1.4%E2%80%907-success.svg?logo=github" alt="github-version.svg" /></a>
 	<a href="https://pypi.org/project/usbrip/#history"><img src="https://img.shields.io/badge/PyPI%20ver-2.1.4%E2%80%907-3775a9.svg?logo=pypi" alt="pypi-version.svg" /></a>
 	<a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/Python-3.6-3776ab.svg?logo=python" alt="python-version.svg" /></a>
 	<a href="https://raw.githubusercontent.com/snovvcrash/usbrip/master/LICENSE"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="license.svg" /></a>
