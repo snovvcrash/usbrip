@@ -5,12 +5,15 @@
 ----------
 
 <p align="center">
-	<a href="https://pypi.org/project/usbrip/#history"><img src="https://img.shields.io/badge/ver-2.1.4-red.svg" alt="usbrip-version.svg" /></a>
-	<a href="https://pypi.org/project/usbrip/#files"><img src="https://img.shields.io/badge/PyPI-Download-3775a9.svg?logo=pypi" alt="pypi-download.svg" /></a>
-	<a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.6-3776ab.svg?logo=python" alt="python-version.svg" /></a>
-	<a href="https://raw.githubusercontent.com/snovvcrash/usbrip/master/LICENSE"><img src="https://img.shields.io/badge/license-GPLv3-blue.svg" alt="license.svg" /></a>
+	<a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/Python-3.6-3776ab.svg?logo=python" alt="python-version.svg" /></a>
+	<a href="https://raw.githubusercontent.com/snovvcrash/usbrip/master/LICENSE"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="license.svg" /></a>
 	<a href="https://blackarch.org/forensic.html"><img src="https://img.shields.io/badge/BlackArch-Linux-b40000.svg?logo=arch-linux" alt="arch-linux.svg" /></a>
-	<a href="https://emojipedia.org/growing-heart/"><img src="https://img.shields.io/badge/built%20with-%F0%9F%92%97%F0%9F%92%97%F0%9F%92%97-lightgrey.svg" alt="built-with-love.svg" /></a>
+	<a href="https://emojipedia.org/growing-heart/"><img src="https://img.shields.io/badge/Builtwith-%F0%9F%92%97%F0%9F%92%97%F0%9F%92%97-lightgrey.svg" alt="built-with-love.svg" /></a>
+</p>
+
+<p align="center">
+	<a href="https://github.com/snovvcrash/usbrip/blob/master/usbrip/__init__.py#L24"><img src="https://img.shields.io/badge/GitHub%20Version-2.1.4.post7-green.svg?logo=github" alt="github-version.svg" /></a>
+	<a href="https://pypi.org/project/usbrip/#history"><img src="https://img.shields.io/badge/PyPI%20Version-2.1.4.post7-3775a9.svg?logo=pypi" alt="pypi-version.svg" /></a>
 </p>
 
 **usbrip** (inherited from "USB Ripper", not "USB R.I.P.") is an open source forensics tool with CLI interface that lets you keep track of USB device artifacts (aka USB event history, *"Connected"* and *"Disconnected"* events) on Linux machines.
