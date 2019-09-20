@@ -19,7 +19,7 @@ Table of Contents:
 
 * [**Description**](#description)
 * [**Quick Start**](#quick-start)
-* [**Screenshots**](#screenshots)
+* [**Showcase**](#showcase)
 * [**Git Clone**](#git-clone)
 * [**Dependencies**](#dependencies)
   - [System Log Structure](#system-log-structure)
@@ -61,9 +61,10 @@ usbrip is available for download and installation at [PyPI](https://pypi.org/pro
 ~$ pip3 install --upgrade usbrip
 ```
 
-Screenshots
+Showcase
 ==========
 
+![demo.gif](https://user-images.githubusercontent.com/23141800/65293459-fd559380-db63-11e9-9e44-292c37470dcd.gif)
 ![screenshot-1.png](https://user-images.githubusercontent.com/23141800/62840987-09b81800-bcab-11e9-8365-b963a5fab49e.png "Get USB event history")
 ![screenshot-2.png](https://user-images.githubusercontent.com/23141800/62840859-3703c680-bca9-11e9-924d-1be1f085c024.png "Search for extra details about a specific USB device")
 
