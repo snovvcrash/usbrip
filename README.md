@@ -214,7 +214,7 @@ To install usbrip use:
 
 :alien: **Note**: when using `-s` option during installation, make sure that system logs do contain at least one *external* USB device entry. It is a necessary condition for usbrip to successfully create the list of trusted devices (and as a result, successfully create the violations storage).
 
-After the installation completes, feel free to remove the usbrip folder.
+After the installation completes, feel free to remove the `~/usbrip` folder.
 
 ### Paths
 
