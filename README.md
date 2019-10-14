@@ -134,7 +134,7 @@ usbrip makes use of the following external modules:
 
 * [terminaltables](https://github.com/Robpol86/terminaltables "Robpol86/terminaltables: Generate simple tables in terminals from a nested list of strings.")
 * [termcolor](https://pypi.org/project/termcolor "termcolor · PyPI")
-* [tdqm](https://github.com/tqdm/tqdm "tqdm/tqdm: A Fast, Extensible Progress Bar for Python and CLI")
+* [tqdm](https://github.com/tqdm/tqdm "tqdm/tqdm: A Fast, Extensible Progress Bar for Python and CLI")
 
 ## Portable
 
