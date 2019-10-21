@@ -381,6 +381,7 @@ Credits & References
 ==========
 
 * [usbrip / Инструменты Kali Linux](https://kali.tools/?p=4873)
+* [Linux Forensics! First Look at usbrip](https://youtu.be/DP4ScSp_2yE)
 * [Как узнать, какие USB устройства подключались к Linux / HackWare.ru](https://hackware.ru/?p=9703)
 * [Linux-форензика в лице трекинга истории подключений USB-устройств / Хабр](https://habr.com/ru/post/352254/)
 * [usbrip: USB-форензика для Линуксов, или Как Алиса стала Евой / Codeby](https://codeby.net/threads/usbrip-usb-forenzika-dlja-linuksov-ili-kak-alisa-stala-evoj.63644/)
