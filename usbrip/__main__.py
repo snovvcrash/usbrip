@@ -308,8 +308,8 @@ def _validate_sieve_args(args):
 			(args.external, args.number, args.date, {}))
 		)
 
-		if args.user:
-			sieve['fields']['user'] = args.user
+		if args.host:
+			sieve['fields']['host'] = args.host
 		if args.vid:
 			sieve['fields']['vid'] = args.vid
 		if args.pid:

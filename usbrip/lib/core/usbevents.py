@@ -413,7 +413,7 @@ def _parse_history(filtered_history):
 	for date, action, logline in filtered_history:
 		if action == 'c':
 			if 'New USB device found, ' in logline:
-				user = logline.split(' ', 1)[0]  # logline -> '<USER> <REST>'
+				host = logline.split(' ', 1)[0]  # logline -> '<HOST> <REST>'
 
 				try:
 					vid = re_vid.search(logline).group(1)
@@ -430,7 +430,7 @@ def _parse_history(filtered_history):
 
 				event = {
 					'conn':     date,
-					'user':     user,
+					'host':     host,
 					'vid':       vid,
 					'pid':       pid,
 					'prod':     None,
@@ -607,7 +607,7 @@ def _represent_events(events_to_show, columns, table_data, title, repres):
 
 	max_len = {
 		'conn':     19,
-		'user':     max(max(len(event['user']) for event in events_to_show), len('User')),
+		'host':     max(max(len(event['host']) for event in events_to_show), len('Host')),
 		'vid':       4,
 		'pid':       4,
 		'prod':     max(max(len(str(event['prod'])) for event in events_to_show), len('Product')),
@@ -670,7 +670,7 @@ def _represent_events(events_to_show, columns, table_data, title, repres):
 		for event in events_to_show:
 			if cfg.ISATTY:
 				print(colored('Connected:      ', 'magenta', attrs=['bold']) + colored(event['conn'], 'green'))
-				print(colored('User:           ', 'magenta', attrs=['bold']) + event['user'])
+				print(colored('Host:           ', 'magenta', attrs=['bold']) + event['host'])
 				print(colored('VID:            ', 'magenta', attrs=['bold']) + event['vid'])
 				print(colored('PID:            ', 'magenta', attrs=['bold']) + event['pid'])
 				print(colored('Product:        ', 'magenta', attrs=['bold']) + str(event['prod']))
@@ -680,7 +680,7 @@ def _represent_events(events_to_show, columns, table_data, title, repres):
 				print(colored('Disconnected:   ', 'magenta', attrs=['bold']) + colored(event['disconn'], 'red'))
 			else:
 				print('Connected:      ' + event['conn'])
-				print('User:           ' + event['user'])
+				print('Host:           ' + event['host'])
 				print('VID:            ' + event['vid'])
 				print('PID:            ' + event['pid'])
 				print('Product:        ' + str(event['prod']))
@@ -712,7 +712,7 @@ def _dump_events(events_to_show, list_name, abs_filename, indent):
 	for event in events_to_show:
 		tmp_event_dict = OrderedDict()
 
-		for key in ('conn', 'user', 'vid', 'pid', 'prod', 'manufact', 'serial', 'port', 'disconn'):
+		for key in ('conn', 'host', 'vid', 'pid', 'prod', 'manufact', 'serial', 'port', 'disconn'):
 			tmp_event_dict[key] = event[key]
 
 		out.append(tmp_event_dict)

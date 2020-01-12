@@ -116,7 +116,7 @@ COLUMN_NAMES = OrderedDict()
 
 if cfg.ISATTY:
 	COLUMN_NAMES['conn']     = colored('Connected',     'magenta', attrs=['bold'])
-	COLUMN_NAMES['user']     = colored('User',          'magenta', attrs=['bold'])
+	COLUMN_NAMES['host']     = colored('Host',          'magenta', attrs=['bold'])
 	COLUMN_NAMES['vid']      = colored('VID',           'magenta', attrs=['bold'])
 	COLUMN_NAMES['pid']      = colored('PID',           'magenta', attrs=['bold'])
 	COLUMN_NAMES['prod']     = colored('Product',       'magenta', attrs=['bold'])
@@ -126,7 +126,7 @@ if cfg.ISATTY:
 	COLUMN_NAMES['disconn']  = colored('Disconnected',  'magenta', attrs=['bold'])
 else:
 	COLUMN_NAMES['conn']     = 'Connected'
-	COLUMN_NAMES['user']     = 'User'
+	COLUMN_NAMES['host']     = 'Host'
 	COLUMN_NAMES['vid']      = 'VID'
 	COLUMN_NAMES['pid']      = 'PID'
 	COLUMN_NAMES['prod']     = 'Product'

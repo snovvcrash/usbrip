@@ -432,7 +432,7 @@ def _parse_column_args(parser):
         type=str,
         default=[],
         help='columns to show (options: "conn", '
-             '"user", '
+             '"host", '
              '"vid", '
              '"pid", '
              '"prod", '
@@ -469,11 +469,11 @@ def _parse_sieve_args(parser):
     )
 
     parser.add_argument(
-        '--user',
+        '--host',
         nargs='+',
         type=str,
         default=[],
-        help='search by users'
+        help='search by hostname'
     )
 
     parser.add_argument(
