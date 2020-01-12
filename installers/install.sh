@@ -8,7 +8,7 @@
 %brief usbrip installer.
 
 %license
-Copyright (C) 2019 Sam Freeside
+Copyright (C) 2020 Sam Freeside
 
 This file is part of usbrip.
 

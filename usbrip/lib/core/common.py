@@ -3,7 +3,7 @@
 
 """LICENSE
 
-Copyright (C) 2019 Sam Freeside
+Copyright (C) 2020 Sam Freeside
 
 This file is part of usbrip.
 
@@ -247,7 +247,7 @@ def print_critical(message, *, errcode=0, initial_error=''):
 def print_secret(message, *, secret=''):
 	if cfg.ISATTY:
 		cprint(
-			'[{}] [SECRET] {} {}'.format(
+			'[{}] [SECRET] {} "{}"'.format(
 				_get_time(),
 				colored(message, 'white', attrs=['bold']),
 				colored(secret, 'white', 'on_grey', attrs=['bold'])

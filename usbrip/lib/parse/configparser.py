@@ -3,7 +3,7 @@
 
 """LICENSE
 
-Copyright (C) 2019 Sam Freeside
+Copyright (C) 2020 Sam Freeside
 
 This file is part of usbrip.
 
@@ -48,10 +48,10 @@ def get_config_parser():
 		print_warning('No configuration file found, creating new one...')
 
 		config_parser.add_section('history')
-		config_parser.set('history', 'password', 'r1pp3r')
+		config_parser.set('history', 'password', 'R1pp3r!')
 
 		config_parser.add_section('violations')
-		config_parser.set('violations', 'password', 'r1pp3r')
+		config_parser.set('violations', 'password', 'R1pp3r!')
 
 		print_info(f'New configuration file: "{CONFIG_FILE}"')
 

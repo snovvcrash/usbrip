@@ -3,7 +3,7 @@
 
 """LICENSE
 
-Copyright (C) 2019 Sam Freeside
+Copyright (C) 2020 Sam Freeside
 
 This file is part of usbrip.
 
@@ -312,7 +312,7 @@ def _get_violation_events(sieve, input_auth, attributes, indent):
 		auth = _process_auth_list(input_auth, indent)
 	except json.decoder.JSONDecodeError as e:
 		raise USBRipError(
-			'Failed to decode authorized device list (JSON)',
+			'Failed to decode authorized device list',
 			errors={'initial_error': str(e)}
 		)
 

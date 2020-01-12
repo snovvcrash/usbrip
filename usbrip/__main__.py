@@ -5,7 +5,7 @@
 
 """LICENSE
 
-Copyright (C) 2019 Sam Freeside
+Copyright (C) 2020 Sam Freeside
 
 This file is part of usbrip.
 
@@ -84,9 +84,9 @@ def main():
 
 		if args.ue_subparser == 'history':
 			timing.begin()
-			ueh = USBEvents(args.file)
-			if ueh:
-				ueh.event_history(
+			ue = USBEvents(args.file)
+			if ue:
+				ue.event_history(
 					args.column,
 					sieve=sieve,
 					repres=repres
@@ -107,9 +107,9 @@ def main():
 
 		elif args.ue_subparser == 'gen_auth':
 			timing.begin()
-			ueg = USBEvents(args.file)
-			if ueg:
-				if ueg.generate_auth_json(
+			ue = USBEvents(args.file)
+			if ue:
+				if ue.generate_auth_json(
 					args.output,
 					args.attribute,
 					sieve=sieve
@@ -122,9 +122,9 @@ def main():
 
 		elif args.ue_subparser == 'violations':
 			timing.begin()
-			uev = USBEvents(args.file)
-			if uev:
-				uev.search_violations(
+			ue = USBEvents(args.file)
+			if ue:
+				ue.search_violations(
 					args.input,
 					args.attribute,
 					args.column,

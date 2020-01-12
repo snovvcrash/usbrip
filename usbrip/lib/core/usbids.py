@@ -3,7 +3,7 @@
 
 """LICENSE
 
-Copyright (C) 2019 Sam Freeside
+Copyright (C) 2020 Sam Freeside
 
 This file is part of usbrip.
 
@@ -162,7 +162,7 @@ def _download_database(filename):
 	except USBRipError as e:
 		raise USBRipError(str(e), errors={'initial_error': e.errors['initial_error']})
 	else:
-		print_info(f'Created "{dirname}"')
+		print_info(f'Created directory "{dirname}/"')
 
 	try:
 		usb_ids = open(filename, 'w+', encoding='utf-8')
@@ -271,7 +271,7 @@ def _search_ids_helper(usb_ids, vid, pid):
 							break
 					else:
 						print('Done\n')
-						print('No such pair of (vendor, product) found')
+						print('No such pair of (vendor, product) found\n')
 						break
 				return
 

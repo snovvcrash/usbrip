@@ -3,7 +3,7 @@
 
 """LICENSE
 
-Copyright (C) 2019 Sam Freeside
+Copyright (C) 2020 Sam Freeside
 
 This file is part of usbrip.
 
@@ -134,7 +134,7 @@ class USBEvents:
 			return
 
 		if not cfg.QUIET and cfg.ISATTY:
-			choice, abs_filename = _output_choice('event history', 'history.json', 'history/')
+			choice, abs_filename = _output_choice('event history', 'history.json')
 			if choice == '2':
 				try:
 					_dump_events(self._events_to_show, 'event history', abs_filename, indent)
@@ -203,7 +203,7 @@ class USBEvents:
 			print_critical(str(e), initial_error=e.errors['initial_error'])
 			return 1
 		else:
-			print_info(f'Created "{dirname}"')
+			print_info(f'Created directory "{dirname}/"')
 
 		try:
 			auth_json = open(abs_output_auth, 'w', encoding='utf-8')
@@ -269,7 +269,7 @@ class USBEvents:
 			return
 
 		if not cfg.QUIET and cfg.ISATTY:
-			choice, abs_filename = _output_choice('violation', 'viol.json', 'violations/')
+			choice, abs_filename = _output_choice('violation', 'viol.json')
 			if choice == '2':
 				try:
 					_dump_events(self._events_to_show, 'violations', abs_filename, indent)
@@ -645,16 +645,16 @@ def _represent_events(events_to_show, columns, table_data, title, repres):
 
 	# Display as table
 	if cfg.ISATTY and (repres['smart'] and event_table.ok or repres['table']):
-		print_info('Representation: Table')
+		print_info('Representation: table')
 		print('\n' + event_table.table)
 
 	# Display as list
 	elif not cfg.ISATTY or (repres['smart'] and not event_table.ok or repres['list']):
 		if not event_table.ok:
 			print_warning('Terminal window is too small to display table properly')
-			print_warning('Representation: List')
+			print_warning('Representation: list')
 		else:
-			print_info('Representation: List')
+			print_info('Representation: list')
 
 		max_len = max(len(str(val)) for event in events_to_show for val in event.values()) + len('Serial Number:  ')  # max length string
 		if not max_len // 2:
@@ -730,14 +730,14 @@ def _dump_events(events_to_show, list_name, abs_filename, indent):
 	print_info(f'New {list_name} list: "{abs_filename}"')
 
 
-def _output_choice(list_name, default_filename, dirname):
+def _output_choice(list_name, default_filename):
 	while True:
 		print(f'[?] How would you like your {list_name} list to be generated?\n')
 
 		print('    1. Terminal stdout')
 		print('    2. JSON-file')
 
-		choice = input('\n[>] Please enter the number of your choice (default is 1): ')
+		choice = input('\n[>] Please enter the number of your choice (default 1): ')
 
 		if choice == '1' or choice == '':
 			return (choice, '')
@@ -745,14 +745,14 @@ def _output_choice(list_name, default_filename, dirname):
 		elif choice == '2':
 			while True:
 				filename = input(
-					f'[>] Please enter the base name for the output file '
+					f'[>] Please enter the output file name '
 					f'(default is "{default_filename}"): '
 				)
 
 				if all(c in printable for c in filename) and len(filename) < 256:
 					if not filename:
 						filename = default_filename
-					elif os.path.splitext(filename) != '.json':
+					elif os.path.splitext(filename)[-1] != '.json':
 						filename = filename + '.json'
 
 					abs_filename = os.path.join(os.path.abspath(os.getcwd()), filename)

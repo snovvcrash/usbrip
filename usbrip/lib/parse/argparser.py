@@ -3,7 +3,7 @@
 
 """LICENSE
 
-Copyright (C) 2019 Sam Freeside
+Copyright (C) 2020 Sam Freeside
 
 This file is part of usbrip.
 
@@ -123,7 +123,7 @@ def build_ueo_parser(subparsers):
     ueo_parser.add_argument(
         'input',
         type=str,
-        help='input path for the event dump (JSON)'
+        help='input path for the event dump'
     )
 
     _parse_debug_args(ueo_parser)
@@ -146,7 +146,7 @@ def build_ueg_parser(subparsers):
     ueg_parser.add_argument(
         'output',
         type=str,
-        help='output path for the list of authorized devices (JSON)'
+        help='output path for the list of authorized devices'
     )
 
     _parse_debug_args(ueg_parser)
@@ -174,13 +174,13 @@ def build_uev_parser(subparsers):
         help='search USB event history for violations '
              '(show USB devices that do appear in hist'
              'ory and do NOT appear in authorized devi'
-             'ce list (JSON))'
+             'ce list)'
     )
 
     uev_parser.add_argument(
         'input',
         type=str,
-        help='input path for the list of authorized devices (JSON)'
+        help='input path for the list of authorized devices'
     )
 
     _parse_debug_args(uev_parser)
@@ -282,7 +282,7 @@ def build_usu_parser(subparsers):
         '--input',
         type=str,
         default=None,
-        help='input path for the list of authorized devices (JSON)'
+        help='input path for the list of authorized devices'
     )
 
 
@@ -317,7 +317,7 @@ def build_usc_parser(subparsers):
         '--input',
         type=str,
         default=None,
-        help='input path for the list of authorized devices (JSON)'
+        help='input path for the list of authorized devices'
     )
 
 
@@ -393,7 +393,7 @@ def build_uis_parser(subparsers):
 def build_uid_parser(subparsers):
     uid_parser = subparsers.add_parser(
         'download',
-        help=f'download/update database;'
+        help=f'download/update database; '
              f'ids database path is "{root_dir_join("usb_ids/usb.ids")}"'
     )
 
