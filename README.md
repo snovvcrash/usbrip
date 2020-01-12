@@ -64,7 +64,7 @@ usbrip is available for download and installation at [PyPI](https://pypi.org/pro
 Showcase
 ==========
 
-![screenshot.png](https://user-images.githubusercontent.com/23141800/72224695-45267d80-358e-11ea-8a9d-794dd662700a.png)
+![screenshot.png](https://user-images.githubusercontent.com/23141800/72224954-ed3d4600-3590-11ea-9431-ea1579b2de0e.png)
 
 Git Clone
 ==========
