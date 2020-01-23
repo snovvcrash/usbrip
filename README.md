@@ -369,7 +369,7 @@ Examples
   ~$ usbrip ids search --vid 0781 --pid 5580
   ```
 
-* Download the latest version of `usb_ids/usb.ids` [database](http://www.linux-usb.org/usb.ids "List of USB ID's"):
+* Download the latest version of `usb.ids` [database](http://www.linux-usb.org/usb.ids "List of USB ID's"):
 
   ```
   ~$ usbrip ids download
