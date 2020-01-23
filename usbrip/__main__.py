@@ -78,6 +78,9 @@ def main():
 	# ----------------------------------------------------------
 
 	elif args.subparser == 'events' and args.ue_subparser:
+		if os.geteuid() != 0:
+			sys.exit('Permission denied. Retry with sudo')
+
 		sieve, repres = validate_ue_args(args)
 
 		# ------------------- USB Events History -------------------
@@ -140,7 +143,7 @@ def main():
 		if os.geteuid() != 0:
 			sys.exit('Permission denied. Retry with sudo')
 
-		if not os.path.exists('/opt/usbrip/') or not os.path.exists('/var/opt/usbrip/storage/'):
+		if any (not os.path.exists(p) for p in ('/opt/usbrip/', '/var/opt/usbrip', '/usr/local/bin/usbrip')):
 			sys.exit('The "storage" module can only be used when usbrip is installed via "installer.sh" - https://git.io/fjDPT')
 
 		sieve, repres = validate_us_args(args)
@@ -345,7 +348,7 @@ def _validate_repres_args(args):
 
 
 def _validate_io_args(args):
-	if 'input' in args and args.input:
+	if 'input' in args and args.input and args.input != '/var/opt/usbrip/trusted/auth.json':
 		if not os.path.exists(args.input):
 			usbrip_arg_error(args.input + ': Path does not exist')
 		elif not os.path.isfile(args.input):
@@ -367,10 +370,10 @@ def _validate_storage_type_args(args):
 		usbrip_arg_error(args.storage_type + ': Invalid storage type')
 
 	if args.storage_type == 'history':
-		if 'input' in args and args.input:
-			usbrip_arg_error('Cannot use "--input" swith with history storage')
+		if 'input' in args and args.input and args.input != '/var/opt/usbrip/trusted/auth.json':
+			usbrip_arg_error('Cannot use "--input" switch with history storage')
 		if 'attribute' in args and args.attribute:
-			usbrip_arg_error('Cannot use "--attribute" swith with history storage')
+			usbrip_arg_error('Cannot use "--attribute" switch with history storage')
 	elif args.storage_type == 'violations':
 		if 'input' in args and args.input is None:
 			usbrip_arg_error('Please specify input path for the list of authorized devices (-i)')

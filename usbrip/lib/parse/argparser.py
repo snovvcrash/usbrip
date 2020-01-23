@@ -26,10 +26,11 @@ __email__  = 'snovvcrash@protonmail[.]ch'
 __site__   = 'https://github.com/snovvcrash/usbrip'
 __brief__  = 'Command line option parser'
 
+import os
+from pathlib import Path
 from argparse import ArgumentParser
 
 from usbrip.lib.core.usbstorage import USBStorage
-from usbrip.lib.core.common import root_dir_join
 
 
 def get_arg_parser():
@@ -146,6 +147,8 @@ def build_ueg_parser(subparsers):
     ueg_parser.add_argument(
         'output',
         type=str,
+        nargs='?',
+        default='/var/opt/usbrip/trusted/auth.json',
         help='output path for the list of authorized devices'
     )
 
@@ -180,6 +183,8 @@ def build_uev_parser(subparsers):
     uev_parser.add_argument(
         'input',
         type=str,
+        nargs='?',
+        default='/var/opt/usbrip/trusted/auth.json',
         help='input path for the list of authorized devices'
     )
 
@@ -281,7 +286,7 @@ def build_usu_parser(subparsers):
         '-i',
         '--input',
         type=str,
-        default=None,
+        default='/var/opt/usbrip/trusted/auth.json',
         help='input path for the list of authorized devices'
     )
 
@@ -316,7 +321,7 @@ def build_usc_parser(subparsers):
         '-i',
         '--input',
         type=str,
-        default=None,
+        default='/var/opt/usbrip/trusted/auth.json',
         help='input path for the list of authorized devices'
     )
 
@@ -360,7 +365,7 @@ def build_uis_parser(subparsers):
     uis_parser = subparsers.add_parser(
         'search',
         help=f'search by VID and/or PID; '
-             f'ids database path is "{root_dir_join("usb_ids/usb.ids")}"'
+             f'ids database path is "{os.path.abspath(str(Path.home()))}/.config/usbrip/usb.ids"'
     )
 
     _parse_debug_args(uis_parser)
@@ -394,7 +399,7 @@ def build_uid_parser(subparsers):
     uid_parser = subparsers.add_parser(
         'download',
         help=f'download/update database; '
-             f'ids database path is "{root_dir_join("usb_ids/usb.ids")}"'
+             f'ids database path is "{os.path.abspath(str(Path.home()))}/.config/usbrip/usb.ids"'
     )
 
     _parse_debug_args(uid_parser)

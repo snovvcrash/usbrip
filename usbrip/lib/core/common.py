@@ -164,10 +164,6 @@ def union_event_sets(event_set_one, event_set_two):
 # ----------------------------------------------------------
 
 
-def root_dir_join(name):
-	return os.path.join(os.path.abspath(__file__).rsplit('/', 3)[0], name)
-
-
 def os_makedirs(dirname):
 	try:
 		os.makedirs(dirname)

@@ -34,12 +34,11 @@ __brief__  = 'USB IDs handler'
 import re
 import socket
 import os
+from pathlib import Path
 
 from urllib.request import urlopen
 
 import usbrip.lib.core.config as cfg
-
-from usbrip.lib.core.common import root_dir_join
 from usbrip.lib.core.common import os_makedirs
 from usbrip.lib.core.common import print_info
 from usbrip.lib.core.common import print_warning
@@ -77,7 +76,7 @@ class USBIDs:
 	@staticmethod
 	@time_it_if_debug(cfg.DEBUG, time_it)
 	def prepare_database(*, offline=True):
-		filename = root_dir_join('usb_ids/usb.ids')
+		filename = f'{os.path.abspath(str(Path.home()))}/.config/usbrip/usb.ids'
 		file_exists = os.path.isfile(filename)
 
 		if file_exists and offline:
@@ -271,8 +270,9 @@ def _search_ids_helper(usb_ids, vid, pid):
 							break
 					else:
 						print('Done\n')
-						print('No such pair of (vendor, product) found\n')
+						print('No such pair of (vendor, product) found')
 						break
+				print()
 				return
 
 		print('Done\n')

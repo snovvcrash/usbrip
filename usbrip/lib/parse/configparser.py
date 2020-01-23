@@ -27,6 +27,7 @@ __site__   = 'https://github.com/snovvcrash/usbrip'
 __brief__  = 'Configuration file parser'
 
 import os
+import stat
 from configparser import ConfigParser
 
 from usbrip.lib.core.common import CONFIG_FILE
@@ -57,5 +58,7 @@ def get_config_parser():
 
 		with open(CONFIG_FILE, 'w', encoding='utf-8') as f:
 			config_parser.write(f)
+
+		os.chmod(CONFIG_FILE, stat.S_IRUSR | stat.S_IWUSR)  # 600
 
 	return config_parser

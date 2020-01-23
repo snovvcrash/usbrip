@@ -27,9 +27,12 @@ along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 %endlicense
 '
 
-# Usage: sudo ./uninstall.sh [-a/--all]
+# Usage: sudo bash installers/uninstall.sh [-a/--all]
 
 # ----------------------- Constants ------------------------
+
+USER_HOME=`getent passwd ${SUDO_USER} | cut -d: -f6`
+CONFIG="${USER_HOME}/.config/usbrip"
 
 OPT="/opt/usbrip"
 VAR_OPT="/var/opt/usbrip"
@@ -39,10 +42,18 @@ G="\033[1;32m"  # GREEN
 R="\033[1;31m"  # RED
 NC="\033[0m"    # NO COLOR
 
+# ----------------------- Functions ------------------------
+
+remove_directory() {
+	if /bin/rm -r "$1" 2> /dev/null; then
+		/usr/bin/printf "${G}>>>>${NC} Removed directory: '$1'\n"
+	fi
+}
+
 # --------------- Check for root privileges ----------------
 
 if [[ $EUID -ne 0 ]]; then
-	/usr/bin/printf "${R}>>>>${NC} Please run as root:\nsudo -H %s\n" "${0}"
+	/usr/bin/printf "${R}>>>>${NC} Please run as root:\nsudo %s\n" "${0}"
 	exit 1
 fi
 
@@ -58,17 +69,15 @@ fi
 
 # OPT
 
-if /bin/rm -r "${OPT}" 2> /dev/null; then
-	/usr/bin/printf "${G}>>>>${NC} Removed directory: '${OPT}'\n"
-fi
+remove_directory "${OPT}"
 
 # VAR_OPT
 
-if $ALL; then
-	if /bin/rm -r "${VAR_OPT}" 2> /dev/null; then
-		/usr/bin/printf "${G}>>>>${NC} Removed directory: '${VAR_OPT}'\n"
-	fi
-fi
+remove_directory "${VAR_OPT}"
+
+# CONFIG
+
+remove_directory "${CONFIG}"
 
 # --------------------- Remove symlink ---------------------
 

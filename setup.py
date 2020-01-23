@@ -135,16 +135,7 @@ setup(
 	install_requires=parse_requirements('requirements.txt'),
 
 	data_files=[
-		('', [
-			'README.md',
-			'requirements.txt'
-		]),
-		('usbrip/usb_ids', [
-			'usbrip/usb_ids/usb.ids'
-		]),
-		('usbrip/cron', [
-			'usbrip/cron/usbrip.cron'
-		])
+		('', ['README.md', 'requirements.txt'])
 	],
 
 	cmdclass={

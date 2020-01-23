@@ -27,15 +27,17 @@ along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 %endlicense
 '
 
-# Usage: sudo -H ./install.sh [-l/--local] [-s/--storages]
+# Usage: sudo -H bash installers/install.sh [-l/--local] [-s/--storages]
 
 shopt -s expand_aliases
 
 # ----------------------- Constants ------------------------
 
+USER_HOME=`getent passwd ${SUDO_USER} | cut -d: -f6`
+CONFIG="${USER_HOME}/.config/usbrip"
+
 OPT="/opt/usbrip"
-LOG="/var/opt/usbrip/log"
-STORAGE="/var/opt/usbrip/storage"
+VAR_OPT="/var/opt/usbrip"
 SYMLINK="/usr/local/bin/usbrip"
 
 G="\033[1;32m"  # GREEN
@@ -44,18 +46,37 @@ R="\033[1;31m"  # RED
 W="\033[1;37m"  # WHITE
 NC="\033[0m"    # NO COLOR
 
+# ----------------------- Functions ------------------------
+
+create_directory() {
+	/usr/bin/printf "${W}>>>>${NC} Creating directory: '$1'\n"
+
+	if [[ -d "$1" ]]; then
+		/usr/bin/printf "${R}>>>>${NC} $1 already exists. First run:\n%s\n" \
+						"sudo uninstall.sh --all"
+		exit 1
+	fi
+
+	if /bin/mkdir -p "$1"; then
+		/usr/bin/printf "${G}>>>>${NC} Successfully created directory: '$1'\n\n"
+	else
+		/usr/bin/printf "${R}>>>>${NC} Failed to create directory: '$1'\n"
+		exit 1
+	fi
+}
+
 # --------------------- usbrip aliases ---------------------
 
 alias createHistoryStorage="${OPT}/venv/bin/usbrip storage create history -e"
 
-alias generateAuthorizedDeviceList="${OPT}/venv/bin/usbrip events gen_auth /var/opt/usbrip/trusted/auth.json -e -a vid pid"
+alias generateAuthorizedDeviceList="${OPT}/venv/bin/usbrip events gen_auth -e -a vid pid"
 
-alias createViolationsStorage="${OPT}/venv/bin/usbrip storage create violations -i /var/opt/usbrip/trusted/auth.json -e -a vid pid"
+alias createViolationsStorage="${OPT}/venv/bin/usbrip storage create violations -e -a vid pid"
 
 # --------------- Check for root privileges ----------------
 
 if [[ $EUID -ne 0 ]]; then
-	/usr/bin/printf "${R}>>>>${NC} Please run as root:\nsudo -H %s\n" "${0}"
+	/usr/bin/printf "${R}>>>>${NC} Please run as root:\nsudo %s\n" "${0}"
 	exit 1
 fi
 
@@ -118,54 +139,23 @@ fi
 
 # OPT
 
-/usr/bin/printf "${W}>>>>${NC} Creating directory: '${OPT}'\n"
-
-if [[ -d "${OPT}" ]]; then
-	/usr/bin/printf "${R}>>>>${NC} ${OPT} already exists. First run:\n%s\n" \
-                    "sudo uninstall.sh --all"
-	exit 1
-fi
-
-if /bin/mkdir "${OPT}"; then
-	/usr/bin/printf "${G}>>>>${NC} Successfully created directory: '${OPT}'\n\n"
-else
-	/usr/bin/printf "${R}>>>>${NC} Failed to create directory: '${OPT}'\n"
-	exit 1
-fi
+create_directory "${OPT}"
 
 # LOG
 
-/usr/bin/printf "${W}>>>>${NC} Creating directory: '${LOG}'\n"
-
-if [[ -d "${LOG}" ]]; then
-	/usr/bin/printf "${R}>>>>${NC} ${LOG} already exists. First run:\n%s\n" \
-                    "sudo uninstall.sh --all"
-	exit 1
-fi
-
-if /bin/mkdir -p "${LOG}"; then
-	/usr/bin/printf "${G}>>>>${NC} Successfully created directory: '${LOG}'\n\n"
-else
-	/usr/bin/printf "${R}>>>>${NC} Failed to create directory: '${LOG}'\n"
-	exit 1
-fi
+create_directory "${VAR_OPT}/log"
 
 # STORAGE
 
-/usr/bin/printf "${W}>>>>${NC} Creating directory: '${STORAGE}'\n"
+create_directory "${VAR_OPT}/storage"
 
-if [[ -d "${STORAGE}" ]]; then
-	/usr/bin/printf "${R}>>>>${NC} ${STORAGE} already exists. First run:\n%s\n" \
-                    "sudo uninstall.sh --all"
-	exit 1
-fi
+# CONFIG
 
-if /bin/mkdir -p "${STORAGE}"; then
-	/usr/bin/printf "${G}>>>>${NC} Successfully created directory: '${STORAGE}'\n\n"
-else
-	/usr/bin/printf "${R}>>>>${NC} Failed to create directory: '${STORAGE}'\n"
-	exit 1
-fi
+create_directory "${CONFIG}"
+
+# -------------------- Fix permissions ---------------------
+
+chmod -R 600 "${VAR_OPT}/log"
 
 # ------------ Build Python virtual environment ------------
 
@@ -200,6 +190,24 @@ fi
 
 ${OPT}/venv/bin/python "${PWD}/setup.py" clean
 echo
+
+# ----------------------- Copy files -----------------------
+
+if /usr/bin/cp "${PWD}/usbrip/usb_ids/usb.ids" "${USER_HOME}/.config/usbrip/usb.ids"; then
+	/usr/bin/printf "${G}>>>>${NC} Successfully copied usb.ids database\n\n"
+else
+	/usr/bin/printf "${R}>>>>${NC} Failed copy usb.ids database\n"
+	exit 1
+fi
+
+if /usr/bin/cp "${PWD}/usbrip/cron/usbrip.cron" "${USER_HOME}/.config/usbrip/usbrip.cron"; then
+	/usr/bin/printf "${G}>>>>${NC} Successfully copied usbrip cron job example\n\n"
+else
+	/usr/bin/printf "${R}>>>>${NC} Failed copy usbrip cron job example\n"
+	exit 1
+fi
+
+chown -R ${SUDO_USER} ${USER_HOME}/.config
 
 # --------------------- Create symlink ---------------------
 

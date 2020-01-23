@@ -30,6 +30,7 @@ import re
 import json
 import subprocess
 import os
+import stat
 from datetime import datetime
 from getpass import getpass
 from configparser import ConfigParser
@@ -43,6 +44,7 @@ from usbrip.lib.core.common import CONFIG_FILE
 from usbrip.lib.core.common import USBRipError
 from usbrip.lib.core.common import union_event_sets
 from usbrip.lib.core.common import print_info
+from usbrip.lib.core.common import print_warning
 from usbrip.lib.core.common import print_critical
 from usbrip.lib.core.common import print_secret
 from usbrip.lib.utils.debug import time_it
@@ -67,7 +69,7 @@ class USBStorage:
 	@staticmethod
 	@time_it_if_debug(cfg.DEBUG, time_it)
 	def list_storage(storage_type, password):
-		storage_full_path = f'{USBStorage._STORAGE_BASE}/{storage_type}.7z'
+		storage_full_path = os.path.join(USBStorage._STORAGE_BASE, f'{storage_type}.7z')
 		if not os.path.isfile(storage_full_path):
 			print_critical(f'Storage not found: "{storage_full_path}"')
 			return
@@ -88,7 +90,7 @@ class USBStorage:
 	@staticmethod
 	@time_it_if_debug(cfg.DEBUG, time_it)
 	def open_storage(storage_type, password, columns, *, sieve=None, repres=None):
-		storage_full_path = f'{USBStorage._STORAGE_BASE}/{storage_type}.7z'
+		storage_full_path = os.path.join(USBStorage._STORAGE_BASE, f'{storage_type}.7z')
 		if not os.path.isfile(storage_full_path):
 			print_critical(f'Storage not found: "{storage_full_path}"')
 			return
@@ -101,9 +103,9 @@ class USBStorage:
 
 		if 'Everything is Ok' in out:
 			base_filename = re.search(r'([^\n ]*\.json)', _7zip_list(storage_full_path, password), re.MULTILINE).group(1)
-			json_file = f'{USBStorage._STORAGE_BASE}/{base_filename}'
+			json_file = os.path.join(USBStorage._STORAGE_BASE, base_filename)
 			USBEvents.open_dump(json_file, columns, sieve=sieve, repres=repres)
-			os.remove(json_file)
+			_shred(json_file)
 		else:
 			print_critical('Undefined behaviour while unpacking storage', initial_error=out)
 
@@ -139,7 +141,7 @@ class USBStorage:
 			print_info('No events to append')
 			return 1
 
-		storage_full_path = f'{USBStorage._STORAGE_BASE}/{storage_type}.7z'
+		storage_full_path = os.path.join(USBStorage._STORAGE_BASE, f'{storage_type}.7z')
 		if not os.path.isfile(storage_full_path):
 			print_critical(f'Storage not found: "{storage_full_path}"')
 			return 1
@@ -154,25 +156,25 @@ class USBStorage:
 
 		if 'Everything is Ok' in out:
 			base_filename = re.search(r'([^\n ]*\.json)', _7zip_list(storage_full_path, password), re.MULTILINE).group(1)
-			json_file = f'{USBStorage._STORAGE_BASE}/{base_filename}'
-			os.remove(storage_full_path)
+			json_file = os.path.join(USBStorage._STORAGE_BASE, base_filename)
+			_shred(storage_full_path)
 
 			with open(json_file, 'r', encoding='utf-8') as dump:
 				events_dumped = json.load(dump)
-			os.remove(json_file)
+			_shred(json_file)
 
 			merged_events = union_event_sets(events_dumped, events_to_show)
 
 			if len(base_filename) > 20:  # len('%Y%m%dT%H%M%S') -> 20
 				min_date = base_filename[:15]
 
-			new_json_file = f'{USBStorage._STORAGE_BASE}/{min_date}-{max_date}.json'
+			new_json_file = os.path.join(USBStorage._STORAGE_BASE, f'{min_date}-{max_date}.json')
 			_dump_events(merged_events, storage_type, new_json_file, indent)
 
 			try:
 				out = _7zip_pack(storage_full_path, new_json_file, password, compression_level)
 			except USBRipError as e:
-				os.remove(new_json_file)
+				_shred(new_json_file)
 				print_critical(str(e), errcode=e.errors['errcode'], initial_error=e.errors['initial_error'])
 				return 1
 
@@ -181,7 +183,7 @@ class USBStorage:
 			else:
 				print_critical('Undefined behaviour while creating storage', initial_error=out)
 
-			os.remove(new_json_file)
+			_shred(new_json_file)
 
 		else:
 			print_critical('Undefined behaviour while unpacking storage', initial_error=out)
@@ -214,9 +216,9 @@ class USBStorage:
 
 		if events_to_show:
 			min_date, max_date = _get_dates(events_to_show)
-			json_file = f'{USBStorage._STORAGE_BASE}/{min_date}-{max_date}.json'
+			json_file = os.path.join(USBStorage._STORAGE_BASE, f'{min_date}-{max_date}.json')
 		else:
-			json_file = f'{USBStorage._STORAGE_BASE}/{datetime.now().strftime("%Y%m%dT%H%M%S")}.json'
+			json_file = os.path.join(USBStorage._STORAGE_BASE, f'{datetime.now().strftime("%Y%m%dT%H%M%S")}.json')
 
 		try:
 			_dump_events(events_to_show, storage_type, json_file, indent)
@@ -224,21 +226,21 @@ class USBStorage:
 			print_critical(str(e), initial_error=e.errors['initial_error'])
 			return 1
 
-		storage_full_path = f'{USBStorage._STORAGE_BASE}/{storage_type}.7z'
+		storage_full_path = os.path.join(USBStorage._STORAGE_BASE, f'{storage_type}.7z')
 		if os.path.exists(storage_full_path):
-			os.remove(storage_full_path)
+			_shred(storage_full_path)
 
 		try:
 			out = _7zip_pack(storage_full_path, json_file, password, compression_level)
 		except USBRipError as e:
-			os.remove(json_file)
+			_shred(json_file)
 			print_critical(str(e), errcode=e.errors['errcode'], initial_error=e.errors['initial_error'])
 			return 1
 
 		if 'Everything is Ok' in out:
 			print_info(f'New {storage_type} storage: "{storage_full_path}"')
 			print_secret('Your password is', secret=password)
-			os.remove(json_file)
+			_shred(json_file)
 		else:
 			print_critical('Undefined behaviour while creating storage', initial_error=out)
 
@@ -247,7 +249,7 @@ class USBStorage:
 	@staticmethod
 	@time_it_if_debug(cfg.DEBUG, time_it)
 	def change_password(storage_type, *, compression_level='5'):
-		storage_full_path = f'{USBStorage._STORAGE_BASE}/{storage_type}.7z'
+		storage_full_path = os.path.join(USBStorage._STORAGE_BASE, f'{storage_type}.7z')
 		if not os.path.isfile(storage_full_path):
 			print_critical(f'Storage not found: "{storage_full_path}"')
 			return
@@ -264,8 +266,8 @@ class USBStorage:
 			out = _7zip_unpack(storage_full_path, old_password)
 			if 'Everything is Ok' in out:
 				base_filename = re.search(r'([^\n ]*\.json)', _7zip_list(storage_full_path, old_password), re.MULTILINE).group(1)
-				json_file = f'{USBStorage._STORAGE_BASE}/{base_filename}'
-				os.remove(storage_full_path)
+				json_file = os.path.join(USBStorage._STORAGE_BASE, f'{base_filename}')
+				_shred(storage_full_path)
 
 				out = _7zip_pack(storage_full_path, json_file, new_password, compression_level)
 
@@ -276,15 +278,18 @@ class USBStorage:
 					conf_parser.optionxform = str
 					conf_parser.read(CONFIG_FILE, encoding='utf-8')
 					conf_parser.set(storage_type, 'password', new_password)
+
 					with open(CONFIG_FILE, 'w', encoding='utf-8') as f:
 						conf_parser.write(f)
+
+					os.chmod(CONFIG_FILE, stat.S_IRUSR | stat.S_IWUSR)  # 600
 
 					print_info('Configuration file updated')
 
 				else:
 					print_critical('Undefined behaviour while creating storage', initial_error=out)
 
-				os.remove(json_file)
+				_shred(json_file)
 
 			else:
 				print_critical('Undefined behaviour while unpacking storage', initial_error=out)
@@ -354,6 +359,23 @@ def _create_shadow(password, rounds):
 '''
 
 
+def _shred(filename):
+	cmd = [
+		'shred',
+		'-z',
+		'-u',
+		'-n',
+		'7',
+		filename
+	]
+
+	try:
+		out = subprocess.check_output(cmd).decode('utf-8')
+	except subprocess.CalledProcessError as e:
+		print_warning(f'Failed to shred {filename}, using standard rm instead: {str(e)}')
+		os.remove(filename)
+
+
 def _7zip_list(archive, password):
 	print_info(f'Listing archive: "{archive}"')
 
@@ -406,6 +428,8 @@ def _7zip_pack(archive, file, password, compression_level):
 	out, errcode, errmsg, e = _7zip_subprocess_handler(cmd)
 	if errcode:
 		raise USBRipError(errmsg, errors={'errcode': errcode, 'initial_error': e})
+
+	os.chmod(archive, stat.S_IRUSR | stat.S_IWUSR)  # 600
 
 	return out
 

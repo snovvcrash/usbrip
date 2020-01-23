@@ -42,6 +42,7 @@ import json
 import itertools
 import operator
 import os
+import stat
 from datetime import datetime
 from collections import OrderedDict, defaultdict
 from string import printable
@@ -76,7 +77,7 @@ from usbrip.lib.utils.debug import time_it_if_debug
 class USBEvents:
 
 	# SingleTable (uses ANSI escape codes) when termianl output, else (| or > for example) AsciiTable (only ASCII)
-	TableClass = SingleTable if cfg.ISATTY else AsciiTable
+	TableClass = SingleTable if cfg.ISATTY and cfg.ISUTF8 else AsciiTable
 
 	@time_it_if_debug(cfg.DEBUG, time_it)
 	def __new__(cls, files=None):
@@ -229,6 +230,8 @@ class USBEvents:
 
 		json.dump(auth, auth_json, sort_keys=True, indent=indent)
 		auth_json.close()
+
+		os.chmod(abs_output_auth, stat.S_IRUSR | stat.S_IWUSR)  # 600
 
 		print_info(f'New authorized device list: "{abs_output_auth}"')
 
@@ -596,7 +599,7 @@ def _filter_events(all_events, sieve):
 
 
 def _represent_events(events_to_show, columns, table_data, title, repres):
-	print_info('Preparing gathered events')
+	print_info('Preparing collected events')
 
 	if repres is None:
 		repres = {
@@ -726,6 +729,8 @@ def _dump_events(events_to_show, list_name, abs_filename, indent):
 			f'Permission denied: "{abs_filename}". Retry with sudo',
 			errors={'initial_error': str(e)}
 		)
+
+	os.chmod(abs_filename, stat.S_IRUSR | stat.S_IWUSR)  # 600
 
 	print_info(f'New {list_name} list: "{abs_filename}"')
 

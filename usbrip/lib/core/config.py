@@ -29,8 +29,7 @@ __brief__  = 'Config file containing cross-module variables'
 import sys
 
 DEBUG = False
-
 QUIET = False
 
-# Enable colored text when terminal output (True), else (| or > for example) no color (False)
-ISATTY = True if sys.stdout.isatty() else False
+ISATTY = True if sys.stdout.isatty() else False  # enable colored text when terminal output (True), else (| or > for example) no color (False)
+ISUTF8 = True if sys.stdout.encoding.lower() == 'utf-8' else False
