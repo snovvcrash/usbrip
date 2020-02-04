@@ -106,9 +106,9 @@ def main():
 				repres=repres
 			)
 
-		# ------------------ USB Events Gen Auth -------------------
+		# ------------------ USB Events GenAuth -------------------
 
-		elif args.ue_subparser == 'gen_auth':
+		elif args.ue_subparser == 'genauth':
 			timing.begin()
 			ue = USBEvents(args.file)
 			if ue:

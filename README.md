@@ -5,8 +5,8 @@
 ----------
 
 <p align="center">
-	<a href="https://github.com/snovvcrash/usbrip/blob/master/usbrip/__init__.py#L24"><img src="https://img.shields.io/badge/GitHub%20ver-2.2.0%E2%80%901-success.svg?logo=github&logoColor=white" alt="github-version.svg" /></a>
-	<a href="https://pypi.org/project/usbrip/#history"><img src="https://img.shields.io/badge/PyPI%20ver-2.2.0%E2%80%901-3775a9.svg?logo=pypi&logoColor=white" alt="pypi-version.svg" /></a>
+	<a href="https://github.com/snovvcrash/usbrip/blob/master/usbrip/__init__.py#L24"><img src="https://img.shields.io/badge/GitHub%20ver-2.2.1%E2%80%901-success.svg?logo=github&logoColor=white" alt="github-version.svg" /></a>
+	<a href="https://pypi.org/project/usbrip/#history"><img src="https://img.shields.io/badge/PyPI%20ver-2.2.1%E2%80%901-3775a9.svg?logo=pypi&logoColor=white" alt="pypi-version.svg" /></a>
 	<a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/Python-3.6-3776ab.svg?logo=python&logoColor=white" alt="python-version.svg" /></a>
 	<a href="https://raw.githubusercontent.com/snovvcrash/usbrip/master/LICENSE"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="license.svg" /></a>
 	<a href="https://blackarch.org/forensic.html"><img src="https://img.shields.io/badge/BlackArch-Linux-b40000.svg?logo=arch-linux" alt="arch-linux.svg" /></a>
@@ -47,7 +47,7 @@ Description
 Besides, it also can:
 
 * export collected information as a JSON dump (and open such dumps, of course);
-* generate a list of authorized (*trusted*) USB devices as a JSON (call it `auth.json`);
+* generate a list of authorized *(trusted)* USB devices as a JSON (call it `auth.json`);
 * search for "violation events" based on the `auth.json`: show (or generate another JSON with) USB devices that do appear in history and do NOT appear in the `auth.json`;
 * *\*when installed with `-s` flag\** create crypted storages (7zip archives) to automatically backup and accumulate USB events with the help of `crontab` scheduler;
 * search additional details about a specific USB device based on its VID and/or PID.
@@ -210,8 +210,6 @@ To install usbrip use:
 * When `-l` switch is enabled, Python dependencies are resolved from local .tar packages (`./3rdPartyTools/`) instead of PyPI.
 * When `-s` switch is enabled, not only the usbrip project is installed, but also the list of trusted USB devices, history and violations storages are created.
 
-:alien: **Note:** when using `-s` option during installation, make sure that system logs do contain **at least one external** USB device entry. It is a necessary condition for usbrip to successfully create the list of trusted devices (and as a result, successfully create the violations storage).
-
 After the installation completes, feel free to remove the `~/usbrip` folder.
 
 ### Paths
@@ -268,7 +266,7 @@ Get USB event history.
 $ sudo usbrip events open <DUMP.JSON> [-t | -l] [-e] [-n <NUMBER_OF_EVENTS>] [-d <DATE> [<DATE> ...]] [--host <HOST> [<HOST> ...]] [--vid <VID> [<VID> ...]] [--pid <PID> [<PID> ...]] [--prod <PROD> [<PROD> ...]] [--manufact <MANUFACT> [<MANUFACT> ...]] [--serial <SERIAL> [<SERIAL> ...]] [--port <PORT> [<PORT> ...]] [-c <COLUMN> [<COLUMN> ...]] [-f <FILE> [<FILE> ...]] [-q] [--debug]
 Open USB event dump.
 
-$ sudo usbrip events gen_auth <OUT_AUTH.JSON> [-a <ATTRIBUTE> [<ATTRIBUTE> ...]] [-e] [-n <NUMBER_OF_EVENTS>] [-d <DATE> [<DATE> ...]] [--host <HOST> [<HOST> ...]] [--vid <VID> [<VID> ...]] [--pid <PID> [<PID> ...]] [--prod <PROD> [<PROD> ...]] [--manufact <MANUFACT> [<MANUFACT> ...]] [--serial <SERIAL> [<SERIAL> ...]] [--port <PORT> [<PORT> ...]] [-f <FILE> [<FILE> ...]] [-q] [--debug]
+$ sudo usbrip events genauth <OUT_AUTH.JSON> [-a <ATTRIBUTE> [<ATTRIBUTE> ...]] [-e] [-n <NUMBER_OF_EVENTS>] [-d <DATE> [<DATE> ...]] [--host <HOST> [<HOST> ...]] [--vid <VID> [<VID> ...]] [--pid <PID> [<PID> ...]] [--prod <PROD> [<PROD> ...]] [--manufact <MANUFACT> [<MANUFACT> ...]] [--serial <SERIAL> [<SERIAL> ...]] [--port <PORT> [<PORT> ...]] [-f <FILE> [<FILE> ...]] [-q] [--debug]
 Generate a list of trusted (authorized) USB devices.
 
 $ sudo usbrip events violations <IN_AUTH.JSON> [-a <ATTRIBUTE> [<ATTRIBUTE> ...]] [-t | -l] [-e] [-n <NUMBER_OF_EVENTS>] [-d <DATE> [<DATE> ...]] [--host <HOST> [<HOST> ...]] [--vid <VID> [<VID> ...]] [--pid <PID> [<PID> ...]] [--prod <PROD> [<PROD> ...]] [--manufact <MANUFACT> [<MANUFACT> ...]] [--serial <SERIAL> [<SERIAL> ...]] [--port <PORT> [<PORT> ...]] [-c <COLUMN> [<COLUMN> ...]] [-f <FILE> [<FILE> ...]] [-q] [--debug]
@@ -282,10 +280,10 @@ List contents of the selected storage. STORAGE_TYPE is "history" or "violations"
 $ sudo usbrip storage open <STORAGE_TYPE> [-t | -l] [-e] [-n <NUMBER_OF_EVENTS>] [-d <DATE> [<DATE> ...]] [--host <HOST> [<HOST> ...]] [--vid <VID> [<VID> ...]] [--pid <PID> [<PID> ...]] [--prod <PROD> [<PROD> ...]] [--manufact <MANUFACT> [<MANUFACT> ...]] [--serial <SERIAL> [<SERIAL> ...]] [--port <PORT> [<PORT> ...]] [-c <COLUMN> [<COLUMN> ...]] [-q] [--debug]
 Open selected storage. Behaves similary to the EVENTS OPEN submodule.
 
-$ sudo usbrip storage update <STORAGE_TYPE> [-a <ATTRIBUTE> [<ATTRIBUTE> ...]] [-e] [-n <NUMBER_OF_EVENTS>] [-d <DATE> [<DATE> ...]] [--host <HOST> [<HOST> ...]] [--vid <VID> [<VID> ...]] [--pid <PID> [<PID> ...]] [--prod <PROD> [<PROD> ...]] [--manufact <MANUFACT> [<MANUFACT> ...]] [--serial <SERIAL> [<SERIAL> ...]] [--port <PORT> [<PORT> ...]] [--lvl <COMPRESSION_LEVEL>] [-q] [--debug]
+$ sudo usbrip storage update <STORAGE_TYPE> [IN_AUTH.JSON] [-a <ATTRIBUTE> [<ATTRIBUTE> ...]] [-e] [-n <NUMBER_OF_EVENTS>] [-d <DATE> [<DATE> ...]] [--host <HOST> [<HOST> ...]] [--vid <VID> [<VID> ...]] [--pid <PID> [<PID> ...]] [--prod <PROD> [<PROD> ...]] [--manufact <MANUFACT> [<MANUFACT> ...]] [--serial <SERIAL> [<SERIAL> ...]] [--port <PORT> [<PORT> ...]] [--lvl <COMPRESSION_LEVEL>] [-q] [--debug]
 Update storage -- add USB events to the existing storage. COMPRESSION_LEVEL is a number in [0..9].
 
-$ sudo usbrip storage create <STORAGE_TYPE> [-a <ATTRIBUTE> [<ATTRIBUTE> ...]] [-e] [-n <NUMBER_OF_EVENTS>] [-d <DATE> [<DATE> ...]] [--host <HOST> [<HOST> ...]] [--vid <VID> [<VID> ...]] [--pid <PID> [<PID> ...]] [--prod <PROD> [<PROD> ...]] [--manufact <MANUFACT> [<MANUFACT> ...]] [--serial <SERIAL> [<SERIAL> ...]] [--port <PORT> [<PORT> ...]] [--lvl <COMPRESSION_LEVEL>] [-q] [--debug]
+$ sudo usbrip storage create <STORAGE_TYPE> [IN_AUTH.JSON] [-a <ATTRIBUTE> [<ATTRIBUTE> ...]] [-e] [-n <NUMBER_OF_EVENTS>] [-d <DATE> [<DATE> ...]] [--host <HOST> [<HOST> ...]] [--vid <VID> [<VID> ...]] [--pid <PID> [<PID> ...]] [--prod <PROD> [<PROD> ...]] [--manufact <MANUFACT> [<MANUFACT> ...]] [--serial <SERIAL> [<SERIAL> ...]] [--port <PORT> [<PORT> ...]] [--lvl <COMPRESSION_LEVEL>] [-q] [--debug]
 Create storage -- create 7zip archive and add USB events to it according to the selected options.
 
 $ sudo usbrip storage passwd <STORAGE_TYPE> [--lvl <COMPRESSION_LEVEL>] [-q] [--debug]
@@ -326,13 +324,13 @@ Examples
 * Show the event history of all USB devices, supressing banner output, info messages and user interaction (`-q`, `--quiet`), represented as a list (`-l`, `--list`) with latest 100 entries (`-n NUMBER`, `--number NUMBER`):
 
   ```
-  ~$ usbrip events history -ql -n 100
+  ~$ sudo usbrip events history -ql -n 100
   ```
 
 * Show the event history of the external USB devices (`-e`, `--external`, which were *actually* disconnected) represented as a table (`-t`, `--table`) containing "Connected", "VID", "PID", "Disconnected" and "Serial Number" columns (`-c COLUMN [COLUMN ...]`, `--column COLUMN [COLUMN ...]`) filtered by date (`-d DATE [DATE ...]`, `--date DATE [DATE ...]`) and PID (`--pid <PID> [<PID> ...]`) with logs taken from the outer files (`-f FILE [FILE ...]`, `--file FILE [FILE ...]`):
 
   ```
-  ~$ usbrip events history -et -c conn vid pid disconn serial -d '1995-09-15' '2018-07-01' --pid 1337 -f /var/log/syslog.1 /var/log/syslog.2.gz
+  ~$ sudo usbrip events history -et -c conn vid pid disconn serial -d '1995-09-15' '2018-07-01' --pid 1337 -f /var/log/syslog.1 /var/log/syslog.2.gz
   ```
 
   :alien: **Note:** there is a thing to remember when working with filters. There are 4 types of filtering available: only *external* USB events (devices that can be pulled out easily, `-e`); *by date* (`-d`); *by fields* (`--host`, `--vid`, `--pid`, `--product`, `--manufact`, `--serial`, `--port`) and *by number of entries* you get as the output (`-n`). When applying different filters simultaneously, you will get the following behaviour: firstly, *external* and *by date* filters are applied, then usbrip will search for specified *field* values in the intersection of the last two filters, and in the end it will cut the output to the *number* you defined with the `-n` option. So think of it as an **intersection** for *external* and *by date* filtering and **union** for *by fields* filtering. Hope it makes sense.
@@ -340,7 +338,7 @@ Examples
 * Build the event history of all USB devices and redirect the output to a file for further analysis. When the output stream is NOT terminal stdout (`|` or `>` for example) there would be no ANSI escape characters (color) in the output so feel free to use it that way. Also notice that usbrip uses some UNICODE symbols so it would be nice to convert the resulting file to UTF-8 encoding (with `encov` for example) as well as change newline characters to Windows style for portability (with `awk` for example):
 
   ```
-  ~$ usbrip history events -t | awk '{ sub("$", "\r"); print }' > usbrip.out && enconv -x UTF8 usbrip.out
+  ~$ sudo usbrip history events -t | awk '{ sub("$", "\r"); print }' > usbrip.out && enconv -x UTF8 usbrip.out
   ```
 
   *Remark*: you can always get rid of the escape characters by yourself even if you have already got the output to stdout. To do that just copy the output data to `usbrip.out` and add one more `awk` instruction:
@@ -352,15 +350,15 @@ Examples
 * Generate a list of trusted USB devices as a JSON-file (`trusted/auth.json`) with "VID" and "PID" attributes containing the first *three* devices connected on November 30, 1984:
 
   ```
-  ~$ usbrip events gen_auth trusted/auth.json -a vid pid -n 3 -d '1984-11-30'
+  ~$ sudo usbrip events genauth trusted/auth.json -a vid pid -n 3 -d '1984-11-30'
   ```
 
-  :warning: **Warning:** there are cases when different USB flash drives might have identical serial numbers. This could happen as a result of a [manufacturing error](https://forums.anandtech.com/threads/changing-creating-a-custom-serial-id-on-a-flash-drive-low-level-blocks.2099116/) or just some black hats were able to rewrite the drive's memory chip which turned out to be non-one-time programmable and so on... Anyways, *«No system is safe»*. usbrip **does not** handle such cases in a smart way so far, namely it will treat a pair of devices with identical SNs (if there exists one) as the same device regarding to the trusted device list and `gen_auth` module.
+  :warning: **Warning:** there are cases when different USB flash drives might have identical serial numbers. This could happen as a result of a [manufacturing error](https://forums.anandtech.com/threads/changing-creating-a-custom-serial-id-on-a-flash-drive-low-level-blocks.2099116/) or just some black hats were able to rewrite the drive's memory chip which turned out to be non-one-time programmable and so on... Anyways, *"No system is safe"*. usbrip **does not** handle such cases in a smart way so far, namely it will treat a pair of devices with identical SNs (if there exists one) as the same device regarding to the trusted device list and `genauth` module.
 
 * Search the event history of the external USB devices for violations based on the list of trusted USB devices (`trusted/auth.json`) by "PID" attribute, restrict resulting events to those which have "Bob-PC" as a hostname, "EvilUSBManufacturer" as a manufacturer, "0123456789" as a serial number and represent the output as a table with "Connected", "VID" and "PID" columns:
 
   ```
-  ~$ usbrip events violations trusted/auth.json -a pid -et --host Bob-PC --manufact EvilUSBManufacturer --serial 0123456789 -c conn vid pid
+  ~$ sudo usbrip events violations trusted/auth.json -a pid -et --host Bob-PC --manufact EvilUSBManufacturer --serial 0123456789 -c conn vid pid
   ```
 
 * Search for details about a specific USB device by its VID (`--vid VID`) and PID (`--pid PID`):

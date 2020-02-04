@@ -135,12 +135,12 @@ def build_ueo_parser(subparsers):
     _parse_file_args(ueo_parser)
 
 
-# ------------------ USB Events Gen Auth -------------------
+# ------------------ USB Events GenAuth -------------------
 
 
 def build_ueg_parser(subparsers):
     ueg_parser = subparsers.add_parser(
-        'gen_auth',
+        'genauth',
         help='generate authorized device list (JSON)'
     )
 
@@ -283,9 +283,9 @@ def build_usu_parser(subparsers):
     )
 
     usu_parser.add_argument(
-        '-i',
-        '--input',
+        'input',
         type=str,
+        nargs='?',
         default='/var/opt/usbrip/trusted/auth.json',
         help='input path for the list of authorized devices'
     )
@@ -318,9 +318,9 @@ def build_usc_parser(subparsers):
     )
 
     usc_parser.add_argument(
-        '-i',
-        '--input',
+        'input',
         type=str,
+        nargs='?',
         default='/var/opt/usbrip/trusted/auth.json',
         help='input path for the list of authorized devices'
     )

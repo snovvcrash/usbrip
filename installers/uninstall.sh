@@ -29,7 +29,18 @@ along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 
 # Usage: sudo bash installers/uninstall.sh [-a/--all]
 
+# --------------- Check for root privileges ----------------
+
+if [[ $EUID -ne 0 ]]; then
+	/usr/bin/printf "${R}>>>>${NC} Please run as root:\nsudo %s [-a/--all]\n" "${0}"
+	exit 1
+fi
+
 # ----------------------- Constants ------------------------
+
+if [[ -z "${SUDO_USER}" ]]; then
+	SUDO_USER="root"
+fi
 
 USER_HOME=`getent passwd ${SUDO_USER} | cut -d: -f6`
 CONFIG="${USER_HOME}/.config/usbrip"
@@ -49,13 +60,6 @@ remove_directory() {
 		/usr/bin/printf "${G}>>>>${NC} Removed directory: '$1'\n"
 	fi
 }
-
-# --------------- Check for root privileges ----------------
-
-if [[ $EUID -ne 0 ]]; then
-	/usr/bin/printf "${R}>>>>${NC} Please run as root:\nsudo %s\n" "${0}"
-	exit 1
-fi
 
 # -------------------- Handle switches ---------------------
 

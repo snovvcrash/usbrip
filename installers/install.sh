@@ -31,7 +31,18 @@ along with usbrip.  If not, see <http://www.gnu.org/licenses/>.
 
 shopt -s expand_aliases
 
+# --------------- Check for root privileges ----------------
+
+if [[ "${EUID}" -ne 0 ]]; then
+	/usr/bin/printf "${R}>>>>${NC} Please run as root:\nsudo -H %s [-l/--local] [-s/--storages]\n" "${0}"
+	exit 1
+fi
+
 # ----------------------- Constants ------------------------
+
+if [[ -z "${SUDO_USER}" ]]; then
+	SUDO_USER="root"
+fi
 
 USER_HOME=`getent passwd ${SUDO_USER} | cut -d: -f6`
 CONFIG="${USER_HOME}/.config/usbrip"
@@ -69,16 +80,9 @@ create_directory() {
 
 alias createHistoryStorage="${OPT}/venv/bin/usbrip storage create history -e"
 
-alias generateAuthorizedDeviceList="${OPT}/venv/bin/usbrip events gen_auth -e -a vid pid"
+alias generateAuthorizedDeviceList="${OPT}/venv/bin/usbrip events genauth /var/opt/usbrip/trusted/auth.json -e -a vid pid"
 
-alias createViolationsStorage="${OPT}/venv/bin/usbrip storage create violations -e -a vid pid"
-
-# --------------- Check for root privileges ----------------
-
-if [[ $EUID -ne 0 ]]; then
-	/usr/bin/printf "${R}>>>>${NC} Please run as root:\nsudo %s\n" "${0}"
-	exit 1
-fi
+alias createViolationsStorage="${OPT}/venv/bin/usbrip storage create violations /var/opt/usbrip/trusted/auth.json -e -a vid pid"
 
 # -------------------- Handle switches ---------------------
 
@@ -107,7 +111,7 @@ if ! /usr/bin/dpkg-query -W -f='${Status}' python3-venv 2>&1 | /bin/grep "ok ins
 	select YN in "Yes" "No"; do
 		case ${YN} in
 			"Yes" )
-				$(which apt) install "python3-venv" -y
+				apt install "python3-venv" -y
 				break
 				;;
 			"No" )
@@ -125,7 +129,7 @@ if ! /usr/bin/dpkg-query -W -f='${Status}' p7zip-full 2>&1 | /bin/grep "ok insta
 	select YN in "Yes" "No"; do
 		case ${YN} in
 			"Yes" )
-				$(which apt) install "p7zip-full" -y
+				apt install "p7zip-full" -y
 				break
 				;;
 			"No" )
@@ -193,17 +197,17 @@ echo
 
 # ----------------------- Copy files -----------------------
 
-if /usr/bin/cp "${PWD}/usbrip/usb_ids/usb.ids" "${USER_HOME}/.config/usbrip/usb.ids"; then
+if cp "${PWD}/usbrip/usb_ids/usb.ids" "${USER_HOME}/.config/usbrip/usb.ids"; then
 	/usr/bin/printf "${G}>>>>${NC} Successfully copied usb.ids database\n\n"
 else
-	/usr/bin/printf "${R}>>>>${NC} Failed copy usb.ids database\n"
+	/usr/bin/printf "${R}>>>>${NC} Failed to copy usb.ids database\n"
 	exit 1
 fi
 
-if /usr/bin/cp "${PWD}/usbrip/cron/usbrip.cron" "${USER_HOME}/.config/usbrip/usbrip.cron"; then
+if cp "${PWD}/usbrip/cron/usbrip.cron" "${USER_HOME}/.config/usbrip/usbrip.cron"; then
 	/usr/bin/printf "${G}>>>>${NC} Successfully copied usbrip cron job example\n\n"
 else
-	/usr/bin/printf "${R}>>>>${NC} Failed copy usbrip cron job example\n"
+	/usr/bin/printf "${R}>>>>${NC} Failed to copy usbrip cron job example\n"
 	exit 1
 fi
 
@@ -233,7 +237,7 @@ if ${STORAGES}; then
 		exit 1
 	fi
 
-	# Gen Auth
+	# GenAuth
 
 	/usr/bin/printf "${W}>>>>${NC} Generating authorized device list\n"
 

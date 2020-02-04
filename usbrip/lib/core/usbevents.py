@@ -48,6 +48,7 @@ from collections import OrderedDict, defaultdict
 from string import printable
 from subprocess import check_output
 from io import StringIO
+from random import randint
 
 from terminaltables import AsciiTable, SingleTable
 from termcolor import colored, cprint
@@ -94,24 +95,30 @@ class USBEvents:
 				# child_env['LANG'] = 'en_US.utf-8'
 				# journalctl_out = check_output(['journalctl'], env=child_env).decode('utf-8')
 
-				journalctl_out = check_output([
-					'journalctl',
-					'-o',
-					'short-iso-precise'
-				]).decode('utf-8')
+				try:
+					journalctl_out = check_output([
+						'journalctl',
+						'-o',
+						'short-iso-precise'
+					]).decode('utf-8')
 
-				if '-- Logs begin at' in journalctl_out:
-					print_info('Successfully runned journalctl')
-
-					filtered_history = _read_log_file(
-						None,
-						log=StringIO(journalctl_out),
-						total=journalctl_out.count('\n')+1
-					)
+				except Exception as e:
+					print_warning(f'Failed to run journalctl: {str(e)}')
+					filtered_history = _get_filtered_history()
 
 				else:
-					print_warning('Failed to run journalctl')
-					filtered_history = _get_filtered_history()
+					if '-- Logs begin at' in journalctl_out:
+						print_info('Successfully runned journalctl')
+
+						filtered_history = _read_log_file(
+							None,
+							log=StringIO(journalctl_out),
+							total=journalctl_out.count('\n')
+						)
+
+					else:
+						print_warning(f'An error occured when running journalctl: {journalctl_out}')
+						filtered_history = _get_filtered_history()
 
 		except USBRipError as e:
 			print_critical(str(e), initial_error=e.errors['initial_error'])
@@ -186,14 +193,26 @@ class USBEvents:
 
 		_represent_events(events_to_show, columns, table_data, 'USB-Event-Dump', repres)
 
-	# ------------------ USB Events Gen Auth -------------------
+	# ------------------ USB Events GenAuth -------------------
 
 	@time_it_if_debug(cfg.DEBUG, time_it)
 	def generate_auth_json(self, output_auth, attributes, *, indent=4, sieve=None):
 		self._events_to_show = _filter_events(self._all_events, sieve)
 		if not self._events_to_show:
 			print_info('No USB devices found!')
-			return 1
+
+		rand_id = f'usbrip-{randint(1000, 9999)}'
+		self._events_to_show += [{
+			'conn':     rand_id,
+			'host':     rand_id,
+			'vid':      rand_id,
+			'pid':      rand_id,
+			'prod':     rand_id,
+			'manufact': rand_id,
+			'serial':   rand_id,
+			'port':     rand_id,
+			'disconn':  rand_id
+		}]
 
 		abs_output_auth = os.path.abspath(output_auth)
 
@@ -371,10 +390,10 @@ def _read_log_file(filename, log=None, total=None):
 
 			date = line[:32].strip()
 			if date.count(':') == 3:
-				date = ''.join(line[:32].rsplit(':', 1))  # rreplace(':', '', 1) to remove the last ':' from "2019-08-09T06:15:49.655261-04:00" timestamp if there is one
+				date = ''.join(line[:32].rsplit(':', 1))  # rreplace(':', '', 1) to remove the last ':' from "1970-01-01T00:00:00.000000-00:00" timestamp if there is one
 
 			try:
-				date = datetime.strptime(date, '%Y-%m-%dT%H:%M:%S.%f%z')  # ex. "2019-08-09T06:15:49.655261-0400"
+				date = datetime.strptime(date, '%Y-%m-%dT%H:%M:%S.%f%z')  # ex. "1970-01-01T00:00:00.000000-0000"
 
 			except ValueError:
 				# Case 2 -- Non-Modified Timestamp ("%b %d %H:%M:%S")
