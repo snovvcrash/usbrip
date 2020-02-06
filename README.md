@@ -66,6 +66,12 @@ Showcase
 
 ![screenshot.png](https://user-images.githubusercontent.com/23141800/72224954-ed3d4600-3590-11ea-9431-ea1579b2de0e.png)
 
+**Docker**
+
+```
+~$ docker run --rm -it snovvcrash/usbrip
+```
+
 Git Clone
 ==========
 
