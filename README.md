@@ -69,7 +69,7 @@ Showcase
 **Docker**
 
 ```
-~$ docker run --rm -it snovvcrash/usbrip
+~$ docker run --rm -it [snovvcrash/usbrip](https://hub.docker.com/r/snovvcrash/usbrip)
 ```
 
 Git Clone
