@@ -1,5 +1,5 @@
 <p align="center">
-	<img src="https://user-images.githubusercontent.com/23141800/56420194-b9551e80-62a5-11e9-8508-fc0f4a398042.png" alt="logo.png" />
+	<a href="#"><img src="https://user-images.githubusercontent.com/23141800/56420194-b9551e80-62a5-11e9-8508-fc0f4a398042.png" alt="logo.png" /></a>
 </p>
 
 ----------
@@ -66,7 +66,7 @@ Showcase
 
 ![screenshot.png](https://user-images.githubusercontent.com/23141800/72224954-ed3d4600-3590-11ea-9431-ea1579b2de0e.png)
 
-[**Docker**](https://hub.docker.com/r/snovvcrash/usbrip)
+[**Docker**](https://hub.docker.com/r/snovvcrash/usbrip) (\*DEMO ONLY!\*)
 
 ```
 ~$ docker run --rm -it snovvcrash/usbrip
