@@ -1,19 +1,19 @@
 <p align="center">
-	<a href="#"><img src="https://user-images.githubusercontent.com/23141800/56420194-b9551e80-62a5-11e9-8508-fc0f4a398042.png" alt="logo.png" /></a>
+  <a href="#"><img src="https://user-images.githubusercontent.com/23141800/56420194-b9551e80-62a5-11e9-8508-fc0f4a398042.png" alt="logo.png" /></a>
 </p>
 
 ----------
 
 <p align="center">
-	<a href="https://github.com/snovvcrash/usbrip/blob/master/usbrip/__init__.py#L24"><img src="https://img.shields.io/badge/GitHub%20ver-2.2.1%E2%80%901-success.svg?logo=github&logoColor=white" alt="github-version.svg" /></a>
-	<a href="https://pypi.org/project/usbrip/#history"><img src="https://img.shields.io/badge/PyPI%20ver-2.2.1%E2%80%901-3775a9.svg?logo=pypi&logoColor=white" alt="pypi-version.svg" /></a>
-	<a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/Python-3.6-3776ab.svg?logo=python&logoColor=white" alt="python-version.svg" /></a>
-	<a href="https://raw.githubusercontent.com/snovvcrash/usbrip/master/LICENSE"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="license.svg" /></a>
-	<a href="https://blackarch.org/forensic.html"><img src="https://img.shields.io/badge/BlackArch-Linux-b40000.svg?logo=arch-linux" alt="arch-linux.svg" /></a>
-	<a href="https://emojipedia.org/growing-heart/"><img src="https://img.shields.io/badge/built%20with-%F0%9F%92%97%F0%9F%92%97%F0%9F%92%97-lightgrey.svg" alt="built-with-love.svg" /></a>
+  <a href="https://github.com/snovvcrash/usbrip/blob/master/usbrip/__init__.py#L24"><img src="https://img.shields.io/badge/GitHub%20ver-2.2.1%E2%80%901-success.svg?logo=github&logoColor=white" alt="github-version.svg" /></a>
+  <a href="https://pypi.org/project/usbrip/#history"><img src="https://img.shields.io/badge/PyPI%20ver-2.2.1%E2%80%901-3775a9.svg?logo=pypi&logoColor=white" alt="pypi-version.svg" /></a>
+  <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/Python-3.6-3776ab.svg?logo=python&logoColor=white" alt="python-version.svg" /></a>
+  <a href="https://raw.githubusercontent.com/snovvcrash/usbrip/master/LICENSE"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="license.svg" /></a>
+  <a href="https://repology.org/project/usbrip/versions"><img src="https://repology.org/badge/version-for-repo/blackarch/usbrip.svg?header=BlackArch pkg" alt="blackarch-package.svg"></a>
+  <a href="https://emojipedia.org/growing-heart/"><img src="https://img.shields.io/badge/built%20with-%F0%9F%92%97%F0%9F%92%97%F0%9F%92%97-lightgrey.svg" alt="built-with-love.svg" /></a>
 </p>
 
-**usbrip** (inherited from "USB Ripper", not "USB R.I.P.") is an open source forensics tool with CLI interface that lets you keep track of USB device artifacts (i.e., USB event history) on Linux machines.
+**usbrip** (inherited from "USB Ripper", not "USB R.I.P.") is a simple forensics tool with command line interface that lets you keep track of USB device artifacts (i.e., USB event history) on Linux machines.
 
 Table of Contents:
 
@@ -199,7 +199,7 @@ When using the `installers/install.sh` some extra features become available:
 * the virtual environment is created automatically;
 * the `storage` module becomes available: you can set a crontab job to backup USB events on a schedule (the example of crontab jobs can be found in `usbrip/cron/usbrip.cron`).
 
-:warning: **Warning:** if you are using the crontab scheduling, you want to configure the cron job with `sudo crontab -e` in order to force the `storage update` submodule run as root as well as protect the passwords of the USB event storages. The storage passwords are kept in `/var/opt/usbrip/usbrip.ini`.
+:warning: **Warning:** if you are using the crontab scheduling, you want to configure the cron job with `sudo crontab -e` in order to force the `storage update` submodule run as root. The storage passwords are kept in `/var/opt/usbrip/usbrip.ini` and accessible by root only.
 
 The `installers/uninstall.sh` script removes all the installation artifacts from your system.
 
@@ -385,8 +385,6 @@ Credits & References
 * [usbrip / Инструменты Kali Linux](https://kali.tools/?p=4873)
 * [Как узнать, какие USB устройства подключались к Linux / HackWare.ru](https://hackware.ru/?p=9703)
 * [Linux-форензика в лице трекинга истории подключений USB-устройств / Хабр](https://habr.com/ru/post/352254/)
-* [usbrip: USB-форензика для Линуксов, или Как Алиса стала Евой / Codeby](https://codeby.net/threads/usbrip-usb-forenzika-dlja-linuksov-ili-kak-alisa-stala-evoj.63644/)
-* [Hack The Box :: Forensics Challenges](https://www.hackthebox.eu/home/challenges/Forensics)
 * [Linux Forensics! First Look at usbrip / YouTube / 13Cubed](https://youtu.be/DP4ScSp_2yE)
 
 Post Scriptum
@@ -394,6 +392,6 @@ Post Scriptum
 
 Yep, the banner and info messages style is inspired by the *sqlmap* project (⌒_⌒;)
 
-If this tool has been useful for you, feel free to buy me a coffee :coffee:
+If this tool has been useful for you, feel free to buy me a coffee.
 
 [![coffee.png](https://user-images.githubusercontent.com/23141800/44239262-2cf7d680-a1c1-11e8-96b4-c4949f84e94e.png)](https://buymeacoff.ee/snovvcrash)
