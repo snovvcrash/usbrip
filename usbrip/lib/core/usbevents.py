@@ -236,13 +236,13 @@ class USBEvents:
 		if not attributes:
 			attributes = ('vid', 'pid', 'prod', 'manufact', 'serial')
 
-		auth = defaultdict(list)
+		auth = defaultdict(set)
 		for event in tqdm(self._events_to_show, ncols=80, unit='dev'):
 			for key, val in event.items():
-				if (key in attributes and
-					val is not None and
-					val not in auth[key]):
-					auth[key].append(val)
+				if key in attributes and val is not None:
+					auth[key].add(val)
+
+		auth = {key: list(vals) for key, vals in auth.items()}
 
 		for key in auth.keys():
 			auth[key].sort()
@@ -273,12 +273,14 @@ class USBEvents:
 		if not attributes:
 			attributes = auth.keys()
 
+		auth_sets = [set(auth[attr]) for attr in attributes]
+
 		for event in tqdm(self._all_events, ncols=80, unit='dev'):
 			try:
 				if any(
-					event[key] not in vals and
-					event[key] is not None
-					for key, vals in zip(attributes, auth.values())
+					event[key] is not None and
+					event[key] not in vals
+					for key, vals in zip(attributes, auth_sets)
 				):
 					self._violations.append(event)
 			except KeyError as e:

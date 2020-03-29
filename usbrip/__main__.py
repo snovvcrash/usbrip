@@ -58,7 +58,7 @@ def main():
 	arg_parser = get_arg_parser()
 	args = arg_parser.parse_args()
 
-	if 'quiet' in args and not args.quiet:
+	if hasattr(args, 'quiet') and not args.quiet:
 		if cfg.ISATTY:
 			print(BANNER + '\n')
 		else:
@@ -298,7 +298,7 @@ def usbrip_internal_error():
 
 
 def _validate_column_args(args):
-	if 'column' in args and args.column:
+	if hasattr(args, 'column') and args.column:
 		for column in args.column:
 			if column not in COLUMN_NAMES.keys():
 				usbrip_arg_error(column + ': Invalid column name')
@@ -332,12 +332,12 @@ def _validate_sieve_args(args):
 
 
 def _validate_repres_args(args):
-	if 'table' in args or 'list' in args:
+	if hasattr(args, 'table') or hasattr(args, 'list'):
 		repres = dict.fromkeys(('table', 'list', 'smart'), False)
 
-		if 'table' in args and args.table:
+		if hasattr(args, 'table') and args.table:
 			repres['table'] = True
-		elif 'list' in args and args.list:
+		elif hasattr(args, 'list') and args.list:
 			repres['list'] = True
 		else:
 			repres['smart'] = True
@@ -348,18 +348,18 @@ def _validate_repres_args(args):
 
 
 def _validate_io_args(args):
-	if 'input' in args and args.input and args.input != '/var/opt/usbrip/trusted/auth.json':
+	if hasattr(args, 'input') and args.input and args.input != '/var/opt/usbrip/trusted/auth.json':
 		if not os.path.exists(args.input):
 			usbrip_arg_error(args.input + ': Path does not exist')
 		elif not os.path.isfile(args.input):
 			usbrip_arg_error(args.input + ': Not a regular file')
 
-	if 'output' in args and os.path.exists(args.output):
+	if hasattr(args, 'output') and os.path.exists(args.output):
 		usbrip_arg_error(args.output + ': Path already exists')
 
 
 def _validate_attribute_args(args):
-	if 'attribute' in args and args.attribute:
+	if hasattr(args, 'attribute') and args.attribute:
 		for attribute in args.attribute:
 			if attribute not in ('vid', 'pid', 'prod', 'manufact', 'serial'):
 				usbrip_arg_error(attribute + ': Invalid attribute name')
@@ -370,22 +370,22 @@ def _validate_storage_type_args(args):
 		usbrip_arg_error(args.storage_type + ': Invalid storage type')
 
 	if args.storage_type == 'history':
-		if 'input' in args and args.input and args.input != '/var/opt/usbrip/trusted/auth.json':
+		if hasattr(args, 'input') and args.input and args.input != '/var/opt/usbrip/trusted/auth.json':
 			usbrip_arg_error('Cannot use "--input" switch with history storage')
-		if 'attribute' in args and args.attribute:
+		if hasattr(args, 'attribute') and args.attribute:
 			usbrip_arg_error('Cannot use "--attribute" switch with history storage')
 	elif args.storage_type == 'violations':
-		if 'input' in args and args.input is None:
+		if hasattr(args, 'input') and args.input is None:
 			usbrip_arg_error('Please specify input path for the list of authorized devices (-i)')
 
 
 def _validate_compression_level_args(args):
-	if 'lvl' in args and args.lvl and (len(args.lvl) > 1 or args.lvl not in '0123456789'):
+	if hasattr(args, 'lvl') and args.lvl and (len(args.lvl) > 1 or args.lvl not in '0123456789'):
 		usbrip_arg_error(args.lvl + ': Invalid compression level')
 
 
 def _validate_file_args(args):
-	if 'file' in args and args.file:
+	if hasattr(args, 'file') and args.file:
 		for file in args.file:
 			if not os.path.exists(file):
 				usbrip_arg_error(file + ': Path does not exist')
@@ -394,7 +394,7 @@ def _validate_file_args(args):
 
 
 def _validate_vid_pid_args(args):
-	if 'vid' in args and 'pid' in args and not args.vid and not args.pid:
+	if hasattr(args, 'vid') and hasattr(args, 'pid') and not args.vid and not args.pid:
 		usbrip_arg_error('At least one of --vid/--pid or --download option should be specified')
 
 
