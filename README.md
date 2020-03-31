@@ -5,8 +5,8 @@
 ----------
 
 <p align="center">
-  <a href="https://github.com/snovvcrash/usbrip/blob/master/usbrip/__init__.py#L24"><img src="https://img.shields.io/badge/GitHub%20ver-2.2.1%E2%80%901-success.svg?logo=github&logoColor=white" alt="github-version.svg" /></a>
-  <a href="https://pypi.org/project/usbrip/#history"><img src="https://img.shields.io/badge/PyPI%20ver-2.2.1%E2%80%901-3775a9.svg?logo=pypi&logoColor=white" alt="pypi-version.svg" /></a>
+  <a href="https://github.com/snovvcrash/usbrip/blob/master/usbrip/__init__.py#L24"><img src="https://img.shields.io/badge/GitHub%20ver-2.2.1%E2%80%902-success.svg?logo=github&logoColor=white" alt="github-version.svg" /></a>
+  <a href="https://pypi.org/project/usbrip/#history"><img src="https://img.shields.io/badge/PyPI%20ver-2.2.1%E2%80%902-3775a9.svg?logo=pypi&logoColor=white" alt="pypi-version.svg" /></a>
   <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/Python-3.6-3776ab.svg?logo=python&logoColor=white" alt="python-version.svg" /></a>
   <a href="https://raw.githubusercontent.com/snovvcrash/usbrip/master/LICENSE"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="license.svg" /></a>
   <a href="https://repology.org/project/usbrip/versions"><img src="https://repology.org/badge/version-for-repo/blackarch/usbrip.svg?header=BlackArch pkg" alt="blackarch-package.svg"></a>
@@ -158,9 +158,7 @@ Or let the [`pipenv`](https://github.com/pypa/pipenv "pypa/pipenv: Python Develo
 After that you can run usbrip portably:
 
 ```
-(venv) ~/usbrip$ python -m usbrip -h
-Or
-(venv) ~/usbrip$ python __main__.py -h
+(venv) ~/usbrip$ python -m usbrip --help
 ```
 
 Installation
@@ -176,7 +174,7 @@ First of all, usbrip is pip installable. This means that after git cloning the r
 ~/usbrip$ python3 -m venv venv && source venv/bin/activate
 (venv) ~/usbrip$ pip install .
 
-(venv) ~/usbrip$ usbrip -h
+(venv) ~/usbrip$ usbrip --help
 ```
 
 Or if you want to resolve Python dependencies locally (without bothering PyPI), use `setup.py`:
@@ -185,7 +183,7 @@ Or if you want to resolve Python dependencies locally (without bothering PyPI), 
 ~/usbrip$ python3 -m venv venv && source venv/bin/activate
 (venv) ~/usbrip$ python setup.py install
 
-(venv) ~/usbrip$ usbrip -h
+(venv) ~/usbrip$ usbrip --help
 ```
 
 :alien: **Note:** you'd likely want to run the installation process while the Python virtual environment is active (like it is shown above).
@@ -210,7 +208,7 @@ To install usbrip use:
 ~/usbrip$ sudo -H installers/install.sh [-l/--local] [-s/--storages]
 ~/usbrip$ cd
 
-~$ usbrip -h
+~$ usbrip --help
 ```
 
 * When `-l` switch is enabled, Python dependencies are resolved from local .tar packages (`./3rdPartyTools/`) instead of PyPI.
@@ -309,19 +307,19 @@ Update (download) the USB ID database.
 To get a list of module names use:
 
 ```
-~$ usbrip -h
+~$ usbrip --help
 ```
 
 To get a list of submodule names for a specific module use:
 
 ```
-~$ usbrip <module> -h
+~$ usbrip <module> --help
 ```
 
 To get a list of all switches for a specific submodule use:
 
 ```
-~$ usbrip <module> <submodule> -h
+~$ usbrip <module> <submodule> --help
 ```
 
 Examples
