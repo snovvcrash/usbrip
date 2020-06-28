@@ -32,4 +32,4 @@ DEBUG = False
 QUIET = False
 
 ISATTY = True if sys.stdout.isatty() else False  # enable colored text when terminal output (True), else (| or > for example) no color (False)
-ISUTF8 = True if sys.stdout.encoding == 'UTF-8' else False
+ISUTF8 = True if sys.stdout.encoding.upper() == 'UTF-8' else False
