@@ -64,7 +64,7 @@ Besides, it also can:
 Quick Start
 ==========
 
-**Way 1.** Install the PyPI version with pip:
+**Way 1.** Install with pip:
 
 ```
 ~$ curl https://bootstrap.pypa.io/get-pip.py | python3
@@ -72,7 +72,7 @@ Quick Start
 ~$ usbrip --help
 ```
 
-**Way 2.** Install the bleeding-edge version with [`install.sh`](#manual-installation):
+**Way 2.** Install bleeding-edge with [`install.sh`](#manual-installation):
 
 ```
 ~$ sudo apt install python3-venv p7zip-full -y
@@ -158,7 +158,7 @@ For simplicity, lets agree that all the commands where `~/usbrip$` prefix is app
 
 ## `install.sh`
 
-Besides installing with pip, usbrip can also be installed with custom `installers/install.sh` script.
+Besides installing with pip, usbrip can also be installed with custom [`installers/install.sh`](https://github.com/snovvcrash/usbrip/blob/master/installers/install.sh) script.
 
 When using `install.sh` some extra features become available:
 
@@ -204,7 +204,7 @@ Cron jobs can be set as follows:
 
 ### `uninstall.sh`
 
-The `installers/uninstall.sh` script removes usbrip and all the installation artifacts from your system.
+The [`installers/uninstall.sh`](https://github.com/snovvcrash/usbrip/blob/master/installers/uninstall.sh) script removes usbrip and all the installation artifacts from your system.
 
 To uninstall usbrip use:
 
