@@ -78,7 +78,7 @@ def main():
 	# ----------------------------------------------------------
 
 	elif args.subparser == 'events' and args.ue_subparser:
-		if os.geteuid() != 0:
+		if (args.ue_subparser == 'genauth' or args.ue_subparser == 'violations') and os.geteuid() != 0:
 			sys.exit('Permission denied. Retry with sudo')
 
 		sieve, repres = validate_ue_args(args)
@@ -144,7 +144,7 @@ def main():
 			sys.exit('Permission denied. Retry with sudo')
 
 		if any (not os.path.exists(p) for p in ('/opt/usbrip/', '/var/opt/usbrip', '/usr/local/bin/usbrip')):
-			sys.exit('The "storage" module can only be used when usbrip is installed via "installer.sh" - https://git.io/fjDPT')
+			sys.exit('The "storage" module can only be used when usbrip is installed via "install.sh" - https://git.io/JJfJq')
 
 		sieve, repres = validate_us_args(args)
 		timing.begin()

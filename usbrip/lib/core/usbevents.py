@@ -175,6 +175,12 @@ class USBEvents:
 		except json.decoder.JSONDecodeError as e:
 			print_critical('Failed to decode event dump (JSON)', initial_error=str(e))
 			return
+		except PermissionError as e:
+			print_critical(
+				f'Permission denied: "{abs_input_dump}". Retry with sudo',
+				initial_error=str(e)
+			)
+			return
 
 		if not events_dumped:
 			print_critical('This dump is empty!')
@@ -369,8 +375,16 @@ def _read_log_file(filename, log=None, total=None):
 				abs_filename = os.path.splitext(abs_filename)
 
 		else:
-			log = codecs.open(abs_filename, 'r', encoding='utf-8', errors='ignore')
-			end_of_file = ''
+			try:
+				log = codecs.open(abs_filename, 'r', encoding='utf-8', errors='ignore')
+			except PermissionError as e:
+				print_warning(
+					f'Permission denied: "{abs_filename}". Retry with sudo',
+					initial_error=str(e)
+				)
+				return filtered
+			else:
+				end_of_file = ''
 
 		total = sum(1 for line in log)
 		log.seek(0)
