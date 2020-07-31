@@ -75,7 +75,7 @@ Quick Start
 
 ```
 ~$ sudo apt install python3-venv p7zip-full -y
-~$ git clone https://github.com/snovvcrash/usbrip.git usbrip && cd usbrip
+~$ git clone https://github.com/snovvcrash/usbrip.git ~/usbrip && cd ~/usbrip
 ~/usbrip$ sudo -H installers/install.sh
 ~/usbrip$ cd
 ~$ usbrip --help
@@ -162,7 +162,7 @@ Besides installing with pip, usbrip can also be installed with custom [`installe
 When using `install.sh` some extra features become available:
 
 * the virtual environment is created automatically;
-* the `storage` module becomes available: you can set a crontab job to backup USB events on a schedule (the example of crontab jobs can be found in `usbrip/cron/usbrip.cron`).
+* the `storage` module becomes available: you can set a crontab job to backup USB events on a schedule (the example of crontab jobs can be found in [`usbrip/cron/usbrip.cron`](https://github.com/snovvcrash/usbrip/blob/master/usbrip/cron/usbrip.cron)).
 
 :warning: **Warning:** if you are using the crontab scheduling, you want to configure the cron job with `sudo crontab -e` in order to force the `storage update` submodule run as root. The storage passwords are kept in `/var/opt/usbrip/usbrip.ini` and accessible by root only by default.
 
@@ -359,4 +359,4 @@ Post Scriptum
 
 If this tool has been useful for you, feel free to buy me a coffee.
 
-[![coffee.png](https://user-images.githubusercontent.com/23141800/44239262-2cf7d680-a1c1-11e8-96b4-c4949f84e94e.png)](https://buymeacoff.ee/snovvcrash)
+[![coffee.png](https://user-images.githubusercontent.com/23141800/89087110-d418ad00-d39b-11ea-8065-5df89592a1bc.png)](https://buymeacoff.ee/snovvcrash)
