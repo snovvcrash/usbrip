@@ -359,4 +359,4 @@ Post Scriptum
 
 If this tool has been useful for you, feel free to buy me a coffee.
 
-[![coffee.png](https://user-images.githubusercontent.com/23141800/89087110-d418ad00-d39b-11ea-8065-5df89592a1bc.png)](https://buymeacoff.ee/snovvcrash)
+[![coffee.png](https://user-images.githubusercontent.com/23141800/89102246-d1f03600-d40f-11ea-9e34-69825f226fa9.jpg)](https://buymeacoff.ee/snovvcrash)
