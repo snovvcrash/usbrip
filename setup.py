@@ -134,10 +134,6 @@ setup(
 	python_requires='>=3.6',
 	install_requires=parse_requirements('requirements.txt'),
 
-	data_files=[
-		('', ['README.md', 'requirements.txt'])
-	],
-
 	cmdclass={
 		'install': LocalInstallCommand,
 		'clean': CleanCommand
