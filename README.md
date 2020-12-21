@@ -99,8 +99,8 @@ Dependencies
 
 usbrip supports two types of timestamps within system log files:
 
-1. **Non-modified** — standard `syslog` structure for GNU/Linux ([`"%b %d %H:%M:%S"`](http://strftime.org/), ex. `"Jan  1 00:00:00"`). This type of timestamp does not provide the information about years.
-2. **Modified** (recommended) — better `syslog` structure which provides high precision timestamps including years ([`"%Y-%m-%dT%H:%M:%S.%f%z"`](http://strftime.org/), ex. `"1970-01-01T00:00:00.000000-00:00"`).
+1. **Non-modified** – standard `syslog` structure for GNU/Linux ([`"%b %d %H:%M:%S"`](http://strftime.org/), ex. `"Jan  1 00:00:00"`). This type of timestamp does not provide the information about years.
+2. **Modified** (recommended) – better `syslog` structure which provides high precision timestamps including years ([`"%Y-%m-%dT%H:%M:%S.%f%z"`](http://strftime.org/), ex. `"1970-01-01T00:00:00.000000-00:00"`).
 
 If you do have `journalctl` installed, then there's nothing to worry about as it can convert timestamps on the fly.
 
@@ -130,11 +130,11 @@ $ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
 ~$ sudo systemctl restart rsyslog
 ```
 
-Firstly, usbrip will check if there is a chance to dump system events using `journalctl` as the most portable option. If not — it will search for and parse `/var/log/syslog*` and `/var/log/messages*` system log files.
+Firstly, usbrip will check if there is a chance to dump system events using `journalctl` as the most portable option. If not – it will search for and parse `/var/log/syslog*` and `/var/log/messages*` system log files.
 
 ## DEB Packages
 
-* python3.6 (or newer) interpreter;
+* python3.6 (or newer);
 * python3-venv;
 * p7zip-full (used by `storages` module).
 
@@ -149,7 +149,7 @@ Manual installation
 
 ## Git Clone
 
-For simplicity, lets agree that all the commands where `~/usbrip$` prefix is appeared are executed in the `~/usbrip` directory which is created as a result of git clone:
+For simplicity, lets agree that all the commands where `~/usbrip$` prefix is appeared are executed in the `~/usbrip` directory which is created as a result of a git clone:
 
 ```
 ~$ git clone https://github.com/snovvcrash/usbrip.git usbrip && cd usbrip
@@ -183,12 +183,12 @@ After the installation completes, feel free to remove the `~/usbrip` directory.
 
 When installed with `install.sh`, the usbrip uses the following paths:
 
-* `/opt/usbrip/` — project's main directory;
-* `/var/opt/usbrip/log/` — usbrip logs when using with [cron](https://github.com/snovvcrash/usbrip/blob/master/usbrip/cron/usbrip.cron);
-* `/var/opt/usbrip/storage/` — USB event storages (`history.7z` and `violations.7z`, created during the installation process);
-* `/var/opt/usbrip/trusted/` — list of trusted USB devices (`auth.json`, created during the installation process);
-* `/var/opt/usbrip/usbrip.ini` — usbrip configuration file (contains passwords for 7-Zip storages);
-* `/usr/local/bin/usbrip` — symlink to the `/opt/usbrip/venv/bin/usbrip` script.
+* `/opt/usbrip/` – project's main directory;
+* `/var/opt/usbrip/log/` – usbrip logs when using with [cron](https://github.com/snovvcrash/usbrip/blob/master/usbrip/cron/usbrip.cron);
+* `/var/opt/usbrip/storage/` – USB event storages (`history.7z` and `violations.7z`, created during the installation process);
+* `/var/opt/usbrip/trusted/` – list of trusted USB devices (`auth.json`, created during the installation process);
+* `/var/opt/usbrip/usbrip.ini` – usbrip configuration file (contains passwords for 7-Zip storages);
+* `/usr/local/bin/usbrip` – symlink to the `/opt/usbrip/venv/bin/usbrip` script.
 
 ### cron
 
