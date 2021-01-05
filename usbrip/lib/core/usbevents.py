@@ -108,7 +108,7 @@ class USBEvents:
 
 				else:
 					if '-- Logs begin at' in journalctl_out:
-						print_info('Successfully runned journalctl')
+						print_info('Successfully ran journalctl')
 
 						filtered_history = _read_log_file(
 							None,
@@ -117,7 +117,7 @@ class USBEvents:
 						)
 
 					else:
-						print_warning(f'An error occured when running journalctl: {journalctl_out}')
+						print_warning(f'An error occurred when running journalctl: {journalctl_out}')
 						filtered_history = _get_filtered_history()
 
 		except USBRipError as e:
