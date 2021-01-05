@@ -288,7 +288,7 @@ def usbrip_arg_error(message=None, *, subparser=' '):
 
 
 def usbrip_internal_error():
-	print(sys.argv[0].rsplit('/', 1)[-1] + ': Internal error occured', file=sys.stderr)
+	print(sys.argv[0].rsplit('/', 1)[-1] + ': Internal error occurred', file=sys.stderr)
 	sys.exit(1)
 
 

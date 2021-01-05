@@ -166,7 +166,7 @@ chmod -R 600 "${VAR_OPT}/log"
 /usr/bin/printf "${W}>>>>${NC} Building Python virtual environment\n"
 
 if /usr/bin/python3 -m venv "${OPT}/venv"; then
-	/usr/bin/printf "${G}>>>>${NC} Successfully builded Python virtual environment\n\n"
+	/usr/bin/printf "${G}>>>>${NC} Successfully built Python virtual environment\n\n"
 else
 	/usr/bin/printf "${R}>>>>${NC} Failed to build Python virtual environment\n"
 	exit 1

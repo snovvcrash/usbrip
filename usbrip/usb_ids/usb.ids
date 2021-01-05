@@ -2680,7 +2680,7 @@
 	08d7  QuickCam Communicate STX
 	08d8  QuickCam for Notebook Deluxe
 	08d9  QuickCam IM/Connect
-	08da  QuickCam Messanger
+	08da  QuickCam Messenger
 	08dd  QuickCam for Notebooks
 	08e0  QuickCam Express
 	08e1  Labtec Webcam
@@ -18664,10 +18664,10 @@
 	60e9  keyman64 keyboard itercepter
 	60ea  Wiggleport FPGA-based I/O board
 	60ec  Duet 3D Printer Controller
-	60f0  UDAD-T1 data aquisition device (boot)
-	60f1  UDAD-T1 data aquisition device
-	60f2  UDAD-T2 data aquisition device (boot)
-	60f3  UDAD-T2 data aquisition device
+	60f0  UDAD-T1 data acquisition device (boot)
+	60f1  UDAD-T1 data acquisition device
+	60f2  UDAD-T2 data acquisition device (boot)
+	60f3  UDAD-T2 data acquisition device
 	60f4  Uniti ARC motor controller
 	60f5  EightByEight Blinky Badge (DFU)
 	60f6  EightByEight Blinky Badge
@@ -18822,7 +18822,7 @@
 1fab  Samsung Opto-Electroncs Co., Ltd.
 	104d  ES65
 1fbd  Delphin Technology AG
-	0001  Expert Key - Data aquisition system
+	0001  Expert Key - Data acquisition system
 1fc9  NXP Semiconductors
 	0003  LPC1343
 	010b  PR533
@@ -21393,7 +21393,7 @@ HUT 82  Monitor VESA Virtual Controls
 	06e  Green Video Black Level
 	070  Blue Video Black Level
 	0a2  Auto Size Center
-	0a4  Polarity Horizontal Sychronization
+	0a4  Polarity Horizontal Synchronization
 	0a6  Polarity Vertical Synchronization
 	0aa  Screen Orientation
 	0ac  Horizontal Frequency in Hz

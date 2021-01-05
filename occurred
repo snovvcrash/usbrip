@@ -1,0 +1,2 @@
+usbrip/__main__.py:291:	print(sys.argv[0].rsplit('/', 1)[-1] + ': Internal error occurred', file=sys.stderr)
+usbrip/lib/core/usbevents.py:120:						print_warning(f'An error occurred when running journalctl: {journalctl_out}')
