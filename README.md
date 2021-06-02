@@ -27,7 +27,7 @@ Table of Contents:
   - [Git Clone](#git-clone)
   - [`install.sh`](#installsh)
     * [Paths](#paths)
-    * [cron](#cron)
+    * [Cron](#cron)
     * [`uninstall.sh`](#uninstallsh)
 * [**Usage**](#usage)
   - [Synopsis](#synopsis)
@@ -188,7 +188,7 @@ When installed with `install.sh`, usbrip uses the following paths:
 * `/var/opt/usbrip/usbrip.ini` – usbrip configuration file (contains passwords for 7-Zip storages).
 * `/usr/local/bin/usbrip` – symlink to the `/opt/usbrip/venv/bin/usbrip` script.
 
-### cron
+### Cron
 
 Cron jobs can be set as follows:
 
