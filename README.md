@@ -351,7 +351,9 @@ Credits & References
 * [Как узнать, какие USB устройства подключались к Linux / HackWare.ru](https://hackware.ru/?p=9703)
 * [usbrip: USB-форензика для Линуксов, или Как Алиса стала Евой / Форум информационной безопасности Codeby.net](https://codeby.net/threads/usbrip-usb-forenzika-dlja-linuksov-ili-kak-alisa-stala-evoj.63644/)
 
-[![13cubed.png](https://user-images.githubusercontent.com/23141800/120508803-b1e32780-c3d0-11eb-92d2-71384cf0f044.jpg)](https://youtu.be/DP4ScSp_2yE)
+<p align="center">
+  <a href="https://youtu.be/DP4ScSp_2yE"><img src="https://user-images.githubusercontent.com/23141800/120510806-73e70300-c3d2-11eb-8703-83af98f1a180.jpg" alt="13cubed.jpg" /></a>
+</p>
 
 Post Scriptum
 ==========
