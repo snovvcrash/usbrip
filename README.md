@@ -66,7 +66,7 @@ Quick Start
 **Way 1.** Install with pip:
 
 ```console
-~$ sudo -H python3 -m pip install --upgrade usbrip
+~$ sudo -H python3 -m pip install -U usbrip
 ~$ usbrip -h
 ```
 
@@ -74,9 +74,9 @@ Quick Start
 
 ```console
 ~$ sudo apt install python3-venv p7zip-full -y
-~$ git clone https://github.com/snovvcrash/usbrip.git ~/usbrip && cd ~/usbrip
-~$ sudo -H installers/install.sh
-~$ cd
+~$ git clone https://github.com/snovvcrash/usbrip && cd usbrip
+~/usbrip$ sudo -H installers/install.sh
+~/usbrip$ cd
 ~$ usbrip -h
 ```
 
@@ -150,7 +150,9 @@ Manual installation
 For simplicity, lets agree that all the commands where `~/usbrip$` prefix is appeared are executed in the `~/usbrip` directory which is created as a result of a git clone:
 
 ```console
-~$ git clone https://github.com/snovvcrash/usbrip.git usbrip && cd usbrip
+~$ git clone https://github.com/snovvcrash/usbrip
+~$ cd usbrip
+~/usbrip$ pwd
 ```
 
 ## `install.sh`
