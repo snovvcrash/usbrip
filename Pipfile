@@ -6,7 +6,7 @@ name = "pypi"
 [dev-packages]
 
 [packages]
-pip = "==18.0"
+pip = "==19.2"
 termcolor = "*"
 terminaltables = "*"
 tqdm = "*"
