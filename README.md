@@ -35,6 +35,7 @@ Table of Contents:
 * [**Examples**](#examples)
 * [**ToDo**](#todo)
 * [**Credits & References**](#credits--references)
+* [**Stargazers Chart**](#stargazers-chart)
 * [**Post Scriptum**](#post-scriptum)
 
 Description
@@ -355,6 +356,13 @@ Credits & References
 
 <p align="center">
   <a href="https://youtu.be/DP4ScSp_2yE"><img src="https://user-images.githubusercontent.com/23141800/120510806-73e70300-c3d2-11eb-8703-83af98f1a180.jpg" alt="13cubed.jpg" /></a>
+</p>
+
+Stargazers Chart
+==========
+
+<p align="center">
+  <a href="https://starchart.cc/snovvcrash/usbrip"><img src="https://starchart.cc/snovvcrash/usbrip.svg" alt="stargazers" /></a>
 </p>
 
 Post Scriptum
