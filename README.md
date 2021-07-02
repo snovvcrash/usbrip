@@ -41,7 +41,7 @@ Table of Contents:
 Description
 ==========
 
-**usbrip** is a small piece of software which analyzes Linux log data: journalctl output or contents of `/var/log/syslog*` (`/var/log/messages*`) files. Based on the collected data usbrip can build USB event history tables with the following columns:
+**usbrip** is a small piece of software which analyzes Linux log data: journalctl output or contents of `/var/log/syslog*` (or `/var/log/messages*`) files. Based on the collected data usbrip can build USB event history tables with the following columns:
 
 * Connected (date & time)
 * Host
@@ -126,7 +126,7 @@ $ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
 ~$ sudo systemctl restart rsyslog
 ```
 
-Firstly, usbrip will check if there is a chance to dump system events using journalctl as the most portable option. If not – it will search for and parse `/var/log/syslog*` and `/var/log/messages*` system log files.
+Firstly, usbrip will check if there is a chance to dump system events using journalctl as the most portable option. If not – it will search for and parse `/var/log/syslog*` or `/var/log/messages*` system log files.
 
 Dependencies
 ==========
