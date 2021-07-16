@@ -43,6 +43,7 @@ import itertools
 import operator
 import os
 import stat
+import json
 from datetime import datetime
 from collections import OrderedDict, defaultdict
 from string import printable
@@ -207,18 +208,19 @@ class USBEvents:
 		if not self._events_to_show:
 			print_info('No USB devices found!')
 
-		rand_id = f'usbrip-{randint(1000, 9999)}'
-		self._events_to_show += [{
-			'conn':     rand_id,
-			'host':     rand_id,
-			'vid':      rand_id,
-			'pid':      rand_id,
-			'prod':     rand_id,
-			'manufact': rand_id,
-			'serial':   rand_id,
-			'port':     rand_id,
-			'disconn':  rand_id
-		}]
+		# TODO seems just for debug purposes => Remove
+		# rand_id = f'usbrip-{randint(1000, 9999)}'
+		# self._events_to_show += [{
+		# 	'conn':     rand_id,
+		# 	'host':     rand_id,
+		# 	'vid':      rand_id,
+		# 	'pid':      rand_id,
+		# 	'prod':     rand_id,
+		# 	'manufact': rand_id,
+		# 	'serial':   rand_id,
+		# 	'port':     rand_id,
+		# 	'disconn':  rand_id
+		# }]
 
 		abs_output_auth = os.path.abspath(output_auth)
 
@@ -231,30 +233,49 @@ class USBEvents:
 		else:
 			print_info(f'Created directory "{dirname}/"')
 
+		# create file if not exists already
+		if not (os.path.isfile(abs_output_auth) and os.access(abs_output_auth, os.R_OK)):
+			try:
+				auth_json = open(abs_output_auth, 'w', encoding='utf-8')
+				auth_json.close()
+			except PermissionError as e:
+				print_critical(f'Permission denied: "{abs_output_auth}". Retry with sudo', initial_error=str(e))
+				return 1
+
+		# read content of file and append
 		try:
-			auth_json = open(abs_output_auth, 'w', encoding='utf-8')
+			with open(abs_output_auth, 'r+') as json_file:
+				auth = defaultdict(set)
+				try:
+					auth = json.load(json_file, encoding='utf-8')
+				except ValueError as vErr:
+					# ignore error and recreate auth list
+					pass
+
+				print_info('Generating authorized device list (JSON)')
+
+				if not attributes:
+					attributes = ('vid', 'pid', 'prod', 'manufact', 'serial')
+
+				for event in tqdm(self._events_to_show, ncols=80, unit='dev'):
+					for key, val in event.items():
+						if key in attributes and val is not None:
+							if not auth[key]:
+								auth[key] = []
+							if not val in auth[key]:
+								auth[key].append(val)
+
+				auth = {key: list(vals) for key, vals in auth.items()}
+
+				for key in auth.keys():
+					auth[key].sort()
+
+				json_file.seek(0)
+				json.dump(auth, json_file, sort_keys=True, indent=indent)
+				json_file.truncate()
 		except PermissionError as e:
 			print_critical(f'Permission denied: "{abs_output_auth}". Retry with sudo', initial_error=str(e))
 			return 1
-
-		print_info('Generating authorized device list (JSON)')
-
-		if not attributes:
-			attributes = ('vid', 'pid', 'prod', 'manufact', 'serial')
-
-		auth = defaultdict(set)
-		for event in tqdm(self._events_to_show, ncols=80, unit='dev'):
-			for key, val in event.items():
-				if key in attributes and val is not None:
-					auth[key].add(val)
-
-		auth = {key: list(vals) for key, vals in auth.items()}
-
-		for key in auth.keys():
-			auth[key].sort()
-
-		json.dump(auth, auth_json, sort_keys=True, indent=indent)
-		auth_json.close()
 
 		os.chmod(abs_output_auth, stat.S_IRUSR | stat.S_IWUSR)  # 600
 
