@@ -33,7 +33,6 @@ Table of Contents:
   - [Synopsis](#synopsis)
   - [Help](#help)
 * [**Examples**](#examples)
-* [**ToDo**](#todo)
 * [**Credits & References**](#credits--references)
 * [**Stargazers Chart**](#stargazers-chart)
 * [**Post Scriptum**](#post-scriptum)
@@ -341,11 +340,6 @@ Examples
   ```console
   ~$ usbrip ids download
   ```
-
-ToDo
-==========
-
-* [ ] Migrate from 7-Zip archives as the protected storages to SQLite DB
 
 Credits & References
 ==========
