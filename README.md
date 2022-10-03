@@ -358,10 +358,3 @@ Stargazers Chart
 <p align="center">
   <a href="https://starchart.cc/snovvcrash/usbrip"><img src="https://starchart.cc/snovvcrash/usbrip.svg" alt="stargazers" /></a>
 </p>
-
-Post Scriptum
-==========
-
-If this tool has been useful for you, feel free to buy me a coffee.
-
-[![coffee.png](https://user-images.githubusercontent.com/23141800/89102246-d1f03600-d40f-11ea-9e34-69825f226fa9.jpg)](https://buymeacoff.ee/snovvcrash)
