@@ -354,8 +354,9 @@ def _validate_io_args(args):
 		elif not os.path.isfile(args.input):
 			usbrip_arg_error(args.input + ': Not a regular file')
 
-	if hasattr(args, 'output') and os.path.exists(args.output):
-		usbrip_arg_error(args.output + ': Path already exists')
+	# TODO seems to be only relevant for generate_auth call - if so => remove
+	# if hasattr(args, 'output') and os.path.exists(args.output):
+	# 	usbrip_arg_error(args.output + ': Path already exists')
 
 
 def _validate_attribute_args(args):

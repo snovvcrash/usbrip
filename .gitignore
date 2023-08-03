@@ -25,3 +25,9 @@ venv.bak/
 
 # Custom files
 TODO.txt
+
+#IntelliJ folder
+.idea/*
+
+#my auth folder
+auth.json
